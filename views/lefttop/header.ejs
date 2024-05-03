@@ -1,0 +1,69 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home</title>
+  <link rel="stylesheet" href="/css/lefttop/header.css" />
+  <link rel="stylesheet" href="/css/bootstrap.min.css" />
+  <script src="/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+  <div class="book_main_container">
+    <div id="header" class="header_book_wrap">
+      <div class="topContainer">
+        <div class="topSearch">
+          <select name="categories" id="categories">
+            <option value="All">All</option>
+            <option value="book_title">Title</option>
+            <option value="author_name">Author</option>
+            <option value="book_publication_year">Year</option>
+            <option value="genre_name">Genre</option>
+          </select>
+          <input type="text" name="searchBook" id="searchBook" placeholder="Search">
+          <img src="/icon/osearch.png" alt="search icon" height="22" onclick="search()">
+        </div>
+        <a href="/userProfile">
+        <div class="topProfile">
+          <img onerror="this.src='icon/unknownuser.png';" id="image" height="40px" width="40px" style="border-radius: 50px;margin-left: 10px;">
+          <h4 style="margin-left: 15px;" id="name"></h4>
+        </div>
+      </a>
+
+      </div>
+    </div>
+ </body>
+       <script>
+      async function search() {
+        let input = document.getElementById('searchBook').value;
+        input = input.trim();
+        if (input == '') {
+          alert('please enter any details');
+          document.getElementById('searchBook').focus();
+        }
+        else {
+          let option = document.getElementById('categories').value;
+          window.sessionStorage.setItem('option', `${option}`);
+          window.sessionStorage.setItem('input', `${input}`);
+          window.location.pathname = `/booksearch/head/first/1/${option}/${input}`;
+        }
+      };
+      let user_id = `<%= user_id %>`;
+      window.addEventListener('load',async ()=>{
+      let nameurl = await fetch(`/user/?user_id=${user_id}`);
+      let nameimg_res = await nameurl.json();
+            document.getElementById('name').innerHTML = nameimg_res[0].u_fname;
+            if (nameimg_res[0].img_path == '') {
+              document.getElementById('image').src = `icon/unknownuser.png`;
+            }
+            else{
+              document.getElementById('image').src = nameimg_res[0].img_path;
+            }
+    });
+
+
+    </script>
+</body>
+
+</html>

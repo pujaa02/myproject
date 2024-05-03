@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="/css/bookpages/bookSearch.css">
+  <link rel="icon" type="image/x-icon" href="/assests/SMARTLIB.png">
+</head>
+  <style>
+    .topRow{
+      cursor: pointer;
+    }
+    .pagination a{
+      padding: 10px;
+    }
+    table td{
+      width: 200px;
+      text-align: center;
+    }
+  </style>
+<body>
+<% var dir=process.cwd() %>
+        <%- include(dir + "/views/lefttop/leftside.ejs" ) %> <%- include(dir + "/views/lefttop/header.ejs" ) %>
+  <div class="bookSearch">
+    
+    <div class="bookTable">
+     
+        <table id="table">
+          <tr class="topRow">
+            <td colspan="2" onclick="order('book_title','1')">Title <i id="down1" class="orderIcon">&#x25be;</i><i id="up1" class="orderIcon">&#x25b4;</i></td>
+            <td onclick="order('rate','2')">Ratings  <i id="down2" class="orderIcon">&#x25be;</i><i id="up2" class="orderIcon">&#x25b4;</i></td>
+            <td><select name="browse" id="browse">
+              <option value="Browse" disabled selected>Genre</option>
+              <option value="Fiction">Fiction</option>
+              <option value="Noval">Noval</option>
+              <option value="Mystry">Mystry</option>
+              <option value="Thriller">Thriller</option>
+              <option value="Horror">Horror</option>
+              <option value="Design">Design</option>
+             </select>
+            <td onclick="order('remaining_book','3')">Availablility  <i id="down3" class="orderIcon">&#x25be;</i><i id="up3" class="orderIcon">&#x25b4;</i></td>
+            <td onclick="order('book_publication_year','4')" >Publication Year  <i id="down4" class="orderIcon">&#x25be;</i><i id="up4" class="orderIcon">&#x25b4;</i></td>
+            <td style="text-align: center;"><a href="/booksearch" style="border: none;">Clear</a></td>
+          </tr>
+          <% if(data.length > 0){%>
+          <%data.forEach((element,index) => { %>
+           <tr>
+             <td><img src="<%=element.book_img%>" alt=""></td>
+             <td style="text-align: start;">
+                <p><%= element.book_title %><br></p>
+                <p><%= element.author_name %></p>
+             </td>
+           <td class="rating">
+            <% if(element.rate == null){%>
+                <p style="font-size: 1.5rem;"><b>0</b><span style="opacity: 0.7;">/5</span></p>
+        <% }else{ %>
+               <p style="font-size: 1.5rem;"><b><%= element.rate %></b><span style="opacity: 0.7;">/5</span></p>
+        <% } %>
+           <td><%= element.genre_name %></td>
+           <% if(element.remaining_book > 0) {%>
+           <td><p>Yes</p></td> 
+           <%}else{%>
+            <td><p>No</p></td> 
+            <% } %>
+           <td><%= element.book_publication_year %></td>
+           
+           <td><a href="/book_in_detail/?book_id=<%= element.prime_book_id %>">Preview</a></td>
+           </tr>         
+          <% }); %>    
+         <% }else{ %>
+               <td colspan="8" align="center">No Data Found.</td>
+          <% } %>
+          </tr>
+        </table>
+
+        <div class="pagination">
+          <h5 align="center">Showing <%=first%> to <%=last%> of <%= %> entries</h3>
+              <a href="/booksearch/order/first/1/<%= genre %>" id="first"><<</a>
+              <a href="/booksearch/order/prev/<%= page %>/<%= genre %>" onclick="prev()" id="prev"><</a>
+              <input type="text" value="<%= page %>" id="page" disabled>
+              <input type="hidden" name="" id="hidden" value="<%= count %>">
+              <a href="/booksearch/order/next/<%= page %>/<%= genre %>" onclick="next()" id="next">></a>
+              <a href="/booksearch/order/last/1/<%= genre %>" onclick="last()" id="last">>></a>
+  
+      </div>
+  
+  </div>
+
+  </div>
+  </body>
+  <script>
+ 
+  window.addEventListener('load',async ()=>{
+    let genre = document.getElementById('browse').value;
+      let id = window.sessionStorage.getItem('change');
+      document.getElementById(id).style.color = 'red';
+  });
+    function order(e, n){
+      window.sessionStorage.setItem('time',`${e}1`);
+      window.sessionStorage.setItem('change',`down${n}`);
+      let genre = window.sessionStorage.getItem('selValue');
+      window.location.href = `/booksearch/order/first/1/${e}/desc/${genre}`;
+    }
+ 
+
+    function viewProfile() {
+
+      let profile = document.getElementById('profile');
+      if (profile.style.display == 'flex') {
+        profile.style.display = 'none';
+      }
+      else {
+        profile.style.display = 'flex';
+      }
+    }
+
+    document.getElementById('browse').addEventListener('change', async () => {
+      let genre = document.getElementById('browse').value;
+      window.sessionStorage.setItem("selValue",genre);
+      window.location.href = `/booksearch/order/:direction/:index/${genre}`;
+    })
+     
+    let page = document.getElementById('page').value;
+    let count = document.getElementById('hidden').value;
+    count = Math.ceil(count / 2);
+    if(count == 0){
+          document.getElementsByClassName('topRow')[0].style.display = 'none';
+          document.getElementsByClassName('pagination')[0].style.display = 'none';
+        }
+        if(page == 1 && count == 1){
+            document.getElementById('first').style.pointerEvents = 'none';
+            document.getElementById('prev').style.pointerEvents = 'none';
+            document.getElementById('last').style.pointerEvents = 'none';
+            document.getElementById('next').style.pointerEvents = 'none';
+         }
+        else if(page == 1){
+            document.getElementById('first').style.pointerEvents = 'none';
+            document.getElementById('prev').style.pointerEvents = 'none';
+        }
+        else if(page == count){
+            document.getElementById('last').style.pointerEvents = 'none';
+            document.getElementById('next').style.pointerEvents = 'none';
+        }
+        
+  </script>
+
+  </html>

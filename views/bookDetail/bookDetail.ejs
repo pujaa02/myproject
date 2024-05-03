@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Detail</title>
+    <link rel="stylesheet" href="/css/bookDetail.css">
+    <link rel="stylesheet" href="/css/lefttop/header.css">
+    <link rel="stylesheet" href="/css/lefttop/leftside.css">
+    <script src="../../node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="../../node_modules/sweetalert2/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href='../../node_modules/@fortawesome/fontawesome-free/css/all.min.css'>
+    <script src='../../node_modules/@fortawesome/fontawesome-free/js/all.min.js'></script>
+    <script src="../node_modules/socket.io/client-dist/socket.io.js"></script>
+    <script src="/js/bookdetail.js"></script>
+</head>
+<body onload=" data(`<%= book_id %>`,`<%= user_id%>`)">
+    <% var dir=process.cwd() %>
+        <%- include(dir + "/views/lefttop/leftside.ejs" ) %>
+         <%- include(dir + "/views/lefttop/header.ejs" ) %>
+
+                <div class="bookMain">
+                    <div class="back" onclick="back()">
+                        <img src="/assests/leftArrow.png" alt="back arrow">
+                        <p>Back to result</p>
+                        </h4>
+                    </div>
+                    <div class="bookDetails">
+                        <div class="bookImage">
+                            <img id="book_img" alt="book img">
+                        </div>
+                        <div class="bookFullDetails">
+                            <h2 id="title"></h2>
+                            <p>By <u id="authname1"></u> ,<span id='publication_year'></span></p>
+                            <p style="opacity: 0.5;" id="edition">Second Edition</p>
+                            <div class="bookRating">
+                                <div class="rating" style="display: inline;" id="ratingStar">
+                                    <i id="st1" class="far fa-star"></i>
+                                    <i id="st2" class="far fa-star"></i>
+                                    <i id="st3" class="far fa-star"></i>
+                                    <i id="st4" class="far fa-star"></i>
+                                    <i id="st5" class="far fa-star"></i>
+                                </div>
+                                <b id="rating"><span id='rate'></span> Rating</b>
+                                <b id="curread">25 Currently Reading</b>
+                                <b id="readed">119 Have read</b>
+                            </div>
+                            <div class="bookAvil">
+                                <p class="availabledis">Availability : </p>
+                                <p class="available" id="available"></p>
+                            </div>
+                            <div class="bookCat">
+                                <p class="bookCatdis">Category : </p>
+                                <p class="cate" id="genre"></p>
+                            </div>
+
+                            <div class="bookBtn">
+                                <input type="button" value="Add to WatchList" id="WatchList" onclick="addwatch(`<%= book_id %>`,`<%= user_id%>`)">
+                            </div>
+                        </div>
+                        <div class="bookAuthor">
+                            <h3><span style="color: orange; margin-right: 10px;">About</span>Author</h3>
+                            <p id="authname2">Steve Krug</p>
+                            <img src="/assests/author.png" alt="" id="authorImg">
+                            <p class="authorDes" id="authdesc">Steve Krug is a usability consultant who has more than 30
+                                years
+                                of experience as a user advocate for companies like Apple, Netscape, AOL, Lexus, and
+                                others.
+                            </p>
+                            <h4>other Books</h4>
+                            <div class="authorBooks" id="authorBooks">
+                                <img src="/assests/author1.png"  class="authorBooks" id="authorbooks1">
+                                <img src="/assests/cover.png" class="authorBooks" id="authorbooks2">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="BookMenu">
+                        <div class="BookMenuList">
+                            <ul>
+                                <li class="bookDetailUl" onclick="showDetails(0)"><a class="bookA"
+                                        style="color: #F27851; text-decoration: underline; font-weight: 700; opacity: 1;">Overview</a>
+                                </li>
+                                <li class="bookDetailUl" onclick="showDetails(1)"><a class="bookA">Description</a></li>
+                                <li class="bookDetailUl" onclick="showDetails(2)"><a class="bookA">Comments</a>
+                                </li>
+                                <li class="bookDetailUl" onclick="showDetails(3)"><a class="bookA">Related
+                                        Books</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="details" id="firstBlock">
+                            <div class="bookCommon">
+                                <p>Publication Year</p>
+                                <p id="publication_year2"><b>2000</b></p>
+                            </div>
+                            <div class="bookCommon">
+                                <p>Publication</p>
+                                <p style="color: #F27851;" id="publication">New Riders Press</p>
+                            </div>
+                            <div class="bookCommon">
+                                <p>Language</p>
+                                <p style="color: #F27851;" id="language_of_book">English</p>
+                            </div>
+                            <div class="bookCommon">
+                                <p>Pages</p>
+                                <p id="pagebook"><b>216</b></p>
+                            </div>
+                        </div>
+
+         <div class="details">
+            <p class="bookDetailPar" id="bookdesc">The book's premise is that a good software program or web site should let users accomplish their intended tasks as easily and directly as possible. Krug points out that people are good at satisficing, or taking the first available solution to their problem, so design should take advantage of this.</p>
+         </div>
+
+         <div class="details" id="displayCol">
+             <div class="bookComment">
+                <div class="bookUserComment">
+                    <h6 id="userid_comment">haresh</h6>
+                    <p id="date_comment">10/02/2024</p>
+                </div> 
+                     <p id="comment">it is nice a book to read.</p>
+             </div>
+             <div class="bookComment">
+                <div class="bookUserComment">
+                <h6>vijay</h6>
+                <p>20/01/2024</p>
+                </div>
+                <p>it is a great book.</p>
+            </div>
+            <div class="bookComment">
+                <div class="bookUserComment">
+                    <h6>darshan</h6>
+                    <p>12/03/2024</p>
+                </div>
+                <p>it is a good book.</p>
+            </div>
+            
+         </div>
+
+         <div class="details">
+            <div class="relatedBook" id="related_book1">
+                <img id="relatedbook1" alt="">
+                <a id="related1">Details</a>
+            </div>
+            <div class="relatedBook" id="related_book2">
+                <img id="relatedbook2" alt="">
+                <a id="related2">Details</a>
+            </div>
+            <div class="relatedBook" id="related_book3">
+                <img id="relatedbook3" alt="">
+                <a id="related3">Details</a>
+            </div>
+            <div class="relatedBook" id="related_book4">
+                <img id="relatedbook4" alt="">
+                <a id="related4">Details</a>
+            </div>
+            <div class="relatedBook" id="related_book5">
+                <img id="relatedbook5" alt="">
+                <a id="related5">Details</a>
+            </div>
+         </div>
+    </div>
+ </div>
+ </div>
+</body>
+
+</html>

@@ -1,0 +1,445 @@
+.mainarea {
+  /* height: 780px; */
+  height: 90%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  background-color: #f2f2f2;
+  position: relative;
+  border-radius: 0 0 10px 0;
+  scrollbar-width: none;
+}
+
+.quotesection {
+  margin-top: 35px;
+  margin-left: 2rem;
+  width: 547px;
+  height: 220px;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
+    linear-gradient(140.88deg, #eb5231 -29.15%, #571fcf 151.64%);
+  border-radius: 10px;
+}
+
+.quoteframe {
+  padding: 20px 20px;
+}
+
+.todayquote {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 25px;
+  line-height: 128.52%;
+  color: #ffffff;
+}
+
+.contentofquote {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 150%;
+  color: #ffffff;
+}
+
+.contentby {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 128.52%;
+  text-align: right;
+  color: #ffffff;
+  margin-top: 1rem;
+}
+.categorybook {
+  font-family: "Inter";
+  font-style: normal;
+  font-size: 20px;
+  line-height: 128.52%;
+  color: #d85757;
+}
+.quotebtn {
+  display: flex;
+  margin-left: 40px;
+  gap: 8px;
+}
+
+.one {
+  box-sizing: border-box;
+  width: 10px;
+  height: 10px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid #ffffff;
+}
+
+.active {
+  background: #8a317c;
+}
+
+.newarrivals {
+  position: absolute;
+  width: 760px;
+  height: 220px;
+  left: 635px;
+  top: 35px;
+  background: #ffffff;
+  border-radius: 10px;
+}
+.rightsideframe img {
+  animation-name: move;
+  animation-duration: 50s;
+  animation-iteration-count: infinite;
+  animation-direction: left;
+  animation-timing-function: linear;
+  transition: all 10s;
+}
+@keyframes move {
+  0% {
+    margin-left: 0px;
+  }
+  25% {
+    margin-left: -600px;
+  }
+  50% {
+    margin-left: -1020px;
+  }
+  75% {
+    margin-left: -600px;
+  }
+  100% {
+    margin-left: 0px;
+  }
+}
+.sidenewarrival {
+  position: absolute;
+  width: 58px;
+  height: 220px;
+  left: 0px;
+  top: 0px;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
+    linear-gradient(182.98deg, #eb5231 -4.09%, #571fcf 165.15%);
+  border-radius: 10px 0px 0px 10px;
+}
+#rightsidenewarrival {
+  display: flex;
+  padding: 0px;
+  gap: 20px;
+  position: absolute;
+  width: 700px;
+  height: 229px;
+  left: 58px;
+  top: 0px;
+  overflow: hidden;
+}
+
+.rightsideframe {
+  /* Frame 19 */
+  width: 162px;
+  height: 195px;
+  border-radius: 10px;
+  margin: 12px 15px;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+
+.rightsideframe img {
+  margin-top: 15px;
+  margin-left: 10px;
+  width: 140px;
+  height: 170px;
+  border-radius: 5px;
+  background: #ffffff;
+  box-shadow: 5px 8px 10px rgba(43, 41, 41, 0.25);
+}
+
+.pnewarrivals {
+  position: absolute;
+  width: 157px;
+  height: 32px;
+  left: -45px;
+  top: 80px;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 23px;
+  line-height: 128.52%;
+  color: #ffffff;
+  transform: rotate(-90deg);
+}
+
+.recommended p {
+  position: absolute;
+  width: 286px;
+  height: 33px;
+  left: 44px;
+  top: 300px;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 25px;
+  line-height: 128.52%;
+  color: #4d4d4d;
+}
+
+#recommendedbooks {
+  display: flex;
+  padding: 0px;
+  gap: 39px;
+  position: absolute;
+  width: 1350px;
+  height: 280px;
+  left: 44px;
+  top: 350px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+.frame {
+  width: calc(100% / 2);
+  width: 160px;
+  height: 260px;
+  background: #ffffff;
+  border-radius: 10px;
+  flex: none;
+  margin-bottom: 15px;
+}
+
+.frame img {
+  width: 130px;
+  height: 170px;
+  margin-left: 1rem;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+
+.framecontent {
+  width: 130px;
+  height: 52px;
+  margin: 10px 13px;
+}
+
+.framecontentp1 {
+  font-size: 12px;
+  font-weight: bold;
+  margin-top: -1px;
+  font-family: "Inter";
+  font-style: normal;
+  color: #4d4d4d;
+}
+
+.framecontentp2 {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 8px;
+  color: #4d4d4d;
+  margin-top: -5px;
+}
+
+.framecontentp3 {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 10px;
+  color: #4d4d4d;
+  margin-top: -5px;
+}
+
+.recentreading p {
+  position: absolute;
+  width: 286px;
+  height: 33px;
+  left: 44px;
+  top: 660px;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 25px;
+  line-height: 128.52%;
+  color: #4d4d4d;
+}
+
+#recentbooks {
+  display: flex;
+  padding: 0px;
+  gap: 39px;
+  position: absolute;
+  width: 1350px;
+  height: 280px;
+  left: 44px;
+  top: 710px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+.frameofrecent {
+  width: calc(100% / 2);
+  width: 160px;
+  height: 260px;
+  background: #ffffff;
+  border-radius: 10px;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  margin-bottom: 15px;
+}
+
+.frameofrecent img {
+  width: 130px;
+  height: 170px;
+  margin-left: 1rem;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+
+#container {
+  position: absolute;
+  width: 1350px;
+  top: 1010px;
+  left: 44px;
+}
+
+.categoryname p {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 25px;
+  line-height: 128.52%;
+  color: #4d4d4d;
+}
+
+.categoryrow {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 0px;
+  gap: 39px;
+  margin-top: 15px;
+  width: 1553px;
+  height: 280px;
+  margin-bottom: 10px;
+  overflow-x: scroll;
+}
+
+.categorycol {
+  width: 160px;
+  height: 260px;
+  background: #ffffff;
+  border-radius: 10px;
+}
+
+.categorycol img {
+  width: 130px;
+  height: 170px;
+  margin-left: 1rem;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+
+@media only screen and (max-width: 1296px) {
+  .mainarea {
+    height: 596px;
+    width: 940px;
+    overflow-x: hidden;
+  }
+
+  .quotesection {
+    width: 350px;
+  }
+
+  .newarrivals {
+    position: absolute;
+    width: 500px;
+    left: 400px;
+  }
+
+  .sidenewarrival {
+    width: 50px;
+  }
+
+  .pnewarrivals {
+    position: absolute;
+    left: -55px;
+    top: 90px;
+  }
+
+  #rightsidenewarrival {
+    width: 420px;
+  }
+
+  .rightsideframe {
+    width: 132px;
+    margin: 12px 5px;
+  }
+
+  .rightsideframe img {
+    width: 111px;
+  }
+
+  #recommendedbooks {
+    width: 830px;
+  }
+
+  #recentbooks {
+    width: 830px;
+  }
+
+  .categoryrow {
+    width: 830px;
+  }
+}
+
+@media (1297px <=width <=1370px) {
+  .mainarea {
+    height: 590px;
+    margin-top: 30px;
+    overflow-x: hidden;
+  }
+
+  .quotesection {
+    width: 370px;
+  }
+
+  .newarrivals {
+    position: absolute;
+    width: 520px;
+    left: 450px;
+  }
+
+  #recommendedbooks,
+  #recentbooks,
+  .categoryrow {
+    width: 950px;
+    height: 300px;
+  }
+
+  .sidenewarrival {
+    width: 50px;
+  }
+
+  .pnewarrivals {
+    position: absolute;
+    left: -55px;
+    top: 90px;
+  }
+
+  #rightsidenewarrival {
+    width: 420px;
+  }
+
+  .rightsideframe {
+    width: 132px;
+    margin: 12px 5px;
+  }
+
+  .rightsideframe img {
+    width: 111px;
+  }
+  .frame,
+  .categorycol,
+  .frameofrecent {
+    height: 280px;
+  }
+}

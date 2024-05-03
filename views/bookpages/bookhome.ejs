@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/x-icon" href="assests/SMARTLIB.png">
+  <title>bookhome</title>
+  <link rel="stylesheet" href="/css/bookpages/bookhome.css" />
+
+</head>
+
+<body onload="myfun('<%= user_id%>')">
+  <% var dir=process.cwd() %>
+    <%- include(dir + "/views/lefttop/leftside.ejs" ) %> <%- include(dir + "/views/lefttop/header.ejs"
+        ) %>
+        <div class="mainarea">
+         
+          <!-- start from here -->
+          <div class="quotesection">
+            <div class="quoteframe">
+              <p class="todayquote">Today Quote</p>
+              <p class="contentofquote">“There is more treasure in books than in all the pirate's loot on Treasure
+                Island.”</p>
+              <p class="contentby">-Walt Disney</p>
+            </div>
+            <!-- second------------ -->
+            <div class="quoteframe">
+              <p class="todayquote">Today Quote</p>
+              <p class="contentofquote">“To learn to read is to light a fire; every syllable that is spelled out is a
+                spark.”</p>
+              <p class="contentby">- Victor Hugo</p>
+            </div>
+            <!-- third------------ -->
+            <div class="quoteframe">
+              <p class="todayquote">Today Quote</p>
+              <p class="contentofquote">“I can survive well enough on my own – if given the proper reading material.”
+              </p>
+              <p class="contentby">- Sarah J. Maas</p>
+            </div>
+            <!-- forth -------------- -->
+            <div class="quoteframe">
+              <p class="todayquote">Today Quote</p>
+              <p class="contentofquote">“Some books are so familiar that reading them is like being home again.”</p>
+              <p class="contentby">-Louisa May Alcott</p>
+            </div>
+            <div class="quotebtn">
+              <span class="one" onclick="currentSlide(1)"></span>
+              <span class="one" onclick="currentSlide(2)"></span>
+              <span class="one" onclick="currentSlide(3)"></span>
+              <span class="one" onclick="currentSlide(4)"></span>
+            </div>
+          </div>
+
+          <!-- right bar section new arrivals books -->
+          <div class="newarrivals">
+            <div class="sidenewarrival">
+              <p class="pnewarrivals">New Arrivals</p>
+            </div>
+            <div id="rightsidenewarrival"></div>
+          </div>
+
+    <!-- recommended for you -->
+    <div class="recommended">
+      <p>Recommended for You</p>
+    </div>
+    <div id="recommendedbooks"></div>
+    <!-- end here -->
+    <div class="recentreading">
+      <p>Recent Reading</p>
+    </div>
+    <div id="recentbooks"></div>
+    <!-- ===================== all cateroeis ==================== -->
+
+
+    <div id="container">
+         
+    </div>
+    <!-- mainarea end here -->
+  </div>
+</body>
+<script src="/js/bookpages/bookhome.js"></script>
+<script>
+  let i = 0;
+    setInterval(function(){
+      if(i == 4){
+        i = 0;
+      }
+      currentSlide(i)
+      i++;
+    },3000);
+</script>
+</html>
+
+
+
+

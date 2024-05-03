@@ -1,0 +1,43 @@
+.mainarea {
+  height: 85%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  background-color: #f2f2f2;
+  position: relative;
+  border-radius: 0 0 10px 0;
+  scrollbar-width: none;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+.heading p{
+  margin-top: 2rem;
+  text-align: left;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 25px;
+  line-height: 128.52%;
+  color: #d85757;
+}
+.container ul li{
+  list-style-type: disc !important;
+  line-height: 185%;
+  font-size: 19px;
+}
+@media only screen and (max-width: 1296px) {
+  .mainarea {
+    height: 475px;
+    width: 940px;
+    overflow-x: hidden;
+  }
+}
+
+@media (1297px <=width <=1366px) {
+  .mainarea {
+    height: 590px;
+    overflow-x: hidden;
+  }
+}

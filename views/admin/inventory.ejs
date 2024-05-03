@@ -1,0 +1,72 @@
+
+<style>
+
+    #lisbookid{
+      border:2px solid #b3320b;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size:18px;
+  color:black;
+  text-decoration: none;
+    }
+  </style>
+  
+  
+  <%-include ('adminSidebar',{search : 1}) %>
+    <div class="table1">
+      <h2 class="text-center mt-2">List Book</h2>
+      <table class="table text-center table-bordered w-auto">
+        <thead>
+          <tr>
+            <th scope="col" onclick="bookOrder('prime_book_id',1)">Id<i id="down1" class="orderIcon">&#8595;</i></th>
+            <th scope="col" onclick="bookOrder('prime_book_id',2)">Book Id <i id="down1" class="orderIcon">&#8595;</i></th>
+            <th scope="col" onclick="bookOrder('book_title',3)">Title<i id="down1" class="orderIcon">&#8595;</i></th>
+            <th scope="col" onclick="bookOrder('name',4)">Reader Name<i id="down1" class="orderIcon">&#8595;</i></th>
+            <th scope="col" onclick="bookOrder('borrow_date',5)">Issue Date<i id="down1" class="orderIcon">&#8595;</i></th>
+            <th scope="col" onclick="bookOrder('return_book',6)">Return Date<i id="down1" class="orderIcon">&#8595;</i></th>
+            <th scope="col" onclick="bookOrder('status',7)">Status<i id="down1" class="orderIcon">&#8595;</i></th>
+    
+          </tr>
+        </thead>
+        <tbody>
+          <% for(let i=0 ; i<result2.length ; i++) {%>
+            <tr>
+                <th scope="row">
+                    <%= result2[i].book_id %>
+                </th>
+              <th scope="row">
+                <%= result2[i].prime_book_id %>
+              </th>
+              <td>
+                <%= result2[i].book_title %>
+              </td>
+              <td>
+                <%= result2[i].name %>
+              </td>
+              <td>
+                <%= result2[i].borrow_date %>
+              </td>
+              <td>
+                <%= result2[i].return_date%>
+              </td>
+              <td>
+                 <%= result2[i].status %>
+              </td>
+             
+            </tr>
+            <% } ; %>
+        </tbody>
+      </table>
+      <%-include ('pagination',{p,page}) %>
+    </div>
+    </div>
+    </div>
+    </body>
+      <script>
+         function bookOrder(column,n){
+            window.sessionStorage.setItem('column',`${column}1`);
+            window.sessionStorage.setItem('icon',n);
+            window.location.href = `/admin/listbook/${column}/desc`;
+          }
+      </script>
+    </html>

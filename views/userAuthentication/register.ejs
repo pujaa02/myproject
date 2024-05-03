@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="stylesheet" href="css/authentication.css" />
+  <link rel="stylesheet" href="/sweetalert2/sweetalert2.min.css">
+  <script src="/sweetalert2/sweetalert2.min.js"></script>
+</head>
+
+<body>
+  <div class="Container">
+    <div class="register">
+      <div class="logoR">
+        <img src="./assests/smartLibLogo.png" alt="" width="130px;" />
+        <span class="logoText">SMARTLIB</span>
+      </div>
+      <div class="group1Reg">
+        <span class="group1First">Registration !</span>
+        <span class="group1Second">For Both Staff & Students</span>
+        <span class="group1Second2"><b></b></span>
+      </div>
+      <form id="form">
+        <div class="mainForm">
+          <div class="formRow1">
+            <div class="formdesign" id="fname">
+              <label class="label" for="fname">First name</label>
+              <input type="text" name="fname" style="margin-bottom: 18px" /><br />
+              <span class="formerror"><b></b></span>
+            </div>
+            <div class="formdesign" id="lname">
+              <label class="label" for="lname">Last name</label>
+              <input type="text" name="lname" style="margin-bottom: 18px" /><br />
+              <span class="formerror"><b></b></span>
+            </div>
+            <div class="formdesign" id="date">
+              <label class="label" for="dob">DOB</label>
+              <input type="date" placeholder="YYYY-MM-DD" id="Test_DatetimeLocal" name="dob"
+                style="margin-bottom: 22px" />
+              <span class="formerror"><b></b></span>
+            </div>
+          </div>
+          <div class="formRow2">
+            <div class="formdesign" id="email">
+              <label class="label" for="email">Email</label>
+              <input type="text" name="email" style="margin-bottom: 18px" /><br />
+              <span class="formerror"><b></b></span>
+            </div>
+            <div class="formdesign" id="number">
+              <label class="label" for="number">Phone Number:</label>
+              <input type="text" name="number" style="margin-bottom: 19px" /><br />
+              <span class="formerror"><b></b></span>
+            </div>
+            <div class="formdesign" id="gender">
+              <label class="label" for="gender">Gender:</label>
+              <div class="innerGender">
+                <input type="radio" name="gender_combo" value="male" />
+                <label for="male">Male</label>
+                <input type="radio" name="gender_combo" value="female" />
+                <label for="Female">Female</label>
+                <input type="radio" name="gender_combo" value="Others" />
+                <label for="gender_combo">Others</label>
+                <br /><span class="formerror"><b></b></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="submitDivLog">
+          <div id="submit" onclick="checkFormDetails()">Register</div>
+        </div>
+        <div id="registerNewUserLog">
+          Already a User?
+          <span class="resgisterNew" onclick="goLogin()">Login now</span>
+        </div>
+      </form>
+
+      <br />
+      <div id="linkDiv" style="display: none">
+        <div class="col1Timer">
+          <span class="hourTimer" style="display: inline-block">0</span>H:
+          <div class="timer" style="display: inline-block">0</div>
+          M: <span class="seconds">0</span>S
+        </div>
+        <div class="col1TimeOver" style="display: none">
+          <span>Time Over!! Please Register again!</span>
+        </div>
+        <div class="col2">
+          Get activate :<a href="" id="link" style="font-size: 13px"></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const hour = 2;
+    const goLogin = () => {
+      window.location = `${location.origin}/login`;
+    };
+    function seterror(id, error) {
+      let varId = document.getElementById(id);
+      varId.getElementsByClassName("formerror")[0].innerHTML = " " + error;
+    }
+    function clearerrors() {
+      element = document.getElementsByClassName("formerror");
+      for (let item of element) {
+        item.innerHTML = "";
+      }
+    }
+    const formValidation = () => {
+      clearerrors();
+      let formId = document.getElementById("form");
+      let formdata = new FormData(formId);
+      const form = Object.fromEntries(formdata);
+
+      let returnVal = true;
+      let stringRegex = /^[a-zA-Z]+$/;
+      let fname = form.fname;
+      fname = fname.replace(/\s/g, "");
+
+      let lname = form.lname;
+      lname = lname.replace(/\s/g, "");
+
+      let email = form.email;
+      email = email.replace(/\s/g, "").toLowerCase();
+
+      let dob = form.dob;
+      dob = dob.replace(/\s/g, "");
+
+      if (fname == "" || fname == undefined) {
+        seterror("fname", "please add First name!");
+        returnVal = false;
+      } else if (fname.length < 2) {
+        seterror("fname", "First name is too short!!");
+        returnVal = false;
+      } else if (fname.length > 15) {
+        seterror("fname", "First name is too large!!");
+        returnVal = false;
+      } else if (stringRegex.test(fname) == false) {
+        setError("fname", "Name should contain Characters!!");
+        returnVal = false;
+      }
+
+      if (lname == "" || lname == undefined) {
+        seterror("lname", "please add Last name!");
+        returnVal = false;
+      } else if (lname.length < 2) {
+        seterror("lname", "Last name is too short!!");
+        returnVal = false;
+      } else if (fname.length > 15) {
+        seterror("lname", "Last name is too large!!");
+        returnVal = false;
+      } else if (stringRegex.test(lname) == false) {
+        seterror("lname", "Name should contain Characters!!");
+        returnVal = false;
+      }
+
+      const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+      if (email == "" || email == undefined) {
+        seterror("email", "please add Email!");
+        returnVal = false;
+      }
+      if (!emailRegex.test(email)) {
+        seterror("email", "please enter a valid email!");
+        returnVal = false;
+      }
+
+      let currentDate = new Date();
+      let DOBRegex = /^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$/;
+      if (dob == "" || dob == undefined) {
+        seterror("date", "please add DOB!");
+        returnVal = false;
+      } else if (DOBRegex.test(dob) == false) {
+        seterror("date", "please enter DOB in YYYY-MM-DD Format!!");
+        returnVal = false;
+      }
+      else if ((currentDate.getFullYear() - 13) <= dob.split("-")[0]) {
+        if (((currentDate.getFullYear() - 13) == dob.split("-")[0]) && (currentDate.getMonth() <= dob.split("-")[1])) {
+          if (currentDate.getMonth() == dob.split("-")[1] && currentDate.getDate() <= dob.split("-")[2]) {
+          }
+          else {
+            seterror("date", "Age should greter than 13!!");
+            returnVal = false;
+          }
+        }
+        else {
+          seterror("date", "Age should greter than 13!!");
+          returnVal = false;
+        }
+      }
+
+      let number = form.number;
+      number = number.replace(/\s/g, "");
+      let numberRegex = /[0-9]{10}/;
+      if (number.length != 10) {
+        seterror("number", "Number should contain 10 digit!!!");
+      } else if (!numberRegex.test(number)) {
+        seterror("number", "Please enter a valid phone number");
+        returnVal = false;
+      }
+
+      if (
+        document.getElementsByName("gender_combo")[0].checked == false &&
+        document.getElementsByName("gender_combo")[1].checked == false
+      ) {
+        seterror("gender", "please select Gender!!");
+        returnVal = false;
+      }
+
+      return returnVal;
+    };
+
+    const checkFormDetails = () => {
+      if (formValidation()) {
+        checkForm();
+      }
+      else {
+        Swal.fire({
+          title: "Invalid Input",
+          text: "Please Fill Valid Input?",
+          icon: "warning"
+        });
+      }
+    }
+
+    const checkForm = async () => {
+      clearerrors();
+      let returnVal = true;
+      let form = document.getElementById("form");
+      let formdata = new FormData(form);
+      const params = new URLSearchParams(formdata);
+      const response1 = await new Response(params).text();
+
+      const response = await fetch(`${location.origin}/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: response1,
+      });
+      let res1 = await response.json();
+      if (res1.validationDone == false) {
+        clearerrors();
+
+        if (res1.data2.fnameError != "") {
+          seterror("fname", res1.data2.fnameError);
+          returnVal = false;
+        }
+        if (res1.data2.lnameError != "") {
+          seterror("lname", res1.data2.lnameError);
+          returnVal = false;
+        }
+        if (res1.data2.emailError != "") {
+          seterror("email", res1.data2.emailError);
+          returnVal = false;
+        }
+        if (res1.data2.numberError != "") {
+          seterror("number", res1.data2.numberError);
+          returnVal = false;
+        }
+        if (res1.data2.genderError != "") {
+          seterror("gender", res1.data2.genderError);
+          returnVal = false;
+        }
+        if (res1.data2.dobError != "") {
+          seterror("date", res1.data2.dobError);
+          returnVal = false;
+        }
+        if (res1.exist == true) {
+          // let group1Second2 =
+          //   document.getElementsByClassName("group1Second2")[0];
+          // group1Second2.innerHTML = "User is Alerdy exist!!!";
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "User is Alerdy Exist!",
+            footer: '<div onclick="goLogin()" style="color:blue;font-family:bold; cursor: pointer;">For login click on this link !</div>'
+          });
+        }
+        return returnVal;
+      } else {
+
+        Swal.fire({
+          title: "Good job!",
+          text: "please click on the link for further process!",
+          icon: "success"
+        });
+
+        document.getElementsByClassName("hourTimer")[0].innerHTML = 2;
+        document.getElementsByClassName("timer")[0].innerHTML = 0;
+        document.getElementsByClassName("seconds")[0].innerHTML = 0;
+
+        clearerrors();
+        document.getElementById("linkDiv").style.display = "block";
+        let digitalLink = `${location.origin}/createPass?userID=${res1.data2}&digiLink=${res1.data1}`;
+        document.getElementById("link").innerHTML = digitalLink;
+        document.getElementById("link").setAttribute("href", digitalLink);
+        document.getElementsByClassName("col1Timer")[0].style.display =
+          "block";
+        startTimer();
+      }
+    };
+
+    const startTimer = () => {
+      let myTimer = setInterval(() => {
+        let hour = document.getElementsByClassName("hourTimer")[0].innerHTML;
+        let min = document.getElementsByClassName("timer")[0].innerHTML;
+        let sec = document.getElementsByClassName("seconds")[0].innerHTML;
+        if (sec == 0 && min == 0 && hour == 0) {
+          document.getElementsByClassName("col1Timer")[0].style.display =
+            "none";
+          document.getElementsByClassName("col1TimeOver")[0].style.display =
+            "block";
+          document.getElementsByClassName("col2")[0].style.display = "none";
+          clearInterval(myTimer);
+        } else if (min == 0 && sec == 0) {
+          hour = hour - 1;
+          min = 59;
+          sec = 59;
+        } else if (sec == "00" || sec == "0") {
+          sec = 60;
+          min = min - 1;
+        } else {
+          sec = sec - 1;
+        }
+        document.getElementsByClassName("hourTimer")[0].innerHTML = hour;
+        document.getElementsByClassName("timer")[0].innerHTML = min;
+        document.getElementsByClassName("seconds")[0].innerHTML = sec;
+      }, 1000);
+    };
+    const clearPage = () => {
+      document.getElementsByClassName("col1TimeOver")[0].style.display =
+        "none";
+      document.getElementsByClassName("col2")[0].style.display = "none";
+    };
+    document.getElementById('form').addEventListener('keydown', function (event) {
+      if (event.key === 'Enter' && !event.shiftKey && !event.ctrlKey && !event.altKey && !event.capsLockKey) {
+        checkFormDetails();
+      }
+    });
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,178 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  <link rel="stylesheet" href="/css/sideNav.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/charts/apexcharts.css">
+  <script src="/js/bootstrap.min.js"></script>
+  <style>
+    .table1 {
+      position: relative;
+      top: 21px;
+      background-color: #F3F3F7;
+      height: 639px;
+    }
+
+    form {
+      width: 85%;
+      margin: auto;
+      background-color: #F3F3F7;
+      padding-bottom:-20px;
+    }
+
+    .table {
+      width: 85%;
+      margin: auto;
+      background-color:#f3f3f7;
+      padding: 20px;
+      margin-top: 20px;
+      margin-bottom: 25px;
+    }
+
+    .leftPart {
+      width: 100%;
+    }
+
+    .searchImg{
+      cursor: pointer;
+    }
+  </style>
+
+</head>
+
+<body onload="Chart()">
+
+  <div class="main">
+
+    <header>
+      <div class="headerMain">
+        <div class="logo">
+          <img src="/icon/SmartLib.png" alt="Library Logo">
+        </div>
+
+        <div class="navList">
+          <nav>
+            <ul>
+              <li><img src="/icon/home.png" alt="home icon" height="20"><a href="/admin">Home</a></li>
+              <li><img src="/icon/add.png" alt="home icon" height="20"><a href="/admin/addBook">Add Book</a></li>
+              <li><img src="/icon/booklist.png" alt="search icon" height="20"><a href="/admin/listbook">List Books</a>
+              </li>
+              <li><img src="/icon/users.png" alt="shelf icon" height="20"><a href="/admin/getallusers">List Users</a></li>
+              <li><img src="/icon/rate.png" alt="request icon" height="20"><a href="/admin/showrating">Ratings</a>
+              <li><img src="/icon/request.png" alt="request icon" height="20"><a href="/admin/listrequests">Requests</a>
+              </li>
+              <li><img src="/icon/authors.png" alt="request icon" height="20"><a href="/admin/listauthors">Authors</a>
+              </li>
+              <li><img src="/icon/issue.png" alt="request icon" height="20"><a href="/admin/listsFilterUser">Issued Books</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <!-- <div class="navFooter">
+          <nav>
+            <ul>
+<<<<<<< HEAD:views/admin/adminSidebar.ejs
+              <li><a href="/admin/about" class="linkadmin" >About</a></li>
+              <li><a href="#" class="linkadmin" >Support</a></li>
+              <li><a href="#" class="linkadmin" >Terms & Condition</a></li>
+=======
+              <li><a href="#">About</a></li>
+              <li><a href="#">Support</a></li>
+              <li><a href="#">Terms & Condition</a></li>
+>>>>>>> main:views/adminSidebar.ejs
+            </ul>
+          </nav>
+        </div> -->
+      </div>
+    </header>
+
+    <div class="leftPart">
+
+      <div class="topMain">
+        <div class="topContainer">
+          <div class="topSearch">
+            <form action="" method="GET" style="margin-top:0px;" id="form">
+              <%if(search==7){%>
+                <input type="hidden" name="searchvalue2" id="searchBook2" placeholder="Search2" value='<%=Status%>'>
+                <input type="hidden" name="searchvalue3" id="searchBook3" placeholder="Search3" value='<%=readerID%>'>
+                <%}%>
+              <select name="searchby" id="categories" >    
+                <% if(search===1) {%>
+                  <option value="prime_book_id">ID</option>
+                  <option value="book_title">Title</option>
+                  <option value="genre_id">Genre ID</option>
+                  <option value="book_publication">Publication</option>
+                  <option value="book_publication_year">Year</option>
+                  <option value="book_ISBN">ISBN</option>
+                  <% } %>
+                  <% if(search===2) {%>
+                      <option value="user_id">ID</option>
+                      <option value="u_fname">First Name</option>
+                      <option value="u_lname">Last Name</option>
+                      <option value="u_email">EmailId</option>
+                      <option value="u_contact">Contact</option>
+                      <option value="u_dob">DOB</option>
+                  <% } %>
+                  <% if(search===3) {%>
+                    <option value="reader_id">ID</option>
+                    <option value="book_title">Book Title</option>
+                    <option value="u_rating">Rating</option>
+                <% } %>
+                <% if(search===4) {%>
+                  <option value="author_id">Author ID</option>
+                  <option value="author_name">Author Name</option>
+                  <option value="book_title">Book Title</option>
+              <% } %>
+              <% if(search===5) {%>
+                <option value="request_id">Request ID</option>
+                <option value="user_id">User ID</option>
+                <option value="u_fname">User Name</option>
+            <% } %>
+            <% if(search===6) {%>
+              <option value="reader_id">User ID</option>
+              <option value="u_fname">Name</option>
+            <%}%>
+            <% if(search===7) {%>
+              <option value="prime_book_id">Book ID</option>
+              <option value="book_title">Book Title</option>
+            <%}%>
+              </select>
+              <input type="text" name="searchvalue" id="searchBook" placeholder="Search">
+              <img src="/icon/osearch.png" alt="search icon" height="22" onclick="submitForm()" class="searchImg">
+            </form>
+          </div>
+          <div class="topProfile"  onclick="viewProfile()" style="cursor: pointer;">
+            <img src="/icon/profile.png" alt="profile image" height="50">
+            <h4>Admin</h4>
+            <img src="/icon/dropdown.png" alt="dropdown arrow" height="10"
+              style="cursor: pointer;">
+            <div class="showProfile" id="profile">
+              <ul>
+                <li><a href="/logout">Logout </a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script>
+        const submitForm=()=>{
+          let form = document.getElementById("form");
+          form.submit();
+        }
+        const viewProfile = () =>{
+         if(document.getElementById('profile').style.display === 'block'){
+          document.getElementById('profile').style.display = 'none' ;
+         }
+         else{
+          document.getElementById('profile').style.display = 'block' ;
+         }
+        }
+      </script>
+</body>
+</html>

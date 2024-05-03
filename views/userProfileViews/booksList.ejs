@@ -1,0 +1,245 @@
+<style>
+    @media ( 1297px <= width <= 1366px){
+        .comp_container{
+            height: 725px;
+        }
+    }
+</style>
+
+<div class="col-md-12 d-flex flex-column align-item-center">
+    <h3 class="text-center m-3 heading">List Of Books Issued</h3>
+    <% if(result[0].length==0){%>
+        <div class="container">
+            <h2 class="text-center text-danger">No data found</h2>
+        </div>
+        <%} else{ if(result[0].length<=6){%>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Sr No.<div class="d-flex flex-row"><img
+                                    src="./userProfileScript/icons/arrow_up.svg"><img
+                                    src="./userProfileScript/icons/arrow_down.svg"></div>
+                        </th>
+                        <th scope="col">Book Name</th>
+                        <th scope="col">Book Author</th>
+                        <th scope="col">Book Genre</th>
+                        <th scope="col">Issued Date</th>
+                        <th scope="col">Returned Date</th>
+                        <th scope="col">Detail</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(let i=0; i<result[0].length; i++){%>
+                        <tr>
+                            <th scope="row">
+                                <%=i+1%>
+                            </th>
+                            <td>
+                                <%=result[0][i].book_title%>
+                            </td>
+                            <td>
+                                <%=result[0][i].author_name%>
+                            </td>
+                            <td>
+                                <%=result[0][i].genre_name%>
+                            </td>
+                            <td>
+                                <%=result[0][i].borrow_date%>
+                            </td>
+                            <td>
+                                <%if(result[0][i].return_date==null){%>Pending<%}else{%>
+                                        <%= element.return_date%>
+                                            <%}%>
+                            </td>
+                            <td><button type="button" class="ubtn"><a class="text-light"
+                                        href="/bookDetail?reader_id=<%=result[0][i].reader_id%>&book_id=<%=result[0][i].book_id%>">Detail</a></button>
+                            </td>
+                        </tr>
+                        <%}%>
+                </tbody>
+            </table>
+            <%} else{%>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">
+                                <div class="d-flex flex-row align-items-center">
+                                    <div>Sr No</div>
+                                    <div class="d-flex flex-column">
+                                        <a><img id="up" src="./userProfileScript/icons/arrow_up.svg"></a><a><img
+                                                src="./userProfileScript/icons/arrow_down.svg"></a>
+                                    </div>
+                                </div>
+
+                            </th>
+                            <th scope="col">
+                                <div class="d-flex flex-row align-items-center">
+                                    <div id="book_title">Book Name</div>
+                                    <div class="d-flex flex-column" id="book_title">
+                                        <% if(result[1][0].order=='asc' && result[1][0].field=="book_title" ){%>
+                                            <img id="sortup" src="./userProfileScript/icons/arrow_up_green.svg" />
+                                            <%}else{%>
+                                                <a onclick="sortAscBooks(this,'asc','book_title')"
+                                                    href="/booksIssued?order=asc&field=book_title"><img
+                                                        src="./userProfileScript/icons/arrow_up.svg" /></a>
+                                                <%}%>
+                                                    <% if(result[1][0].order=='desc' && result[1][0].field=="book_title"
+                                                        ){%>
+                                                        <img id="sortdown"
+                                                            src="./userProfileScript/icons/arrow_down_green.svg" />
+                                                        <%}else{%>
+                                                            <a onclick="sortDescBooks(this,'desc','book_title')"
+                                                                href="/booksIssued?order=desc&field=book_title"><img
+                                                                    src="./userProfileScript/icons/arrow_down.svg" /></a>
+                                                            <%}%>
+
+                                    </div>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="d-flex flex-row align-items-center">
+                                    <div class="author_name">Book Author</div>
+                                    <div class="d-flex flex-column" id="author_name">
+                                        <% if(result[1][0].order=='asc' && result[1][0].field=="author_name" ){%>
+                                            <img id="sortup" src="./userProfileScript/icons/arrow_up_green.svg" />
+                                            <%}else{%>
+                                                <a onclick="sortAscBooks(this,'asc','author_name')"
+                                                    href="/booksIssued?order=asc&field=author_name"><img
+                                                        src="./userProfileScript/icons/arrow_up.svg" /></a>
+                                                <%}%>
+                                                    <% if(result[1][0].order=='desc' &&
+                                                        result[1][0].field=="author_name" ){%>
+                                                        <img id="sortdown"
+                                                            src="./userProfileScript/icons/arrow_down_green.svg" />
+                                                        <%}else{%>
+                                                            <a onclick="sortDescBooks(this,'desc','author_name')"
+                                                                href="/booksIssued?order=desc&field=author_name"><img
+                                                                    src="./userProfileScript/icons/arrow_down.svg" /></a>
+                                                            <%}%>
+                                    </div>
+                                </div>
+
+                            </th>
+                            <th scope="col">
+                                <div class="d-flex flex-row align-items-center">
+                                    <div id="genre_name">Book Genre</div>
+                                    <div class="d-flex flex-column" id="genre_name">
+                                        <% if(result[1][0].order=='asc' && result[1][0].field=="genre_name" ){%>
+                                            <img id="sortup" src="./userProfileScript/icons/arrow_up_green.svg" />
+                                            <%}else{%>
+                                                <a onclick="sortAscBooks(this,'asc','genre_name')"
+                                                    href="/booksIssued?order=asc&field=genre_name"><img
+                                                        src="./userProfileScript/icons/arrow_up.svg" /></a>
+                                                <%}%>
+                                                    <% if(result[1][0].order=='desc' && result[1][0].field=="genre_name"
+                                                        ){%>
+                                                        <img id="sortdown"
+                                                            src="./userProfileScript/icons/arrow_down_green.svg" />
+                                                        <%}else{%>
+                                                            <a onclick="sortAscBooks(this,'desc','genre_name')"
+                                                                href="/booksIssued?order=desc&field=genre_name"><img
+                                                                    src="./userProfileScript/icons/arrow_down.svg" /></a>
+                                                            <%}%>
+
+                                    </div>
+                                </div>
+
+                            </th>
+                            <th scope="col">
+                                <div class="d-flex flex-row align-items-center">
+                                    <div id="borrow_date">Issued Date</div>
+                                    <div class="d-flex flex-column" id='borrow_date'>
+                                        <% if(result[1][0].order=='asc' && result[1][0].field=="borrow_date" ){%>
+                                            <img id="sortup" src="./userProfileScript/icons/arrow_up_green.svg" />
+                                            <%}else{%>
+                                                <a onclick="sortAscBooks(this,'asc','borrow_date')"
+                                                    href="/booksIssued?order=asc&field=borrow_date"><img
+                                                        src="./userProfileScript/icons/arrow_up.svg" /></a>
+                                                <%}%>
+                                                    <% if(result[1][0].order=='desc' &&
+                                                        result[1][0].field=="borrow_date" ){%>
+                                                        <img id="sortdown"
+                                                            src="./userProfileScript/icons/arrow_down_green.svg" />
+                                                        <%}else{%>
+                                                            <a onclick="sortAscBooks(this,'desc','borrow_date')"
+                                                                href="/booksIssued?order=desc&field=borrow_date"><img
+                                                                    src="./userProfileScript/icons/arrow_down.svg" /></a>
+                                                            <%}%>
+                                    </div>
+                                </div>
+
+                            </th>
+                            <th scope="col">
+                                <div class="d-flex flex-row align-items-center">
+                                    <div id="return_date">Returned Date</div>
+                                    <div class="d-flex flex-column" id="return_date"><a
+                                            href="/booksIssued?order=asc&field=return_date"><img
+                                                src="./userProfileScript/icons/arrow_up.svg"></a><a
+                                            href="/booksIssued?order=desc&field=return_date"><img
+                                                src="./userProfileScript/icons/arrow_down.svg"></a></div>
+                                </div>
+
+                            </th>
+                            <th scope="col">Detail</th>
+                        </tr>
+                    </thead>
+                    <tbody id="booklist">
+                        <% for(let i=0; i<6; i++){%>
+                            <tr>
+                                <th scope="row">
+                                    <%=i+1%>
+                                </th>
+                                <td>
+                                    <%=result[0][i].book_title%>
+                                </td>
+                                <td>
+                                    <%=result[0][i].author_name%>
+                                </td>
+                                <td>
+                                    <%=result[0][i].genre_name%>
+                                </td>
+                                <td>
+                                    <%=result[0][i].borrow_date%>
+                                </td>
+                                <td>
+                                    <%if(result[0][i].return_date==null){%>Pending<%}else{%>
+                                            <%= result[0][i].return_date%>
+                                                <%}%>
+                                </td>
+                                <td><button type="button" class="ubtn"><a class="text-light"
+                                            href="/bookDetail?reader_id=<%=result[0][i].reader_id%>&book_id=<%=result[0][i].book_id%>">Detail</a></button>
+                                </td>
+                            </tr>
+                            <%}%>
+                    </tbody>
+                </table>
+                <nav aria-label="Page navigation example" class="float-right">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <p aria-label="Previous" onclick="displayFirstBook('<%=result[0][0].reader_id%>')"
+                                class="page-link">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </p>
+                        </li>
+                        <li class="page-item">
+                            <p onclick="prevBook('<%=result[0][0].reader_id%>')" class="page-link">
+                                < </p>
+                        </li>
+                        <li class="page-item">
+                            <p id="pageNo" class="page-link">1</p>
+                        </li>
+                        <li class="page-item">
+                            <p onclick="nextBook('<%=result[0][0].reader_id%>')" class="page-link">></p>
+                        </li>
+                        <li class="page-item">
+                            <p onclick="displayLastBook('<%=result[0][0].reader_id%>')" aria-label="Next"
+                                class="page-link">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </p>
+                        </li>
+                    </ul>
+                </nav>
+                <%}}%>
+</div>

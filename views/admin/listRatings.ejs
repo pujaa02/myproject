@@ -1,0 +1,45 @@
+<%-include ('adminSidebar',{search : 3}) %>
+  <div class="table1">
+    <h2 class="text-center mt-2">List of Ratings by Users</h2>
+    <table class="table text-center table-bordered w-auto">
+      <thead>
+        <tr>
+          <th scope="col" onclick="rateOrder('user_id',1)">Reader Id <img src="../public/icon/" alt=""><i id="down1" class="orderIcon">&#8595;</i></th>
+          <th scope="col" onclick="rateOrder('book_title',2)">BookTitle<i id="down2" class="orderIcon">&#8595;</i></th>
+          <th scope="col" onclick="rateOrder('date',3)">Date of Rating<i id="down3" class="orderIcon">&#8595;</i></th>
+          <th scope="col" onclick="rateOrder('rating',4)">Rating(5)<i id="down4" class="orderIcon">&#8595;</i></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(let i=0 ; i<result.length ; i++) {%>
+          <tr>
+            <th scope="row">
+              <%= result[i].user_id %>
+            </th>
+            <td>
+              <%= result[i].book_title %>
+            </td>
+            <td >
+              <%= result[i].date %>
+            </td>
+            <td >
+              <%= result[i].rating %>
+            </td>
+          </tr>
+          <% } ; %>
+      </tbody>
+    </table>
+    <%-include('pagination',{p,page}) %>
+  </div>
+  </div>
+  </div>
+  </body>
+  
+  <script>
+      function rateOrder(column,n){
+          window.sessionStorage.setItem('column',`${column}1`);
+          window.sessionStorage.setItem('icon',n);
+          window.location.href = `/admin/showrating/${column}/desc`;
+        }
+  </script>
+  </html>

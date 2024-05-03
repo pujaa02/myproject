@@ -1,0 +1,91 @@
+<style>
+    @media ( 1297px <= width <= 1366px){
+        .comp_container{
+            height: 725px;
+        }
+    }
+</style>
+<div class="col-md-12 d-flex flex-column align-item-center">
+    <div id="showMsg"></div>
+    <h3 class="text-center m3 heading">Update User Profile</h3>
+    <div class="row">
+        <div class="col-md-3 d-flex flex-column align-items-center g-2">
+            <%if(result[1].length==0){%>
+                <img class="border-rounded" height="200px" width="200px" src="./userProfileScript/icons/unknownuser.png"
+                    alt="Library Logo" />
+                <form id="img_form" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <input type="hidden" id="user_id" name="user_id" value="<%=result[0][0].user_id%>" />
+                        <div class="d-flex flex-column">
+                            <input type="file" class="form-control-file" name="user_img" id="user_img">
+                            <input type="button" onclick="uploadImg()" class="ubtn m-2" value="upload" />
+                        </div>
+                    </div>
+                </form>
+                <%}else{%>
+                    <img class="border-rounded" height="200px" width="200px" src="<%=result[1][0].img_path%>"
+                        alt="Library Logo" />
+                    <p onclick="removeImg('<%=result[1][0].user_img_id%>')" class="ubtn m-2">Remove</p>
+                    <%}%>
+
+        </div>
+        <form class="col-md-9" id="userDataForm" action="/updateUser" method="post">
+            <div class="form-group">
+                <label for="fname">First Name</label>
+                <input type="text" class="form-control" id="fname" name="fname"
+                    onchange="validateFname(this,this.value)" value="<%=result[0][0].u_fname%>">
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="lname">Last Name</label>
+                <input type="text" class="form-control" onchange="validateLname(this,this.value)" id="lname"
+                    name="lname" value="<%=result[0][0].u_lname%>">
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" class="form-control" onchange="validateEmail(this,this.value)" id="email"
+                    name="email" value="<%=result[0][0].u_email%>">
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="dob">D.O.B</label>
+                <input type="text" class="form-control" onchange="validateDOB(this, this.value)" id="dob" name="dob"
+                    value="<%=result[0][0].u_dob%>">
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="address">Address</label>
+                <textarea class="form-control" name="address" onchange="validateAdd(this, this.value)"
+                    id="address"><%=result[0][0].u_address%></textarea>
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="contact">Contact</label>
+                <input type="text" class="form-control" onchange="validateContact(this,this.value)" id="contact"
+                    name="contact" value="<%=result[0][0].u_contact%>">
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="contact">Gender</label>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="gender" id="male" value="male"
+                        <%if(result[0][0].u_gender=="male" ){%> checked<%}%>>
+                        <label class="form-check-label" for="male">Male</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="gender" id="female" value="female"
+                        <%if(result[0][0].u_gender=="female" ){%> checked<%}%>>
+                        <label class="form-check-label" for="female">Female</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="gender" id="others" value="others"
+                        <%if(result[0][0].u_gender=="others" ){%> checked<%}%>>
+                        <label class="form-check-label" for="others">Others</label>
+                </div>
+                <span class="text-danger"></span>
+            </div>
+            <button onclick="updateUserData()" type="button" class="ubtn">Submit</button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        .maincontainer {
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            position: relative;
+            background-color: #ffffff;
+            overflow-y: scroll;
+            scroll-behavior: smooth;
+            height: 90%;
+            scrollbar-width: none;
+            border-radius: 0px 0px 10px 0px;
+        }
+
+        .inputdiv {
+            display: flex;
+            position: absolute;
+            bottom: 0;
+            background-color: #F3F3F7;
+            height: 10%;
+            width: 99%;
+            margin-bottom: 10px;
+            border-left: 5px solid rgb(255, 255, 255);
+            align-items: center;
+
+        }
+
+        .communitymain {
+            margin-left: 5%;
+            overflow: scroll;
+            height: 650px;
+            scroll-behavior: smooth;
+            padding: 0 0 10px 10px;
+        }
+
+        .righbtn {
+            width: 5%;
+            margin-left: 1%;
+        }
+
+        .sendbtn {
+            background-color: rgb(158, 176, 214);
+            padding: 10px;
+            border-radius: 20px;
+            margin-bottom: 5%;
+        }
+
+        .inpwrap {
+            display: flex;
+            background-color: white;
+            border: rgb(255, 255, 255) 1px solid;
+            border-radius: 30px;
+        }
+
+        .u_img {
+            margin: 10px 0 10px 0;
+            height: 40px;
+            width: 40px;
+            border-radius: 20px;
+        }
+
+        .inputmsg {
+            padding-left: 10px;
+            width: 100%;
+            border-radius: 20px;
+            border: white 1px solid;
+        }
+
+        .inputmsg:focus {
+            outline: none;
+        }
+
+        .upload {
+            padding: 20px;
+            cursor: pointer;
+        }
+
+        .buttonsend {
+            cursor: pointer;
+        }
+
+        .forfileupload {
+            display: none;
+        }
+
+        @media (1297px <=width <=1366px) {
+            #thumbnails {
+                height: 725px;
+            }
+        }
+    </style>
+</head>
+
+<body onload="fetchcommunity('<%= user_id %>')">
+    <% var dir=process.cwd() %>
+        <%- include(dir + "/views/lefttop/leftside.ejs" ) %>
+            <%- include(dir + "/views/lefttop/header.ejs" ) %>
+
+                <div class="maincontainer">
+                    <div class="communitymain" id="communitymain">
+                    </div>
+                    <form id="form">
+                        <div id="prediv" class="preview"
+                            style="position: relative; background-color: #F3F3F7;height:400px;width: 500px;left:50px;bottom: 40px;text-align: center;display: none;">
+                            <div style="text-align: end;"><button type="button" class="btn-close me-4" aria-label="Close" onclick="preclose()"></button></div>
+                            <img style="height:350px;width: 450px;margin-top:2%;" id="preview">
+                        </div>
+                        <div class="inputdiv">
+                            <div class="leftinp" style="width: 95%;">
+                                <div class="inpwrap">
+                                    <div><img id="u_img" class="u_img"></div>
+                                    <input id="textinput" name="textinput" class="inputmsg" type="text"
+                                        placeholder="Enter Something here" oninput="enable()">
+                                    <div>
+                                        <label class="form-label" for="customFile"><img id="upload" class="upload"
+                                                src="assests/uplod.svg"></label>
+                                        <input name="image" type="file" class="form-control-file" id="customFile"
+                                            style="display: none;" onchange="previeweve(event)">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="righbtn">
+                                <div class="buttonsend" id="buttonsend" onclick="submit()"><img src="assests/send.svg" id="sendbtn"
+                                        class="sendbtn">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <script>
+                    
+                    const socket = io();
+                    let file = document.getElementById('customFile').value;
+                    let inp = document.getElementById('textinput').value;
+                    function enable() {
+                        let inpfield = document.getElementById('textinput').value;
+                        if (inpfield != '') {
+                            document.getElementById('sendbtn').style.backgroundColor = "rgb(18, 65, 168)";
+                        }
+                        else {
+                            document.getElementById('sendbtn').style.backgroundColor = "rgb(158, 176, 214)";
+                        }
+                    }
+                    async function fetchcommunity(user_id) {
+                        document.getElementById('sendbtn').style.backgroundColor = "rgb(158, 176, 214)";
+                        let urlfetchcom = await fetch(`/fetchcom`);
+                        let res = await urlfetchcom.json();
+
+                        if (res.userimage[0].img_path == '') {
+                            document.getElementById('u_img').src = `/icon/unknownuser.png`;
+                        }
+                        else{
+                            document.getElementById('u_img').src = res.userimage[0].img_path;
+                        }
+                        let uniqueid = '';
+
+                        let posthtml = '';
+                        if (res.fetchofcom.length != 0) {
+                            for (let i = 0; i < res.fetchofcom.length; i++) {
+                                uniqueid = res.fetchofcom[i].upload_id + res.fetchofcom[i].u_lname;
+
+                                let joinedyear = res.fetchofcom[i].joindate;
+                                let year = new Date(joinedyear).getFullYear();
+                                posthtml += `<div class="col-sm-6 col-md-4 col-lg-5 mt-4" id="` + uniqueid + `">
+                                <div class="card">
+                                    <div class="d-flex justify-content-between" style="background-color:white;height:50px;border-bottom:1px solid rgba(0, 0, 0, 0.1);">
+                                        <img class="rounded-circle" src="`+ res.fetchofcom[i].img_path + `" style="height:50px;width:50px;padding:2px;">
+                                        <div class="mt-3"> Joined in `+ year + `</div>
+                                        </div>
+
+                                    <img class="card-img-top" style="border:1px solid rgba(0, 0, 0, 0.1);" src="`+ res.fetchofcom[i].uploaded_filepath + `">
+                                    <div class="card-block">
+                                        <h4 class="card-title">`+ res.fetchofcom[i].u_fname + ` ` + res.fetchofcom[i].u_lname + `</h4>
+                                       
+                                        <div class="card-text">
+                                            `+ res.fetchofcom[i].uploaded_text + `
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <span style="opacity:0.5;">`+ res.fetchofcom[i].postdate + `</span>
+                                    </div>
+                                </div>
+                            </div>`
+                            }
+                        }
+                        document.getElementById('communitymain').innerHTML = posthtml;
+                    }
+                    function previeweve(event) {
+                        document.getElementById('sendbtn').style.backgroundColor = "rgb(18, 65, 168)";
+                        document.getElementById("prediv").style.display = "block";
+                        const input = event.target;
+                        const ImagePreview = document.getElementById("preview");
+                        if (input.files && input.files[0]) {
+                            const reader = new FileReader();
+                            reader.onload = function (e) {
+                                ImagePreview.src = e.target.result;
+                            }
+                            reader.readAsDataURL(input.files[0]);
+                        }
+                    }
+                    function preclose() {
+                        document.getElementById("prediv").style.display = "none";
+                        
+                    }
+                    async function submit() {
+                        if (file == ''  && inp == '') {
+                            document.getElementById('sendbtn').style.backgroundColor = "rgb(158, 176, 214)";
+                        }
+                        else{
+                            document.getElementById("prediv").style.display = "none";
+                            form = document.getElementById('form');
+                            let myformData = new FormData(form);
+                                let data = await fetch(`${location.origin}/postcomupload`, {
+                                    method: "post",
+                                    body: myformData,
+                                });
+                                let response = await data.json();
+                                
+                                if (response == "success") {
+                                    socket.emit("community");
+                                }
+                        }
+                        file = "";
+                        document.getElementById('textinput').value = "";
+
+                    }
+                    socket.on("rescommunity", () => {
+                        fetchcommunity();
+                    })
+
+
+                </script>
+</body>
+
+</html>

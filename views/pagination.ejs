@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .page{
+      display: flex;
+      justify-content:space-between;
+      width: 20%;
+      margin: auto;
+      font-size: 20px;
+    }
+    a{
+      text-decoration: none;
+    }
+    p{
+      margin-top: -5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <% if(page >1) { %>
+        <a  class="fa-solid fa-angles-left arrow" href="?p=1" <% if (p == 1) { %> onclick = 'return false;' <% } %>></a>
+        <a  class="fa-solid fa-angle-left arrow" href="?p=<%= Number(p)-1%>" <% if (p == 1) { %> onclick = 'return false;' <% } %>></a>
+        <p><%= p %></p>
+        <a  class="fa-solid fa-angle-right arrow" href="?p=<%= Number(p)+1%>" <% if(p == page) { %> onclick = 'return false;' <% } %> ></a>
+        <a class="fa-solid fa-angles-right arrow" href="?p=<%= page %>"<% if(p == page) { %> onclick = 'return false;' <% } %> ></a>
+        <% } %>
+  </div>
+</body>
+</html>
+
+
+
+

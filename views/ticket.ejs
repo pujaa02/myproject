@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ticket</title>
+  <link rel="stylesheet" href="/css/ticket.css">
+  <link rel="icon" type="image/x-icon" href="/assests/SMARTLIB.png">
+</head>
+<body>
+        <% var dir=process.cwd() %>
+        <%- include(dir + "/views/lefttop/leftside.ejs" ) %> <%- include(dir + "/views/lefttop/header.ejs" ) %>
+      <div class="ticketMain">
+     
+        <div class="ticketBar">
+            <ul>
+                <li onclick="show(0)" >Tickets</li>
+                <li onclick="show(1)">Issued Tickets</li>
+                <li onclick="show(2)">Closed Tickets</li>
+                <li><input type="button" value="Issue New Ticket" onclick="showForm()"></li>
+            </ul>
+        </div>
+          
+
+       <div class="totalTicket">
+           <table id="table">
+         
+               <% if(result.length > 0) {%>
+
+                <tr>
+                    <th>Ticket No</th>
+                    <th>Issue</th>
+                    <th>Description</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+                    <% result.forEach(element => { %>
+                    
+                        <tr>
+                            <% if(element.status == 'Open'){%>
+                            <td><a href="/ticket/chat?ticket=<%= element.id %>"><%=element.id%></a></td>
+                            <% }else{ %>
+                                <td><%=element.id%></td>
+                            <% } %>
+                            <td><%=element.issue%></td>
+                            <td><%=element.description%></td>
+                            <td><%=element.created_at%></td>
+                            <td><%=element.status%></td>
+                        </tr>
+                    <% }); %>     
+                <% }else{ %>
+                     <tr>
+                        <td>There is not any Raised Ticket. </td>
+                     </tr>               
+                <% } %>
+           </table>
+       </div>
+
+       <div class="totalTicket" id="issueTicket">
+        <table id="table">
+      
+            <% if(result1.length > 0) {%>
+
+             <tr>
+                 <th>Ticket No</th>
+                 <th>Issue</th>
+                 <th>Description</th>
+                 <th>Date</th>
+                 <th>Status</th>
+             </tr>
+                 <% result1.forEach(element => { %>
+                 
+                     <tr>
+                         <td><a href="/ticket/chat?ticket=<%= element.id %>"><%=element.id%></a></td>
+                         <td><%=element.issue%></td>
+                         <td><%=element.description%></td>
+                         <td><%=element.created_at%></td>
+                         <td><%=element.status%></td>
+                     </tr>
+                 <% }); %>     
+             <% }else{ %>
+                  <tr>
+                     <td>There is not any Raised Ticket. </td>
+                  </tr>               
+             <% } %>
+        </table>
+    </div>
+
+    <div class="totalTicket" id="closeTicket">
+        <table id="table">
+      
+            <% if(result2.length > 0) {%>
+
+             <tr>
+                 <th>Ticket No</th>
+                 <th>Issue</th>
+                 <th>Description</th>
+                 <th>Raised Date</th>
+                 <th>Close Date</th>
+                 <th>Status</th>
+             </tr>
+                 <% result2.forEach(element => { %>
+                 
+                     <tr>
+                         <td><%=element.id%></a></td>
+                         <td><%=element.issue%></td>
+                         <td><%=element.description%></td>
+                         <td><%=element.created_at%></td>
+                         <td><%=element.updated_at%></td>
+                         <td><%=element.status%></td>
+                     </tr>
+                 <% }); %>     
+             <% }else{ %>
+                  <tr>
+                     <td>There is not any Raised Ticket. </td>
+                  </tr>               
+             <% } %>
+        </table>
+    </div>
+     <div class="totalTicket">
+     <% if(result1.length < 3) {%>
+        <form class="form" action="/ticket" method="post" id="form">
+            <div class="formInput">
+
+                <label for="Issue">Issue:</label>
+                <input type="text" name="issue" id="issue" placeholder="design Issue">
+                <label for="description">Description:</label>
+                <textarea name="description" id="description" cols="30" rows="10"></textarea>
+            </div>
+            <input type="submit" name="submit" id="submit" onclick="return validate()">
+        </form>  
+    <%}else{%>
+          <h2 align="center">Before Raised new request there are 3 open raised request please wait for time to get resolve.</h2>
+    <% } %>
+     </div>
+      </div>
+
+
+
+</body>
+<script>
+       window.addEventListener('load',function (){
+        document.getElementsByClassName('totalTicket')[0].style.display = 'flex';
+    })
+       function showForm(){
+        show(3)
+       }
+       function validate(){
+        let issue = document.getElementById('issue').value;
+        let description = document.getElementById('description').value;
+        
+        if(issue == ''){
+            alert('enter issue...');
+            document.getElementById('issue').focus();
+            return false;
+        }
+        else if(description == ''){
+            alert('enter description');
+            document.getElementById('description').focus();
+            return false;
+        }
+        else if(!re.exec(fname)) {
+           alert("File extension not supported! please upload file");
+           return false;
+        }
+    
+       }
+
+    function show(e){
+        let div = document.getElementsByClassName('totalTicket');
+        Object.keys(div).forEach(element =>{
+            document.getElementsByClassName('totalTicket')[element].style.display = 'none';
+        })
+         document.getElementsByClassName('totalTicket')[e].style.display = 'flex';
+       }
+</script>
+</html>

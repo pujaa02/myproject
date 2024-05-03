@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/authentication.css">
+    <link rel="stylesheet" href="/sweetalert2/sweetalert2.min.css">
+    <script src="/sweetalert2/sweetalert2.min.js"></script>
+    <style>
+        .alert {
+            visibility: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="Container">
+        <div class="alert" <%if(secondValidation==false){%>
+            style="visibility:visible !important;"
+            <%}%>
+                >
+                <span class="closebtn">&times;</span>
+                <strong>Error! </strong> <span id="alert">
+                    <%if(secondValidation==false){%>
+                        <%if(loginAttmapt==false){%>
+                            Maximum login attampts reached.Please try again next day!!
+                            <%}else{%>
+
+                                Invalid Credentials!!
+                                <%}}%>
+
+                </span>
+        </div>
+        <div class="login">
+            <div class="logo">
+                <img src="./assests/smartLibLogo.png" alt="" width="130px;">
+                <span class="logoText">SMARTLIB</span>
+            </div>
+            <div class="group1">
+                <span class="group1First">Welcome Back !</span>
+                <span class="group1Second">Sign in to continue to yourDigital Library</span>
+            </div>
+            <div class="group2">
+                <form action="/login" name="myFormLogin" method="POST" id="formLogin">
+                    <div id="emails">
+                        <label for="email" class="emailText">Email</label>
+                        <input type="text" name="email" class="emailInput" <%if(validation==false
+                            ||secondValidation==false){%>
+                        value='<%=data1.email%>'
+                            <%}%>
+                                ><br><br>
+                                <span class="formerrorr2" <%if(validation==false){%>
+                                    style="visibility:visible";
+                                    <%}%>
+                                        ><b>
+                                            <%if(validation==false){%>
+                                                <%=data2.emailError%>
+                                                    <%}%>
+                                        </b>
+                                </span>
+                    </div>
+                    <div id="pass">
+                        <label for="pass" class="passText">Password</label>
+                        <span class="formerrorr2" style="position: relative;top:70px;visibility:visible;"><b>
+                                <%if(validation==false){%>
+                                    <%=data2.passError%>
+                                        <%}%>
+                            </b></span>
+                        <input type="password" name="pass" class="passInput" <%if(validation==false ||
+                            secondValidation==false){%>
+                        value=<%=data1.pass%>
+                            <%}%>
+                                ><br><br>
+                                <div id="img1PassLogin">
+                                    <img src="./icon/bxs-hide.svg" alt="" id="img1Hide" onclick="hidePassImg1()"
+                                        class="iconHideImg eyeImg">
+                                    <img src="./icon/bx-show-alt.svg" alt="" id="img1Show" onclick="showPassImg1()"
+                                        class="iconShowImg eyeImg" style="display: none;">
+                                </div>
+                    </div>
+                    <div id="forgotPass" onclick="goOnForgetPass()">
+                        Forgot password?
+                    </div>
+                    <div id="submitDivLog" style="margin-top:-30px;">
+                        <div id="submit" onclick="checkForm()">Login</div>
+                    </div>
+                    <div id="registerNewUser" style="margin:60px 0px 0px 49px;">
+                        New User? <span class="resgisterNew" onclick="registerUser()">Register Here</span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        const goOnForgetPass = () => {
+            window.location = `${location.origin}/forgetPass`;
+        }
+        const registerUser = () => {
+            window.location = `${location.origin}`;
+        }
+        const toggle1 = () => {
+            let x = document.getElementsByClassName("passInput")[0];
+            if (x.type === "password") {
+                x.type = "text";
+                document.getElementById("img1Hide").style.display = "none";
+                document.getElementById("img1Show").style.display = "block";
+            } else {
+                x.type = "password";
+                document.getElementById("img1Hide").style.display = "block";
+                document.getElementById("img1Show").style.display = "none";
+            }
+        }
+        const showPassImg1 = () => {
+            toggle1();
+        }
+
+        const hidePassImg1 = () => {
+            toggle1();
+        }
+        function seterror(id, error) {
+            let varId = document.getElementById(id);
+            varId.getElementsByClassName("formerrorr2")[0].style.visibility = "visible";
+            varId.getElementsByClassName("formerrorr2")[0].innerHTML = " " + error;
+        }
+        function clearerrors() {
+            element = document.getElementsByClassName("formerror");
+            for (let item of element) {
+                item.innerHTML = "";
+            }
+        }
+        // const successFunction = async () => {
+        //     await Swal.fire({
+        //         icon: "success",
+        //         title: "successfully login, Welcome!!",
+        //         showConfirmButton: false,
+        //         timer: 1500
+        //     });
+        // }
+        const checkForm = async () => {
+            if (formValidation()) {
+                // await successFunction();
+                document.forms[0].submit()
+            }
+            else {
+                Swal.fire({
+                    title: "Invalid Input",
+                    text: "Please provide Valid Field !",
+                    icon: "warning"
+                });
+            }
+
+        }
+        const formValidation = () => {
+            let returnVal = true;
+            clearerrors();
+            let stringRegex = /^[a-zA-Z]+$/;
+
+            let email = document.getElementsByName("email")[0].value;
+            email = email.replace(/\s/g, '').toLowerCase();
+
+            let pass = document.getElementsByName("pass")[0].value;
+            pass = pass.replace(/\s/g, '');
+
+            const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+            if (email == "" || email == undefined) {
+                seterror("emails", "please add Email!");
+                returnVal = false;
+            }
+            if (!emailRegex.test(email)) {
+                seterror("emails", "please enter a valid email!");
+                returnVal = false;
+            }
+
+            if (pass == "" || pass == undefined) {
+                seterror("pass", "please add password!!");
+                returnVal = false;
+            }
+            if (pass.length < 8) {
+                seterror("pass", "password have minimum 8 characters!!");
+                returnVal = false;
+            }
+
+            return returnVal;
+        }
+        let close = document.getElementsByClassName("closebtn");
+        let i;
+
+        for (i = 0; i < close.length; i++) {
+            close[i].onclick = function () {
+                let div = this.parentElement;
+                div.style.opacity = "0";
+                setTimeout(function () { div.style.visibility = "hidden"; }, 600);
+            }
+        }
+
+        document.getElementById('formLogin').addEventListener('keydown', function (event) {
+            if (event.key === 'Enter' && !event.shiftKey && !event.ctrlKey && !event.altKey && !event.capsLockKey) {
+                checkForm();
+            }
+        });
+    </script>
+</body>
+
+</html>

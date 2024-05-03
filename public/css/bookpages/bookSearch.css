@@ -1,0 +1,96 @@
+.bookSearch {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 20px;
+  background-color: #f3f3f7;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+.bookTable #browse {
+  width: 80%;
+  border-radius: 15px;
+  border: 1px solid #dcdcdc;
+}
+.bookTable {
+  display: flex;
+  flex-direction: column;
+  margin-left: 40px;
+  width: 95%;
+}
+.bookTable tr td {
+  height: 100px;
+}
+.bookTable tr {
+  background-color: white;
+  height: 150px;
+}
+.bookTable table {
+  border-collapse: separate;
+  border-spacing: 0 20px;
+}
+.bookTable img {
+  width: 90%;
+  position: relative;
+  padding: 10px;
+}
+.bookTable .topRow {
+  height: auto;
+  background-color: #f3f3f7;
+}
+.bookTable .topRow td {
+  text-align: start;
+  width: 220px;
+}
+
+input[type="checkbox"] {
+  display: none;
+}
+label {
+  font-size: 2.5rem;
+  color: #b9b9cf;
+}
+.orderIcon {
+  font-size: 1.5rem;
+  color: black;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pagination input {
+  width: 5%;
+  text-align: center;
+  font-weight: 800;
+  border: 1px solid rgba(31, 28, 28, 0.557);
+}
+.pagination a {
+  display: block;
+  text-decoration: none;
+  border: 1px solid rgba(31, 28, 28, 0.557);
+}
+.pagination h5 {
+  margin-right: 20px;
+}
+.pagination a:hover {
+  background-color: #f76b56;
+}
+.bookTable td a {
+  text-decoration: none;
+  color: #f76b56;
+  border: 1px solid #f76b56;
+  padding: 10px;
+  border-radius: 10px;
+}
+#page {
+  height: 46px;
+}
+@media  (1297px <= width <= 1370px) {
+   
+  .bookSearch{
+     height: 600px;
+   }
+}

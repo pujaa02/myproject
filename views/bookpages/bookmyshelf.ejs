@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>bookmyshelf</title>
+    <script src="../../node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="../../node_modules/sweetalert2/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="/css/bookpages/bookmyshelf.css" />
+    <script src="../../node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="../../node_modules/sweetalert2/dist/sweetalert2.min.css">
+    <link rel="icon" type="image/x-icon" href="assests/SMARTLIB.png">
+  </head>
+
+  <body onload="myfun('<%= user_id%>')">
+    <% var dir=process.cwd() %>
+    <%- include(dir + "/views/lefttop/leftside.ejs" )%> 
+    <%- include(dir + "/views/lefttop/header.ejs" ) %>
+    <div class="mainarea">
+      <div class="book_product_wrap">
+        <div class="header_product">
+          <h2>Your <span> Shelf</span></h2>
+        </div>
+        <div class="book_product_list">
+          <div class="accordian_list">
+            <div class="accordian_header">
+              <a href="#" id="allbooks" onclick="changecontent()">All Books</a>
+            </div>
+            <div class="accordian_header">
+              <a href="#" id="watchlist" onclick="changestyle('watchlistbook')"
+                >WatchList</a
+              >
+            </div>
+            <div class="accordian_header">
+              <a href="#" id="borrowed" onclick="changestyle('borrowedbook')">
+                Borrowed Books</a
+              >
+            </div>
+            <div class="accordian_header">
+              <a href="#" id="pending" onclick="changestyle('pendingbook')">
+                Pending Books</a>
+            </div>
+            <div class="exportbtn" style="margin-left: 25%;">
+              <a id="export" style="background-color:#ef8361;border-radius: 8px;opacity:1;padding:5px;cursor: -webkit-grab; cursor: grab;">Export Watchlist</a>
+            </div>
+          </div>
+          <div id="allbooksectionpage">
+            <div id="watchlistbook">
+              <p id="watchlistp">WatchList Books</p>
+              <div class="product_container_three"></div>
+            </div>
+
+            <div id="borrowedbook">
+              <p id="borrowp">Borrowed Books</p>
+              <div class="product_container"></div>
+            </div>
+
+                <div id="pendingbook">
+                  <p id="remainderp">Pending Books</p>
+                  <div class="product_container_two"></div>
+                </div>
+
+                <!-- allbookssection -->
+              </div>
+              <!-- book_product_list -->
+            </div>
+            <!-- book_product_wrap -->
+          </div>
+          <!-- main area end -->
+        </div>
+</body>
+<script src="/js/bookpages/bookshelf.js"></script>
+
+
+</html>

@@ -1,0 +1,88 @@
+<%-include ('adminSidebar', {search : 0}) %>
+  <div class="table1">
+    <div class="table">
+      <div class="d-flex flex-wrap gap-5 justify-content-center text-center">
+        <div class="" style="width: 300px;" >
+          <div class="d-flex justify-content-between p-3">
+            <div class="fs-1 me-5">
+              <i class="fa-solid fa-book"></i>
+            </div>
+            <div class="d-flex flex-column">
+              <p>Total Books</p>
+              <p class="" style="margin-top: -15px;"><%= result2[0].totalbooks %></p>
+            </div>
+          </div>
+          
+        </div>
+        <div class="card w-40" style="width: 18rem;">
+          <div class="card-body">
+            <h5 class="card-title">Total Books</h5>
+            <p class="card-text" style="font-size: 45px;">
+              <%= result2[0].totalbooks %>
+            </p>
+            <a href="/admin/listbook" class="btn btn-primary">Show all</a>
+          </div>
+        </div>
+        <div class="card w-40" style="width: 18rem;">
+          <div class="card-body">
+            <h5 class="card-title">Total Users</h5>
+            <p class="card-text" style="font-size: 45px;">
+              <%= result1[0].totalusers %>
+            </p>
+            <a href="/admin/getallusers" class="btn btn-primary">Show all</a>
+          </div>
+        </div>
+        <div class="card w-40" style="width: 18rem;">
+          <div class="card-body">
+            <h5 class="card-title">Overall Rating</h5>
+            <p class="card-text" style="font-size: 45px;">
+              <%= parseFloat(result3[0].rating).toFixed(1) %>
+            </p>
+            <a href="/admin/showrating" class="btn btn-primary">Show all</a>
+          </div>
+        </div>
+        <div class="card w-40" style="width: 18rem;">
+          <div class="card-body">
+            <h5 class="card-title">Total Requests</h5>
+            <p class="card-text" style="font-size: 45px;">
+              <%= result4[0].totalrequest %>
+            </p>
+            <a href="/admin/listrequests" class="btn btn-primary">Show all</a>
+          </div>
+        </div>
+        <div class="card w-40" style="width: 18rem;">
+          <div class="card-body">
+            <h5 class="card-title">Total Authors</h5>
+            <p class="card-text" style="font-size: 45px;">
+              <%= result5[0].totalauthors %>
+            </p>
+            <a href="/admin/listauthors" class="btn btn-primary">Show all</a>
+          </div>
+        </div>        
+      </div>
+    <div id="chart"></div>
+  </div>
+  </div>
+  </div>
+  </div>
+  <script src="/charts/apexcharts.min.js"></script>
+  <script>
+    const Chart = () => {
+
+      options = {
+        series: [44, 55, 13, 33],
+        labels: ['Apple', 'Mango', 'Orange', 'Watermelon'],
+        chart:{
+          height:400,
+          width:400,
+          type: 'pie',
+        }
+      }
+
+      var Piechart = new ApexCharts(document.getElementById('chart'), options)
+      Piechart.render();
+    }
+  </script>
+  </body>
+
+  </html>

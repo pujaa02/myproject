@@ -1,0 +1,45 @@
+<%-include ('adminSidebar',{search : 4}) %>
+  <div class="table1">
+    <h2 class="text-center mt-2">List of Authors</h2>
+    <table class="table text-center table-bordered ">
+      <thead>
+        <tr>
+          <th scope="col" onclick="authorOrder('author_id',1)">Author Id</th>
+          <th scope="col" onclick="authorOrder('author_name',2)">Author Name</th>
+          <th scope="col" onclick="authorOrder('author_desc',3)">Author Description</th>
+          <!-- <th scope="col" onclick="authorOrder('book_title',4)">Books of Author</th> -->
+          <th scope="col">Edit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(let i=0 ; i<result.length ; i++) {%>
+          <tr>
+            <th scope="row">
+              <%= result[i].author_id %>
+            </th>
+            <td>
+              <%= result[i].author_name %>
+            </td>
+            <td>
+              <%= result[i].author_desc %>
+            </td>
+            <td>
+              <a href="/admin/getSingleAuthor/<%=result[i].author_id%>"><input type="button" value=" Edit " class="btn btn-primary"></a>
+            </td>
+          </tr>
+          <% } ; %>
+      </tbody>
+    </table>
+    <%-include('pagination',{p,page}) %>
+  </div>
+  </div>
+  </div>
+  </body>
+  <script>
+    function authorOrder(column,n){
+          window.sessionStorage.setItem('column',`${column}1`);
+          window.sessionStorage.setItem('icon',n);
+          window.location.href = `/admin/listauthors/${column}/desc`;
+        }
+  </script>
+  </html>

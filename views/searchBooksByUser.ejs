@@ -1,0 +1,111 @@
+<%-include ('adminSidebar',{search : 1}) %>
+  <div class="table1">
+    <h2 class="text-center">
+      <%if(result2[0].status=="return"){%>
+        RETURN
+      <%}else{%>
+        PENDING
+      <%}%>
+      BOOKS</h2>
+    <table class="table text-center table-bordered w-auto">
+      <thead>
+        <tr>
+          <th scope="col">SR NO:</th>
+          <th scope="col">USER ID</th>
+          <th scope="col">BOOK ID</th>
+          <th scope="col">BOOK TITLE</th>
+          <th scope="col">BORROWED DATE</th>
+          <%if(result2[0].status=="return"){%>
+            <th scope="col">RETURN DATE</th>
+          <%}%>
+          <th scope="col">DAYS LATE</th>
+          <th scope="col">PENALTY</th>
+          <%if(result2[0].status=="pending"){%>
+            <th scope="col">STATUS</th>
+            <th scope="col">SHOW</th>
+            <%}%>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(let i=0 ; i<result2.length ; i++) {%>
+          <tr>
+            <th scope="row">
+              <%= i+1 %>
+            </th>
+            <td>
+              <%= result2[i].reader_id %>
+            </td>
+            <td>
+              <%= result2[i].book_id %>
+            </td>
+            <td>
+              <%= result2[i].book_title %>
+            </td>
+              <td>
+                <% let myArray = result2[i].borrow_date.split(" ");%>
+                <%= myArray[0] %>
+              </td>
+            <%if(result2[0].status=="return"){%>
+              <td>
+                <% let myArray = result2[i].return_date.split(" ");%>
+                <%= myArray[0] %>
+              </td>
+            <%}%>
+            <td>
+              <%if(result2[0].daysLate==null){%>
+                0
+              <%}else{%>
+                <%=result2[0].daysLate%>
+              <%}%>
+            </td>
+            <td>
+              <%if(result2[0].penalty==null){%>
+                0
+              <%}else{%>
+                <%=result2[0].penalty%>
+              <%}%>
+            </td>
+            <%if(result2[0].status=="pending"){%>
+              <td>
+                <select name="status" id="status">
+                  <option value="pending" <%if(result2[i].status=="pending" ){%>
+                    selected
+                    <%}%>
+                      >pending
+                  </option>
+                  <option value="return" <%if(result2[i].status=="return" ){%>
+                    selected
+                    <%}%>
+                      >return
+                  </option>
+                </select>
+              </td>
+              <td><input type="button" value="Update" class="btn btn-primary"
+                  onclick="submitResponse('<%=result2[i].borrowed_id%>')"></a>
+              </td>
+              <%}%>
+          </tr>
+          <% } ; %>
+      </tbody>
+    </table>
+  </div>
+  </div>
+  </div>
+  <script>
+    const submitResponse = async (id) => {
+      let select = document.getElementById("status").value;
+      // console.log(select);
+      const response2 = `&id=${id}&value=${select}`;
+      const response = await fetch(`${location.origin}/admin/insertReturnData`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: response2,
+      });
+    }
+
+  </script>
+  </body>
+
+  </html>

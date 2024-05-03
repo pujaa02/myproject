@@ -1,0 +1,101 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: linear-gradient(160.86deg, #FA7C54 -8.64%, #EC2C5A 121.84%);
+  background-repeat: repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  padding: 48px;
+}
+
+body {
+  background: linear-gradient(160.86deg, #fa7c54 -8.64%, #ec2c5a 121.84%);
+  background-repeat: repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  padding: 48px;
+}
+
+.book_sidebar {
+  width: 20%;
+  height: 100%;
+  background: white;
+  padding: 20px 30px;
+  background-color: #f3f3f7;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  position: relative;
+}
+
+ul {
+  padding-left: 0px !important;
+}
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo img {
+  width: 70%;
+}
+
+.navList ul {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.navList ul li {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.navList ul li img {
+  margin-right: 10px;
+}
+
+ul li {
+  list-style: none;
+}
+
+li a {
+  text-decoration: none;
+  color: black;
+  opacity: 0.5;
+}
+
+.navFooter ul {
+  display: flex;
+  flex-direction: column;
+  padding-left: 0px;
+  position: relative;
+  padding: 10px;
+}
+
+.navFooter ul li {
+  margin: 10px 0;
+}
+
+@media (1297px <=width <=1366px) {
+  .book_sidebar {
+    height: 725px;
+  }
+
+  .navList ul {
+    margin-left: 0;
+  }
+}

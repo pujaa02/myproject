@@ -1,0 +1,275 @@
+.bookMain{
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: relative;
+    background-color: #F3F3F7;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    height: 90%;
+    scrollbar-width: none;
+    border-radius: 0px 0px 10px 0px;
+}
+.backBtn {
+    margin-left: 50px;
+    
+}
+.back{
+    margin-top:10px;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+    display: flex;
+    border: 1px solid #F27851;
+    background-color: #41B64D;
+    width: fit-content;
+    border-radius: 30px;
+    padding:0px 15px 0px 15px;
+    cursor: pointer;
+    p{
+        margin-bottom: 0px;
+        margin-top:0px;
+    }
+}
+.bookDetails{
+    display: flex;
+    width: 95%;
+    margin-left: 50px;
+    margin-top: 10px;
+    gap: 50px;
+}
+.bookImage{
+    display: flex;
+    width: 20%;
+    height: 70%;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+}
+.bookImage img{
+    width: 70%; 
+    border: 1px solid black;
+}
+.bookFullDetails{
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+}
+.bookAuthor{
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    background-color: white;
+    border-radius: 20px;
+    padding: 20px;
+    
+}
+.bookRating{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.8rem;
+}
+.fas{
+    color : gold;
+}
+.bookAvil{
+    margin-top:2% ;
+    align-items: center;
+    display: flex;
+    .availabledis{
+        font-size: 18px;
+        font-weight: 800;
+    }
+}
+.available{
+    background-color: green;
+    color: white;
+    font-size: 14px;
+    margin-left: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    width: fit-content;
+    align-items: center;
+}
+.bookCat{
+    margin-top:2% ;
+    align-items: center;
+    display: flex;
+    .bookCatdis{
+        font-size: 18px;
+        font-weight: 800;
+    }
+}
+.cate{
+    background-color:#F27851;
+    border-radius: 5px;
+    color: white;
+    font-size: 14px;
+    margin-left: 10px;
+    padding: 5px;
+    width: fit-content;
+    align-items: center;
+}
+.bookBtn{
+    display: flex;
+    margin-top: 20px;
+    gap: 30px;
+}
+.bookBtn input{
+    width: 150px;
+    height: 50px;
+    color: white;
+    border: none;
+    border-radius: 10px;
+}
+
+#WatchList{
+    background-color: #41B64D;
+}
+#authorImg{
+    width: 30%;
+    border-radius: 10px;
+    position: relative;
+    top: -65px;
+    left: 190px;
+}
+.authorDes{
+    margin-top: -50px;
+    text-align: justify;
+}
+.authorBooks{
+    display: flex;
+    gap: 30px;
+}
+.authorBooks img{
+    width: 30%;
+}
+.BookMenuList{
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+}
+.BookMenuList ul{
+    display: flex;
+    background-color: white;
+    width: 90%;
+    gap: 20%;
+    margin-left: 50px;
+    font-size: 25px;
+}
+.details{
+   display: none;
+   margin-left: 50px;
+   margin-bottom:1%;
+   gap: 5%;
+   width: 90%;
+}
+.bookCommon{
+    background-color: white;
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+#firstBlock{
+    display: flex;
+}
+.relatedBook{
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border: 1px solid;
+    align-items: center;
+    justify-content: center;
+    width: 16%;
+    padding: 15px;
+    gap: 20px;
+}
+.relatedBook img{
+    width: 90%;
+}
+.relatedBook a{
+    text-decoration: none;
+    border: none;
+    background-color: #41B64D;
+    color: white;
+    width: 90%;
+    height: 30px;
+    text-align: center;
+    border-radius: 10px;
+    padding: 2px;
+}
+.bookComment{
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    padding: 1%;
+    background-color: white;
+    margin-bottom: 2%;
+}
+.bookDetailPar{
+    width: 90%;
+    text-align: justify;
+    margin-left: 10px;
+}
+.bookUserComment{
+    display: flex;
+    justify-content: space-between; 
+}
+#displayCol{
+    flex-direction: column;
+    max-height: 400px;
+  overflow-y: scroll;
+}
+.arrcmt{
+    height: 25px;
+    width: 25px;
+    margin-left: 10px; 
+}
+.nest{
+    overflow-y: scroll;
+    margin-top: 20px;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    padding: 1%;
+    background-color: white;
+    border: 1px solid;
+    border-radius: 10px;
+    margin-bottom: 2%;
+}
+.nestcmt{
+    display: flex;
+    justify-content: space-between; 
+}
+.fornest{
+    display: flex;
+    justify-content: space-between;
+}
+.replydiv{
+  width: fit-content;
+  padding: 3px;
+}
+.filled{
+    color: orange;
+}
+.topSearch{
+    visibility: hidden;
+}
+
+@media  (1297px <= width <= 1370px) {
+   
+    .bookMain{
+       height: 626px;
+     }
+    .bookAuthor{
+      padding: 10px;
+      margin-left: -20px;    
+    }
+    .BookMenuList ul{
+      font-size: 15px;
+    }
+  }

@@ -1,0 +1,85 @@
+.mainarea {
+  height: 85%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  background-color: #f2f2f2;
+  position: relative;
+  border-radius: 0 0 10px 0;
+  scrollbar-width: none;
+}
+
+.conatiner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 150px;
+}
+.conatiner img {
+  width: 200px;
+  height: 200px;
+}
+
+.content p {
+  text-align: center;
+  font-family: "Inter";
+  font-style: normal;
+  font-size: 20px;
+  line-height: 128.52%;
+  font-weight: 400;
+  color: rgb(223, 47, 47);
+
+  margin-bottom: 3rem;
+}
+
+#h4 {
+  margin-left: 2rem;
+}
+.features {
+  margin: 3rem 2rem 6rem;
+}
+.features #right {
+  float: right;
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+}
+.features #left {
+  float: left;
+  width: 345px;
+  height: 345px;
+  border-radius: 50%;
+  margin-right: 25px;
+}
+.features .title {
+  font-size: 22px;
+  color: #d85757;
+}
+.google-map {
+  padding-top: 3rem;
+  text-align: center;
+  
+  /* display: flex;
+  align-items: center;
+  justify-content: center; */
+}
+
+.google-map iframe {
+  height: 400px;
+  border-radius: 10px;
+  width: 800px;
+}
+
+@media only screen and (max-width: 1296px) {
+  .mainarea {
+    height: 475px;
+    width: 940px;
+    overflow-x: hidden;
+  }
+}
+
+@media (1297px <=width <=1366px) {
+  .mainarea {
+    height: 620px;
+    overflow-x: hidden;
+  }
+}

@@ -1,0 +1,79 @@
+<style>
+#requestid{
+border:2px solid #b3320b;
+border-radius: 5px;
+padding: 5px 10px;
+font-size:18px;
+color:black;
+text-decoration: none;
+}
+</style>
+
+<%-include ('adminSidebar',{search : 5}) %>
+  <div class="table1">
+    <h2 class="text-center mt-2">Users Request of Books</h2>
+    <table class="table text-center table-bordered w-auto">
+      <thead>
+        <tr>
+          <th scope="col" id="table1" onclick="requestOrder('contro_id',1)">Request ID<i id="down1" class="orderIcon">&#8595;</i></th>
+          <th scope="col" id="table2" onclick="requestOrder('user_id',2)">User ID<i id="down2" class="orderIcon">&#8595;</i></th>
+          <th scope="col" id="table3" onclick="requestOrder('book_name',3)">Book Name<i id="down3" class="orderIcon">&#8595;</i></th>
+          <th scope="col" id="table4" onclick="requestOrder('author_name',4)">Author Name<i id="down4" class="orderIcon">&#8595;</i></th>
+          <th scope="col" id="table5" onclick="requestOrder('sel_cat',5)">Category<i id="down5" class="orderIcon">&#8595;</i></th>
+          <th scope="col" id="table6" onclick="requestOrder('sel_lan',6)">Language<i id="down6" class="orderIcon">&#8595;</i></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(let i=0 ; i<result.length ; i++) {%>
+          <tr>
+            <th scope="row">
+              <%= result[i].contro_id %>
+            </th>
+            <td>
+              <%= result[i].user_id%>
+            </td>
+            <td>
+              <%= result[i].book_name %>
+            </td>
+            <td>
+              <%= result[i].author_name %>
+            </td>
+            <td>
+              <%= result[i].sel_cat %>
+            </td>
+            <td>
+              <%= result[i].sel_lan %>
+            </td>
+          </tr>
+          <% } ; %>
+      </tbody>
+    </table>
+    <%-include('pagination',{p,page}) %>
+  </div>
+  </div>
+  </div>
+  </body>
+  <script>
+      window.addEventListener('load',()=>{
+       let n = window.sessionStorage.getItem('icon');
+       document.getElementById(`table${n}`).style.border = '1px solid orange';
+      })
+          function requestOrder(column,n){
+            let column1 = window.sessionStorage.getItem('column');
+            let icon = window.sessionStorage.getItem('icon');       
+            if(column1 == `${column}1`){
+                window.sessionStorage.setItem('column', `${column}0`);
+                window.sessionStorage.setItem('icon',n);
+                document.getElementById(`table${n}`).style.border = '1px solid orange';
+                window.location.href = `/admin/listrequests/${column}/asc`;
+            }
+        else{
+               window.sessionStorage.setItem('column', `${column}1`);
+               window.sessionStorage.setItem('icon',n);
+               document.getElementById(`table${n}`).style.border = '1px solid orange';
+               window.location.href = `/admin/listrequests/${column}/desc`;
+            }
+        }
+</script>
+
+  </html>

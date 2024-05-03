@@ -1,0 +1,83 @@
+<header>
+  <div class="headerMain">
+    <div class="logo">
+      <h2>My Profile</h2>
+      <%if(imgResult.length==0){%>
+        <img class="rounded-circle" height="150px" width="80px" src="./userProfileScript/icons/unknownuser.png"
+          alt="Library Logo" />
+        <%}else{%>
+          <img class="rounded-circle" height="150px" width="80px" src="<%=imgResult[0].img_path%>" alt="Library Logo" />
+          <%}%>
+
+    </div>
+    <div class="navList">
+      <nav>
+        <ul>
+          <li>
+            <% if(id=="personal_detail" ){%>
+              <div id="personal_detail" class="current_page">
+                <%}else{%>
+                  <div id="personal_detail">
+                    <%}%>
+                      <img src="./userProfileScript/icons/bxs-user-circle.svg" alt="home icon" height="20" /><a
+                        class="sidebarLink " href="/personalDetail">Personal Details</a>
+                  </div>
+          </li>
+          <li>
+            <% if(id=="mywatchlist" ){%>
+              <div id="mywatchlist" class="current_page">
+                <%}else{%>
+                  <div id="mywatchlist">
+                    <%}%>
+                      <img src="./userProfileScript/icons/bx-book-heart.svg" alt="search icon" height="20" /><a
+                        class=" sidebarLink " href="/watchlist?order=asc&field=book_title">Watchlist</a>
+                  </div>
+          </li>
+          <li>
+            <% if(id=="book_issued" ){%>
+              <div id="book_issued" class="current_page">
+                <%}else{%>
+                  <div id="book_issued">
+                    <%}%>
+
+                      <img src=" ./userProfileScript/icons/bx-book-reader.svg" alt="shelf icon" height="20" /><a
+                        class=" sidebarLink " href="/booksIssued?order=asc&field=book_title">Books
+                        Issued</a>
+                  </div>
+          </li>
+          <li>
+            <% if(id=="update_profile" ){%>
+              <div id="update_profile" class="current_page">
+                <%}else{%>
+                  <div id="update_profile">
+                    <%}%>
+
+                      <img src="./userProfileScript/icons/bxs-user-plus.svg" alt="request icon" height="20" /><a
+                        class="sidebarLink " href="/updateProfile">Update Profile</a>
+                  </div>
+          </li>
+          <li>
+            <% if(id=="notification" ){%>
+              <div id="notification" class="current_page">
+                <%}else{%>
+                  <div id="notification">
+                    <%}%>
+                      <div id="notification">
+                        <img src="./userProfileScript/icons/bxs-bell.svg" alt="request icon" height="20" />
+                        <sup class="text-secondary">
+                          <%=count[0].count%>
+                        </sup><a class="sidebarLink " href="/notification">Notification</a>
+                      </div>
+          </li>
+          <li>
+            <div id="logout">
+              <img src="./userProfileScript/icons/bx-user-x.svg" alt="request icon" height="20" /><a
+                class="sidebarLink " href="/logout">Logout</a>
+            </div>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+  </div>
+</header>

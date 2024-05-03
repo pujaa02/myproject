@@ -1,0 +1,117 @@
+<style>
+    @media ( 1297px <= width <= 1366px){
+        .comp_container{
+            height: 725px;
+        }
+    }
+</style>
+
+<div class=" bookDetails container col-md-12 d-flex flex-column ">
+
+    <div class="jumbotron">
+
+        <img height="20%" width="20%" src="<%=result[0][0].book_img%>" />
+        <h2>
+            <%=result[0][0].book_title%>
+        </h2>
+        <p> <b>Book desc:</b>
+            <%= result[0][0].book_desc%>
+        </p>
+        <hr class="my-4">
+        <p>by <b>
+                <%= result[0][0].author_name%>
+            </b>
+        </p>
+        <p><b>Genre : <%= result[3][0].genre_name%></b></p>
+        <div class="d-flex flex-row">
+            <% if(result[4].length!=0){ let rate=result[4][0].rating; for(let i=0; i<rate; i++){%>
+                <img src="./userProfileScript/icons/bxs-star.svg" />
+                <%}}%>
+        </div>
+        <div class="card">
+            <div id="showMsg"></div>
+            <% result[1].forEach((element)=>{%>
+                <div class="card-body">
+                    <div class="float-right"><img onclick="deleteComment('<%=element.comment_id%>')"
+                            src="./userProfileScript/icons/bxs-x-circle.svg" /></div>
+                    <h5 class="card-title">
+                        <%=element.comment%>
+                    </h5>
+                    <div>
+                        <% if(result[2].length<=5){ result[2].forEach((comments)=>{
+                            if(comments.comment_id==element.comment_id){%>
+                            <div class="pl-5">
+                                <b>
+                                    @<%= comments.u_fname + " " + comments.u_lname%>
+                                </b>
+                                <p>
+                                    <%=comments.nested_comment%>
+                                </p>
+                            </div>
+
+                            <%}})%>
+                    </div>
+
+                    <%} else{%>
+                        <div id="comments">
+                            <% for(let i=0; i<5; i++){ if(result[2][i].comment_id==element.comment_id){%>
+                                <div class="pl-5">
+                                    <b>
+                                        @<%= result[2][i].u_fname + " " + result[2][i].u_lname%>
+                                    </b>
+                                    <p>
+                                        <%=result[2][i].nested_comment%>
+                                    </p>
+                                </div>
+                                <%}}%>
+                        </div>
+                        <nav aria-label="Page navigation example" class="float-right">
+                            <ul class="pagination">
+                                <li class="page-item">
+                                    <p aria-label="Previous" onclick="displayFirst('<%=element.comment_id%>')"
+                                        class="page-link">
+                                        <span aria-hidden="true">&laquo;</span>
+                                        <span class="sr-only">Previous</span>
+                                    </p>
+                                </li>
+                                <li class="page-item">
+                                    <p onclick="prev('<%=element.comment_id%>')" class="page-link">
+                                        < </p>
+                                </li>
+                                <li class="page-item">
+                                    <p id="pageNo" class="page-link">1</p>
+                                </li>
+                                <li class="page-item">
+                                    <p onclick="next('<%=element.comment_id%>')" class="page-link">></p>
+                                </li>
+                                <li class="page-item">
+                                    <p onclick="displayLast('<%=element.comment_id%>')" aria-label="Next"
+                                        class="page-link">
+                                        <span aria-hidden="true">&raquo;</span>
+                                        <span class="sr-only">Next</span>
+                                    </p>
+                                </li>
+                            </ul>
+                        </nav>
+                        <%}%>
+
+                            <form id="replyForm">
+                                <div class="form-row align-items-center">
+                                    <input type="hidden" id="comment_id" name="comment_id"
+                                        value="<%=element.comment_id%>" />
+                                    <input type="hidden" id="reader_id" name="reader_id"
+                                        value="<%=element.reader_id%>" />
+                                    <div class="container d-flex flex-row">
+                                        <input tabindex="0" tpye="text" name="reply"
+                                            class="border-success form-control " placeholder="add to reply" />
+                                        <img class="" onclick="sendReply()"
+                                            src="./userProfileScript/icons/bxs-right-arrow-circle.svg" />
+                                    </div>
+                                </div>
+                            </form>
+                </div>
+
+                <%})%>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,452 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>searchBooksByUser</title>
+  <!-- <link rel="stylesheet" href="./css/issueBooks.css"> -->
+  <style>
+    #table2 {
+      display: none;
+    }
+
+    .footerMain {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 20px 0px;
+    }
+
+    .foot {
+      margin: 5px 10px;
+    }
+
+    .btn {
+      font-size: 20px;
+      background-color: #A5DD9B;
+      border-radius: 100%;
+      padding: 8px 8px;
+      cursor: pointer;
+    }
+
+    #PageLeft,
+    #PageStart,
+    #PageRight,
+    #PageEnd {
+      font-size: 20px;
+      background-color: #A5DD9B;
+      border-radius: 100%;
+      padding: 8px 8px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      transform: scale(1.2);
+      background-color: #C5EBAA;
+    }
+
+    .pageCount {
+      font-size: 30px;
+      background-color: #C5EBAA;
+      border-radius: 100%;
+      padding: 15px 15px;
+      cursor: pointer;
+    }
+
+    .alert {
+      padding: 20px;
+      background-color: #f44336;
+      color: white;
+      opacity: 1;
+      transition: opacity 0.6s;
+      margin-bottom: 15px;
+      display: none;
+    }
+
+    .alert.success {
+      background-color: #04AA6D;
+    }
+
+    .alert.info {
+      background-color: #2196F3;
+    }
+
+    .alert.warning {
+      background-color: #ff9800;
+    }
+
+    .closebtn {
+      margin-left: 15px;
+      color: white;
+      font-weight: bold;
+      float: right;
+      font-size: 22px;
+      line-height: 20px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .closebtn:hover {
+      color: black;
+    }
+
+    #calFilter {
+      display: flex;
+      justify-content: space-around;
+    }
+  </style>
+</head>
+<body onload="perPageData()">
+  <%-include ('adminSidebar',{search : 7}) %>
+
+    <div class="table1">
+      <div style="height:70px;">
+        <div class="alert" id="errorAlert">
+          <span class="closebtn">&times;</span>
+          <strong>Error!</strong> <span id="alert">Somthing Wrong!!</span>
+        </div>
+
+        <div class="alert success" id="successAlert">
+          <span class="closebtn" onclick="closeBtn2()">&times;</span>
+          <strong>Success!</strong><span id="success">Book Return!!</span>
+        </div>
+      </div>
+      <h2 class="text-center">
+        <%if(Status=="return"){%>
+          RETURN
+          <%}else{%>
+            PENDING
+            <%}%>
+              BOOKS
+      </h2>
+      <div id="calFilter">
+        <div id="fromDate">
+          <select name="firstDate" id="firstDate" onchange="selectDate()">
+            <option value="undefined" selected>Select Date</option>
+            <option value="borrowDate1" id="borrowDate1">Borrow Date</option>
+            <option value="returnDate1" id="returnDate1">Return Date</option>
+          </select>
+          <input type="date" id="fromDate" name="fromDate">
+        </div>
+        <%if(Status=="return"){%>
+          <div id="toDate">
+            <select name="secondDate" id="secondDate">
+              <option value="undefined" selected>Select Date</option>
+              <option value="borrowDate2" id="borrowDate2">Borrow Date</option>
+              <option value="returnDate2" id="returnDate2">Return Date</option>
+            </select>
+            <input type="date" id="toDate" name="toDate">
+          </div>
+          <%}%>
+            <button type="buttonFilter" class="btn btn-success" onclick="buttonFilter()">Filter</button>
+            <button type="buttonCancel" class="btn btn-danger" onclick="buttonCancel()">Cancel</button>
+      </div>
+      <table class="table text-center table-bordered w-auto">
+        <thead>
+          <tr>
+            <th scope="col">SR NO:</th>
+            <th scope="col">USER ID</th>
+            <th scope="col">BOOK ID</th>
+            <th scope="col">BOOK TITLE</th>
+            <th scope="col">BORROWED DATE</th>
+            <%if(Status=="return"){%>
+              <th scope="col">RETURN DATE</th>
+              <%}%>
+                <th scope="col">DAYS LATE</th>
+                <th scope="col">PENALTY</th>
+                <%if(Status=="pending"){%>
+                  <th scope="col">RETURN</th>
+                  <%}%>
+          </tr>
+        </thead>
+
+        <tbody id="tbody">
+
+        </tbody>
+      </table>
+      <div class="footerMain">
+        <div class="PageStart foot btn" id="PageStart" onclick="onfirst()">
+          << </div>
+            <div class="PageLeft foot btn" id="PageLeft" onclick="changePage(-1)">
+              < </div>
+                <div class="PageNumber foot pageCount" id="pageCount">
+                  1
+                </div>
+                <div class="PageRight foot btn" id="PageRight" onclick="changePage(1)">
+                  >
+                </div>
+                <div class="PageEnd foot btn" id="PageEnd" onclick="onlast()"> >> </div>
+            </div>
+        </div>
+      </div>
+
+      <div id="elem" style="display: block;">
+        <div id="readerID">
+          <%=readerID%>
+        </div>
+        <div id="Status">
+          <%=Status%>
+        </div>
+        <div id="searchby">
+          <%=searchby%>
+        </div>
+        <div id="searchvalue">
+          <%=searchValue%>
+        </div>
+      </div>
+      <script>
+        const buttonFilter = () => {
+          perPageData();
+        }
+        const successAlert = document.getElementById("successAlert");
+        let limit = 2;
+        let dataLength;
+        let requirePages;
+        let totalPages;
+        function checkPages(dataLength) {
+          let a;
+          if (dataLength % 2 == 0) {
+            a = dataLength / 2;
+            return a;
+          }
+          else {
+            a = (dataLength / 2) + 1;
+            return Math.floor(a);
+          }
+        }
+        function lastPageValues(dataLength) {
+          let b;
+          if (dataLength % 2 == 0) {
+            b = 2;
+            return b;
+          }
+          else {
+            a = (dataLength / 2) + 1;
+            b = dataLength % 2;
+            return b;
+          }
+        }
+
+          function changePage(val) {
+
+            currentPage = Number(document.getElementById("pageCount").innerHTML);
+
+            currentPage = currentPage + val;
+
+            if (currentPage > requirePages || currentPage < 1) {
+              return 0;
+            }
+
+            document.getElementById("pageCount").innerHTML = currentPage;
+            perPageData();
+
+          }
+
+          function onfirst() {
+
+            currentPage = Number(document.getElementById("pageCount").innerHTML);
+
+            if (currentPage <= 1) {
+              return 0;
+            }
+
+            document.getElementById("pageCount").innerHTML = 1;
+            perPageData();
+          }
+          function onlast() {
+            currentPage = Number(document.getElementById("pageCount").innerHTML);
+            if (currentPage >= requirePages) {
+              return 0;
+            }
+            document.getElementById("pageCount").innerHTML = requirePages;
+            perPageData();
+          }
+
+        const submitResponse = async (id, bookId) => {
+          const response2 = `&id=${id}&bookID=${bookId}`;
+          const response = await fetch(`${location.origin}/admin/insertReturnData`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: response2,
+          })
+          let resultRes = await response.json();
+          if (resultRes == true) {
+            toggel2(1);
+            document.getElementById("errorAlert").style.display = "none";
+            await perPageData();
+          }
+          else {
+            toggle2(0);
+            document.getElementById("errorAlert").style.display = "block";
+          }
+        }
+
+        const toggel2 = (id) => {
+          if (id == 0) {
+            successAlert.style.display = "none";
+          }
+          else {
+            successAlert.style.display = "block";
+          }
+        }
+        const checkDate = () => {
+          let firstDate = document.getElementsByName("firstDate")[0].value;
+          let secondDate = document.getElementsByName("secondDate")[0].value;
+          let fromDate = document.getElementsByName("fromDate")[0].value;
+          let toDate = document.getElementsByName("toDate")[0].value;
+
+          date1 = new Date(fromDate);
+          date2 = new Date(toDate);
+
+          var time_difference = date2.getTime() - date1.getTime();
+
+          var days_difference = time_difference / (1000 * 60 * 60 * 24);
+          if (firstDate != undefined && secondDate != undefined && fromDate != undefined && toDate != undefined) {
+            if (days_difference >= 0) {
+              return true;
+            }
+            else {
+              return false;
+            }
+          }
+          else {
+            return false;
+          }
+        }
+        const showAllBookList = async (id, status) => {
+
+          if (checkDate()) {
+            let firstDate = document.getElementsByName("firstDate")[0].value;
+            let secondDate = document.getElementsByName("secondDate")[0].value;
+            let fromDate = document.getElementsByName("fromDate")[0].value;
+            let toDate = document.getElementsByName("toDate")[0].value;
+
+
+            let searchby = document.getElementById("searchby").innerHTML;
+            let searchvalue = document.getElementById("searchvalue").innerHTML;
+            let data = await fetch(`${location.origin}/admin/showBooksByIdDetails/?readerId=${id}&status=${status}&&searchby=${searchby}&&searchvalue=${searchvalue}&&firstDate=${firstDate}&&secondDate=${secondDate}&&fromDate=${fromDate}&&toDate=${toDate}`, {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+              },
+            });
+            let result = await data.json();
+
+            dataLength = result.length;
+            requirePages = checkPages(dataLength);
+            return result;
+
+          }
+          else{
+
+            let searchby = document.getElementById("searchby").innerHTML;
+            let searchvalue = document.getElementById("searchvalue").innerHTML;
+            let data = await fetch(`${location.origin}/admin/showBooksByIdDetails/?readerId=${id}&status=${status}&&searchby=${searchby}&&searchvalue=${searchvalue}`, {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+              },
+            });
+            let result = await data.json();
+
+            dataLength = result.length;
+            requirePages = checkPages(dataLength);
+            return result;
+          }
+
+        }
+
+        const perPageData = async () => {
+
+          let filter = document.getElementById("Status").innerHTML;
+          let id = document.getElementById("readerID").innerHTML;
+          document.getElementById("tbody").innerHTML = "";
+          let result = await showAllBookList(id, filter);
+
+          totalPages = 2;
+          let offset;
+          let page = document.getElementById("pageCount").innerHTML;
+          offset = ((page - 1) * 2) + 2;
+          if (page == requirePages) {
+            totalPages = lastPageValues(result.length);
+            if (totalPages % 2 != 0) {
+              offset = ((page - 1) * 2) + 2 - totalPages;
+            }
+          }
+          let startPage = (page - 1) * 2;
+          for (let i = startPage; i < offset && result.length > i; i++) {
+            let txt =
+              `
+          <tr>
+            <th scope="row">
+              ${ i+1 }
+            </th>
+            <td>
+              ${ result[i].reader_id }
+            </td>
+            <td>
+              ${ result[i].book_id }
+            </td>
+            <td>
+              ${ result[i].book_title }
+            </td>
+            <td>
+              ${result[i].borrow_date.split(" ")[0]}
+              </td>
+            `;
+            filter = filter.replace(/\s/g, "");
+            if (filter == "return") {
+              txt += `
+              <td>
+                ${result[i].return_date.split(" ")[0]}
+              </td>
+              `;
+            }
+            if(result[i].daysLate==null){
+              txt+=`
+              <td>
+                0
+              </td>
+              <td>
+                0
+              </td>
+              `;
+            }else{
+              txt+=`
+              <td>
+                ${result[i].daysLate}
+              </td>
+              <td>
+                ${result[i].penalty}
+              </td>
+              `;
+            }
+            if (filter == "pending") {
+            txt += `
+              <td><input type="button" value="Return" class="btn btn-primary"
+                  onclick="submitResponse(${result[i].borrowed_id},${result[i].book_id})"></a>
+              </td>
+              `;
+            }
+
+            document.getElementById("tbody").innerHTML += txt;
+          }
+        }
+        const selectDate = () => {
+          let firstDate = document.getElementById("firstDate").value;
+          let secondDate = document.getElementById("secondDate").value;
+          if (firstDate == "returnDate1") {
+            document.getElementById("borrowDate2").disabled = true;
+          }
+        }
+        const closeBtn2 = async () => {
+          setTimeout(function () { successAlert.style.display = "none"; }, 300);
+        }
+
+      </script>
+</body>
+</html>
+

@@ -1,0 +1,210 @@
+create database Library_Management_System;
+use Library_Management_System;
+
+
+create table  if not exists users (
+user_id int not null auto_increment primary key,
+u_img blob,
+ u_fname varchar(255),
+ u_lname varchar(255), 
+ u_email varchar(255),
+u_contact bigint, 
+u_address text, 
+u_gender varchar(255), 
+u_dob date, role_id int ,
+ u_salt varchar(255), 
+ u_pass varchar(255), 
+ access_key varchar(255), 
+ created_at timestamp default current_timestamp,
+modified_at timestamp);
+set foreign_key_checks =1;
+truncate users;
+insert into users(u_img, u_fname, u_lname, u_email, u_contact, u_address, u_gender, u_dob, role_id, u_salt, u_pass, access_key) values 
+(010101011, 'Anshika', 'Soni', 'anshika@gmail.com', 124235546, 'Star City', 'female', '2000-05-14', 1, '346546', '345terfgfgh','sdfgdgh'),
+(010101011, 'Diya', 'Gupta', 'diya@gmail.com', 124235546, 'Star City', 'female', '2001-05-14', 1, '345446', 'xcvcxvbgfgh','sdfgdgh'),
+(010101011, 'Vishal', 'Sharma', 'vishalgmail.com', 124235546, 'Star City', 'male', '2002-05-14', 1, '56889', 'sdgdfgh','sdfgdgh'),
+(010101011, 'Mahesh', 'Shah', 'mahesh@gmail.com', 124235546, 'Star City', 'male', '2004-05-14', 1, '214234', 'dxvgfgfgfgh','sdfgdgh'),
+(010101011, 'Samiksha', 'Chalke', 'samiksha@gmail.com', 124235546, 'Star City', 'female', '2005-05-14', 1, '3465687', 'zdvffbgh','sdfgdgh');
+
+create table if not exists login_attempt(
+attempt_id int not null auto_increment primary key, 
+user_id int ,
+ login_timestamp timestamp default current_timestamp,
+login_status varchar(255), 
+foreign key (user_id) references users(user_id));
+
+insert into login_attempt (user_id, login_status)values (1, 'success'),
+(2,'success'),
+(3,'success'),
+(4,'success'),
+(5,'success');
+
+create table if not exists genres (
+genre_id int not null auto_increment primary key ,
+ genre_name varchar(255), 
+ created_at timestamp default current_timestamp,
+modified_at timestamp default current_timestamp);
+
+insert into genres (genre_name) values ('Fiction'), ('Noval'),('Mystry'),('Thriller'), ('Horror');
+
+create table if not exists  books_detail (
+prime_book_id int not null auto_increment primary key ,
+book_title varchar(255),
+book_desc text , 
+genre_id int , 
+book_img blob,
+ book_publication varchar(255),
+ book_publication_year year ,
+ book_ISBN varchar(255),
+created_at timestamp default current_timestamp,
+modified_at timestamp,
+foreign key (genre_id) references genres (genre_id));
+
+insert into books_detail (book_title, book_desc, genre_id, book_img, book_publication, book_publication_year, book_ISBN) values 
+('Godaan','This is a book about the poor life of farmers', 1, 10110001, 'fgdfh', '1993', 'asdfdf'),
+('Palace of illusion',"This book containes the story of mahabharata from Draupadi's point of view", 1, 10110001, 'Pan Macmillan India', '2008', 'asddf'),
+('Aghori', 'This book describe about the mystries life of aghories',3,0101001,'	Mayur Kalbag','2022','dfgf'),
+('Ikigai','The Japanese Secret to a Long and Happy Life',1,10101001, 'sadffh','2017','sdfgd'),
+('Push ki raat' ,' This is the story of a tenant farmer named Halku and his plight against land lordship prevalent in those times',
+1,00101010, 'Raj Shree Prakashan', '2016','asffdf');
+
+create table if not exists authors (
+author_id int not null auto_increment primary key ,
+author_name varchar(255), 
+author_img blob, 
+author_desc text , 
+creadted_at timestamp  default current_timestamp,
+ modified_at timestamp);
+
+insert into authors (author_img, author_name, author_desc) values 
+(10010101,'Munshi Prem Chand',"Premchand worked as a teacher until 1921, when he joined Mohandas K. Gandhi's 
+Noncooperation Movement. As a writer, he first gained renown for his Urdu-language novels and short 
+stories. Except in Bengal, the short story had not been an accepted literary form in northern 
+India until Premchand's works appeared"),
+(00110101,"Chitra Banerjee","She is a Professor of Creative Writing at Houston University and has 
+taught at Diablo College and Foothill College in California"),
+(001110101, "Héctor García","Héctor García and Francesc Miralles are the coauthors of The Book of Ichigo Ichie and The Four-Way Path. Héctor is a citizen of Japan, where he has lived for over a 
+decade, and is the author of A Geek in Japan, a #1 bestseller in Japan."),
+(0011011,"Mayur Kalbag","Mayur Vivek Kalbag is one of the 'leading international trainers' from Mumbai, India. He has been imparting his knowledge and skills on subjects related to Management Development, Advanced leadership & enhancing Organizational
+ Productivity through Human Capital Development since the past 20 years.");
+ 
+create table if not exists books_author (
+id int not null auto_increment primary key , 
+prime_book_id int , author_id int ,
+foreign key (prime_book_id) references books_detail (prime_book_id),
+foreign key (author_id) references authors (author_id));
+
+insert into books_author (prime_book_id, author_id) values (1,1),
+(2,2),(3,4),(4,3),(5,1);
+
+create table if not exists inventory (
+book_id int not null auto_increment primary key ,
+ prime_book_id int ,
+ created_at timestamp default current_timestamp ,
+ modified_at timestamp, 
+ availability_status int,
+ foreign key (prime_book_id) references books_detail(prime_book_id));
+
+insert into inventory (prime_book_id, availability_status) values (1,1),(1,1),(1,1),(1,1),(1,1),
+(2,1),(2,1),(2,1),(2,1),(2,1),(3,1),(3,1),(3,1),(3,1),(3,1),(4,1),(4,1),(4,1),(4,1),(4,1),(5,1),
+(5,1),(5,1),(5,1),(5,1);
+
+create table if not exists comments (
+comment_id int not null auto_increment primary key, 
+reader_id int , 
+book_id int ,
+ comment text , 
+ created_at  timestamp default current_timestamp,
+ modified_at timestamp default current_timestamp,
+foreign key (reader_id) references users (user_id),
+foreign key (book_id) references inventory (book_id)); 
+
+insert into comments(reader_id, book_id, comment) values (1,1,"This is a great book I loved reading this book"),
+(2,3,"It is nice book I recommend every one to read this book"),
+(3,6,"The author has created such a great suspence till the last"),
+(4,11,"It was a boaring book"),
+(5,15,"Did't liked the story");
+
+create table if not exists nested_comments(nested_comment_id int not null auto_increment primary key ,comment_id int ,
+ nested_comment text, foreign key (comment_id) references comments (comment_id));
+ 
+insert into nested_comments (comment_id, nested_comment) values (1, "Yes I do agree with you"),
+(2, "Yes I do agree with you"),
+(3, "Yes"),
+(4, "It was just a wastage of time"),
+(5, "nO I liked the story You should try some other book of this author");
+
+create table if not exists rating (rating_id int not null auto_increment primary key , reader_id int , book_id int ,
+rating int , created_at timestamp default current_timestamp,
+foreign key (reader_id) references users (user_id),
+foreign key (book_id) references inventory (book_id));
+
+insert into rating(reader_id, book_id, rating) values (1,1,2),(2,3,4),(3,6,5),(4,11,1),(5,15,2);
+
+create table if not exists books_log (borrowed_id int not null auto_increment primary key , reader_id int , book_id int , borrow_date timestamp , return_date timestamp,
+status varchar(255), created_at timestamp default current_timestamp, modified_at timestamp default current_timestamp ,
+foreign key (reader_id) references users (user_id) , 
+foreign key (book_id) references inventory (book_id));
+
+insert into books_log (reader_id, book_id, borrow_date,status) values
+(1,1,current_timestamp(),'pending'),
+(2,3,current_timestamp(),'pending'),
+(3,6,current_timestamp(),'pending'),
+(4,11,current_timestamp(),'pending'),
+(5,15,current_timestamp(),'pending');
+
+create table if not exists requests (request_id int not null auto_increment primary key , reader_id int , message text, created_at timestamp default current_timestamp,
+foreign key (reader_id) references users (user_id));
+
+insert into requests(reader_id, message) values (1,"please make available some commic books"),
+ (2, "can please arrange the government exam preparation books people would like to read");
+
+create table if not exists watch_lists (watchlist_id int not null auto_increment primary key , reader_id int , book_id int , created_at timestamp default current_timestamp,
+foreign key (reader_id) references users (user_id) ,
+foreign key (book_id) references inventory (book_id));
+
+insert into watch_lists (reader_id, book_id) values (1,3),(1,15),(2,9),(2,1),(3,25),(3,10);
+ 
+create table if not exists reading_status (status_id int not null auto_increment primary key , reader_id int , book_id int , read_status int,
+created_at timestamp default current_timestamp,
+foreign key (reader_id) references users (user_id),
+foreign key (book_id) references inventory (book_id));
+
+insert into reading_status (reader_id, book_id, read_status) values (1,1,2),
+(2,3,2),(3,6,2),(4,11,2),(5,15,2);
+
+
+
+create table if not exists `reasonforcontro`(
+`reason_id` int primary key auto_increment,
+`reason` varchar(30),
+  `created_at` timestamp DEFAULT (current_timestamp),
+  `modified_at` timestamp
+);
+
+insert into reasonforcontro(reason)
+values("Need For Reasearch"),("Book not Available"),("Proffesional Development"),("For Fun"),("For Academics"),("Other");
+
+CREATE TABLE if not exists `contribution` (
+  `contro_id` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `book_name` varchar(255),
+  `user_id` int,
+  `author_name` varchar(255),
+  `reason_id` int,
+  `sel_cat` varchar(255),
+  `sel_lan` varchar(255),
+  `created_at` timestamp DEFAULT (current_timestamp),
+  `modified_at` timestamp
+);
+ALTER TABLE `contribution` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+ALTER TABLE `contribution` ADD FOREIGN KEY (`reason_id`) REFERENCES `reasonforcontro` (`reason_id`);
+
+create table if not exists `contributed_books` (
+`contributed_id` int primary key auto_increment,
+`contributed_book_id` int,
+`user_id` int,
+ `created_at` timestamp DEFAULT (current_timestamp),
+  `modified_at` timestamp);
+  ALTER TABLE `contributed_books` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+ ALTER TABLE `contributed_books` ADD FOREIGN KEY (`contributed_book_id`) REFERENCES `inventory` (`book_id`);
+  ALTER TABLE `contributed_books` ADD FOREIGN KEY (`contributed_id`) REFERENCES `contribution` (`contro_id`);

@@ -1,0 +1,62 @@
+<style>
+    @media ( 1297px <= width <= 1366px){
+        .comp_container{
+            height: 725px;
+        }
+    }
+</style>
+
+
+<div class="row col-md-12">
+
+    <div class="col-md-9 container-fluid">
+        <h3 class="text-center heading m-5">User's Personal Details</h3>
+        <table class="table table-hover">
+            <tbody>
+                <tr>
+                    <th class="text-center" scope="row">First Name</th>
+                    <td class="pl-5" colspan="2">
+                        <%=result[0].u_fname %>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="text-center" scope="row">Last Name</th>
+                    <td class="pl-5" colspan="2">
+                        <%=result[0].u_lname%>
+                    </td>
+
+                </tr>
+                <tr>
+                    <th class="text-center" scope="row">Email</th>
+                    <td class="pl-5" colspan="2">
+                        <%=result[0].u_email%>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="text-center" scope="row">Contact</th>
+                    <td class="pl-5" colspan="2">
+                        <%=result[0].u_contact%>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="text-center" scope="row">Address</th>
+                    <td class="pl-5" colspan="2">
+                        <%= result[0].u_address%>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="text-center" scope="row">D.O.B</th>
+                    <td class="pl-5" colspan="2">
+                        <%= result[0].u_dob%>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="text-center" scope="row">Gender</th>
+                    <td class="pl-5" colspan="2">
+                        <%= result[0].u_gender%>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

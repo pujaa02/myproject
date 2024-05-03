@@ -1,0 +1,38 @@
+<%-include ('adminSidebar',{search : 0}) %>
+  <div class="table1">
+    <h2 class="text-center mt-2">List Book</h2>
+    <table class="table text-center table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">Book Title</th>
+          <th scope="col">Book ID</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Add</th>
+          <th scope="col">Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(let i =0 ; i<result.length ; i++) {%>
+          <tr>
+          <th scope="row"><%= result[i].prime_book_id %></th>
+          <td><%= result[i].book_title %></td>
+          <td><%= result[i].book_desc %></td>
+          <td><%= result[i].genre_id %></td>
+          <td><%= result[i].book_publication %></td>
+          <td><%= result[i].book_publication_year %></td>
+          <td><%= result[i].book_ISBN %></td>
+          <td><a href="/admin/editBook/?bookid=<%=result[i].prime_book_id %>"><input type="button" value="Edit"></a></td>
+          <td><a href="/admin/deleteBook/?bookid=<%=result[i].prime_book_id %>"><input type="button" value="Delete"></a></td>
+        </tr>
+       <%  }
+       
+       ; %>
+      </tbody>
+    </table>
+
+  </div>
+  </div>
+  </div>
+  </body>
+
+  </html>

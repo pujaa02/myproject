@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="/sweetalert2/sweetalert2.min.css" />
+    <script src="/sweetalert2/sweetalert2.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <title>Document</title>
+    <link rel="stylesheet" href="/css//bookpages/about.css" />
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+
+<body>
+    <% var dir=process.cwd() %> <%- include(dir + "/views/lefttop/leftside.ejs" ) %> <%-include(dir
+                + "/views/lefttop/header.ejs" ) %>
+                <div class="mainarea">
+                    <div class="container mt-5" id="sensation">
+
+                    </div>
+                    <div class="container" id="pagi">
+
+                    </div>
+                </div>
+                <script>
+                    const socket = io();
+
+                    const createText = (result, element) => {
+                        txt = `
+                          <div class="card m-3">
+                           <div class="card-body">
+                          <h5 class="card-title">${element.sensation_title}</h5>
+                          <p class="card-text">${element.sensation_desc}</p>
+                          <div>
+                         <p class="card-text float-left"><small class="text-muted">${element.created_at}</small></p>
+                         <div class="float-right d-flex flex-row">`
+                        if (result.totalLikes.length != 0) {
+                            let like = 0;
+                            result.totalLikes.forEach((likeItem) => {
+
+                                if (likeItem.sensation_id == element.sensation_id) {
+                                    like = likeItem.totalLikes;
+                                }
+                            });
+                            txt += ` <p class="card-text p-2"><small class="text-muted">likes ${like}</small></p>`;
+
+                        } else {
+                            txt += ` <p class="card-text p-2"><small class="text-muted">likes 0</small></p>`;
+                        }
+                        if (result.totalComments.length != 0) {
+                            let comment = 0;
+                            result.totalComments.forEach((commentItem) => {
+                                if (commentItem.sensation_id == element.sensation_id) {
+                                    comment = commentItem.totalComments;
+                                }
+                            })
+                            txt += `<p class="card-text p-2"><small class="text-muted">comments ${comment}</small></p>`;
+                        } else {
+                            txt += `<p class="card-text p-2"><small class="text-muted">comments 0</small></p>`;
+                        }
+                        txt += `</div>
+                                    </div>
+                             </div><div class="row">`;
+
+                        result.images.forEach((image) => {
+                            if (element.sensation_id == image.sensation_id) {
+                                txt += `<img  class="col-md-2" card-img-bottom" src="${image.img_path}" alt="Card image cap">`
+                            }
+                        });
+                        txt += `</div><div class="d-flex flex-row"/>`
+                        if (result.likes.length != 0) {
+                            (result);
+                            let flag = 0;
+                            result.likes.forEach((like) => {
+                                if (like.sensation_id == element.sensation_id && like.user_id == result.user_id) {
+                                    flag += 1;
+                                }
+                            })
+                            if (flag == 1) {
+                                txt += ` <div onclick="disLike(${result.user_id},${element.sensation_id}, this)" class="d-flex flex-row p-3">
+                                    <img src="/icon/red_heart.svg" /><div class="text-primary p-3">like</div>
+                                </div>`;
+                            }
+                            else {
+                                txt += ` <div onclick="addLike(${result.user_id},${element.sensation_id}, this)" class="d-flex flex-row p-3">
+                                    <img src="/icon/heart.svg" /><div class="text-primary p-3">like</div>
+                                </div>`;
+                            }
+                        }
+                        else {
+                            txt += ` <div onclick="addLike(${result.user_id},${element.sensation_id}, this)" class="d-flex flex-row p-3">
+                                    <img src="/icon/heart.svg" /><div class="text-primary p-3">like</div>
+                                </div>`;
+                        }
+                        txt += `
+                                <div onclick="showComment(${result.user_id},${element.sensation_id},this)" class="d-flex flex-row p-3">
+                                    <img src="/icon/comment.svg" /><div class="text-primary p-3">comment</div>
+                                </div>
+                            </div>
+                            <div class="pt-5 comment" id="commentInp${element.sensation_id}"></div>
+                            </div>`;
+                        return txt;
+
+                    }
+                    const pagination = async () => {
+                        let data = await fetch(`${location.origin}/showSensation`, {
+                            method: "get",
+                            headers: {
+                                "Content-Type": "application/x-www-form-urlencoded",
+                            },
+                        });
+                        let result = await data.json();
+                        return result;
+                    }
+
+                    const displayFirst = async () => {
+                        document.getElementById("sensation").innerHTML = "";
+                        let result = await pagination();
+                        let limit = 3;
+                        let total = result.sensation.length;
+                        let pages = Math.ceil(total / limit);
+                        let pageNo = document.getElementById('pageNo');
+                        pageNo.innerHTML = 1;
+                        let pageid = 1;
+                        let startIdx = (pageid - 1) * limit;
+                        let txt = "";
+                        for (let i = startIdx; i < startIdx + limit; i++) {
+                            let cardTxt = createText(result, result.sensation[i]);
+                            txt += cardTxt;
+                            document.getElementById("sensation").innerHTML = txt;
+                        }
+
+                    }
+                    const displayLast = async () => {
+                        document.getElementById("sensation").innerHTML = "";
+                        let result = await pagination();
+                        let total = result.sensation.length;
+                        let limit = 3;
+                        let pages = Math.ceil(total / limit);
+                        let pageNo = document.getElementById('pageNo');
+                        pageNo.innerHTML = pages;
+                        let pageid = pages;
+                        let startIdx = (pageid - 1) * limit;
+                        let txt = "";
+                        for (let i = startIdx; i < startIdx + limit; i++) {
+                            let cardTxt = createText(result, result.sensation[i]);
+                            txt += cardTxt;
+                            document.getElementById("sensation").innerHTML += txt;
+                        }
+
+                    }
+                    const prev = async () => {
+                        let result = await pagination();
+                        let total = result.sensation.length;
+                        let limit = 3;
+                        let pages = Math.ceil(total / limit);
+                        let pageNo = document.getElementById('pageNo');
+                        if (pageNo.innerHTML > 1) {
+                            document.getElementById("sensation").innerHTML = "";
+                            let pageid = parseInt(pageNo.innerHTML) - 1;
+                            pageNo.innerHTML = pageid;
+                            let startIdx = (pageid - 1) * limit;
+                            let txt = "";
+                            for (let i = startIdx; i < startIdx + limit; i++) {
+                                let cardTxt = createText(result, result.sensation[i]);
+                                txt += cardTxt;
+                            }
+
+                            document.getElementById("sensation").innerHTML += txt;
+
+                        }
+                    }
+                    const next = async () => {
+                        let result = await pagination();
+                        let total = result.sensation.length;
+                        let limit = 3;
+                        let pages = Math.ceil(total / limit);
+                        let pageNo = document.getElementById('pageNo');
+                        if (pageNo.innerHTML < pages) {
+                            document.getElementById("sensation").innerHTML = "";
+                            let pageid = parseInt(pageNo.innerHTML) + 1;
+                            pageNo.innerHTML = pageid;
+                            let startIdx = (pageid - 1) * limit;
+                            ("startIdx " + startIdx);
+                            let txt = "";
+                            for (let i = startIdx; i < startIdx + limit; i++) {
+                                let cardTxt = createText(result, result.sensation[i]);
+                                txt += cardTxt;
+                                document.getElementById("sensation").innerHTML += txt;
+                            }
+                        }
+                    }
+
+                    const fetchSensation = async () => {
+                        (`${location.origin}/showSensation`);
+                        let data = await fetch(`/showSensation`, {
+                            method: "get",
+                            headers: {
+                                "Content-Type": "application/x-www-form-urlencoded",
+                            },
+                        });
+                        let result = await data.json();
+                        (result);
+
+                        if (result.sensation.length <= 3) {
+                            let txt = "";
+                            result.sensation.forEach((element) => {
+                                let cardTxt = createText(result, element);
+                                txt += cardTxt;
+                            });
+                            document.getElementById("sensation").innerHTML = txt;
+                        }
+                        else {
+                            let txt = "";
+                            for (let i = 0; i < 3; i++) {
+                                let cardTxt = createText(result, result.sensation[i]);
+                                txt += cardTxt;
+                            }
+                            document.getElementById("sensation").innerHTML = txt;
+                            let pagi = ` <nav aria-label="Page navigation example" class="float-left">
+        <ul class="pagination">
+            <li class="page-item">
+                <p aria-label="Previous" onclick="displayFirst()"
+                    class="page-link">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </p>
+            </li>
+            <li class="page-item">
+                <p onclick="prev()" class="page-link">
+                    < </p>
+            </li>
+            <li class="page-item">
+                <p id="pageNo" class="page-link">1</p>
+            </li>
+            <li class="page-item">
+                <p onclick="next()" class="page-link">>
+                </p>
+            </li>
+            <li class="page-item">
+                <p onclick="displayLast()" aria-label="Next"
+                    class="page-link">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </p>
+            </li>
+        </ul>
+    </nav>`;
+                            document.getElementById("pagi").innerHTML = pagi;
+
+                        }
+                    }
+                    fetchSensation();
+
+                    socket.on("respSensation", (event) => {
+                        fetchSensation();
+                    });
+
+
+                    const addLike = async (user_id, sen_id, element) => {
+                        ("liking")
+                        let formData = new FormData();
+                        formData.append("user_id", user_id);
+                        formData.append("sen_id", sen_id);
+                        const params = new URLSearchParams(formData);
+                        const res = await new Response(params).text();
+                        (res);
+                        let data = await fetch(`/addSenLike`, {
+                            method: "post",
+                            headers: {
+                                "Content-Type": "application/x-www-form-urlencoded",
+                            },
+                            body: res,
+                        });
+                        let result = await data.json();
+                        if (result) {
+                            (result);
+                            element.children[0].src = "/icon/red_heart.svg";
+                            element.setAttribute("onclick", `disLike(${user_id},${sen_id},this)`)
+                            socket.emit("addLike", 1);
+                        }
+                    }
+
+                    const disLike = async (user_id, sen_id, element) => {
+
+                        let formData = new FormData();
+                        formData.append("user_id", user_id);
+                        formData.append("sen_id", sen_id);
+                        const params = new URLSearchParams(formData);
+                        const res = await new Response(params).text();
+                        (res);
+                        let data = await fetch(`/disLikeSen`, {
+                            method: "post",
+                            headers: {
+                                "Content-Type": "application/x-www-form-urlencoded",
+                            },
+                            body: res,
+                        });
+                        let result = await data.json();
+                        if (result) {
+                            element.children[0].src = "/icon/heart.svg";
+                            element.setAttribute("onclick", `addLike(${user_id},${sen_id},this),`)
+                        }
+                    }
+
+
+
+                    const showComment = (user_id, sen_id, element) => {
+                        let parentElement = element.parentElement;
+                        let supParentEle = parentElement.parentElement;
+                        let children = supParentEle.children;
+                        let commentInp = children[3];
+                        let commentsInps = Array.from(document.getElementsByClassName("comment"));
+                        commentsInps.forEach((element) => {
+                            element.innerHTML = "";
+                        })
+                        let txt = `
+                      <form id="replyForm">
+                                <div class="form-row align-items-center">
+                                    <input type="hidden" id="sen_id" name="sen_id"
+                                        value="${sen_id}" />
+                                    <input type="hidden" id="user_id" name="user_id"
+                                        value="${user_id}" />
+                                    <div class="container d-flex flex-row">
+                                        <input tabindex="0" tpye="text" name="comment"
+                                            class="border-success form-control " placeholder="add to reply" />
+                                        <img class="" onclick="sendComment()"
+                                            src="./userProfileScript/icons/bxs-right-arrow-circle.svg" />
+                                    </div>
+                                </div>
+                            </form>`;
+                        commentInp.innerHTML = txt;
+                    }
+
+                    const sendComment = async (user_id, sen_id) => {
+                        let form = document.getElementById('replyForm');
+                        let msg = form['comment'].value.trim();
+                        if (msg != "") {
+                            let myformData = new FormData(form);
+                            let params = new URLSearchParams(myformData);
+                            let res = await new Response(params).text();
+                            (res);
+                            let data = await fetch(`${location.origin}/sendComment`, {
+                                method: "post",
+                                headers: {
+                                    "Content-Type": "application/x-www-form-urlencoded",
+                                },
+                                body: res,
+                            });
+                            let result = await data.json();
+                            if (result) {
+                                form['comment'].value = "";
+                                Swal.fire({
+                                    position: "center",
+                                    icon: "success",
+                                    title: "Your comment has been saved",
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                })
+                                socket.emit("addComment", 1);
+                            }
+                        }
+                        else {
+                            Swal.fire("Comment should not be an empty string !");
+                        }
+                        let commentsInps = Array.from(document.getElementsByClassName("comment"));
+                        commentsInps.forEach((element) => {
+                            element.innerHTML = "";
+                        });
+
+                    }
+                </script>
+
+                <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+                    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+                    crossorigin="anonymous"></script>
+                <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+                    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+                    crossorigin="anonymous"></script>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
+                    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+                    crossorigin="anonymous"></script>
+</body>
+
+</body>
+
+</html>

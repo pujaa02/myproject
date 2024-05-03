@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <title>Document</title>
+    <style>
+      .maxwidth{
+          max-width:90px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="input-group rounded">
+      <input
+        type="search"
+        class="form-control rounded"
+        placeholder="Search by book title"
+        aria-label="Search"
+        aria-describedby="search-addon"
+        id="booksearch"
+      
+        autofocus="autofocus"
+      />
+      <span
+        class="input-group-text border-0"
+        id="search-addon"
+      >
+        <i class="fas fa-search"></i>
+      </span>
+    </div>
+    <div class="input-group rounded">
+      <input
+        type="search"
+        class="form-control rounded"
+        placeholder="Search by ISBN"
+        aria-label="Search"
+        aria-describedby="search-addon"
+        id="isbn"
+        autofocus="autofocus"
+      />
+      <span
+        class="input-group-text border-0"
+        id="search-addon"
+      >
+        <i class="fas fa-search"></i>
+      </span>
+    </div>
+    <div class="input-group rounded">
+      <input
+        type="search"
+        class="form-control rounded"
+        placeholder="Search by author"
+        aria-label="Search"
+        aria-describedby="search-addon"
+        id="authorsearch"
+      
+        autofocus="autofocus"
+      />
+      <span
+        class="input-group-text border-0"
+        id="search-addon"
+      >
+        <i class="fas fa-search"></i>
+      </span>
+    </div>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">name</th>
+          <th scope="col" class="maxwidth">description</th>
+          <th scope="col">ISBN</th>
+          <th scope="col">Authors</th>
+        </tr>
+      </thead>
+      <tbody id="bookslist">
+        
+      </tbody>
+    </table>
+    <nav aria-label="...">
+      <ul class="pagination">
+        <li class="page-item" id="previous">
+          <a class="page-link" tabindex="-1" onclick="funnextPrev(-1)"
+            >Previous</a
+          >
+        </li>
+
+        <li class="page-item active">
+          <a class="page-link" id="page">1</a>
+        </li>
+        <li class="page-item" id="next">
+          <a class="page-link" onclick="funnextPrev(1)">Next</a>
+        </li>
+      </ul>
+    </nav>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      let currentPage = 1;
+      let booksArr;
+      let authorsArr;
+      let lastPagebook;
+      let page = document.getElementById("page");
+      let previous = document.getElementById("previous");
+      let next = document.getElementById("next");
+      if (currentPage === 1) {
+        previous.style.display = "none";
+      } else {
+        previous.style.display = "block";
+      }
+      let bookList = document.getElementById("bookslist");
+      funsearch();
+      document
+        .getElementById("booksearch")
+        .addEventListener("keyup", funsearch);
+        document
+        .getElementById("isbn")
+        .addEventListener("keyup", funsearch);
+        document
+        .getElementById("authorsearch")
+        .addEventListener("keyup", funsearch);
+      async function funsearch() {
+
+        let booksearch = document.getElementById("booksearch").value.trim();
+        let isbn = document.getElementById("isbn").value.trim();
+        let authorsearch=document.getElementById("authorsearch").value.trim() ;
+        try {
+          let response = await fetch("/search", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ booksearch ,isbn,authorsearch}),
+          });
+          let { books, lastPage,authors} = await response.json();
+          booksArr = books;
+          authorsArr=authors;
+        lastPagebook = lastPage;
+          currentPage = 1;
+          page.innerText = 1;
+          bookList.innerHTML = "";
+          displaynoneblock(currentPage, lastPagebook);
+          books.forEach(function (book) {
+            let index = books.indexOf(book);
+            if (index >= 0 && index < 3) {
+              let tr = document.createElement("tr");
+              let td = document.createElement("td");
+              let td2 = document.createElement("td");
+              let td3 = document.createElement("td");
+              let td4 = document.createElement("td");
+              let td5 = document.createElement("td");
+              td.innerText = book.book_title;
+              td2.classList.add("maxwidth");
+              td2.innerText = book.book_desc;
+              td3.innerText = book.book_ISBN;
+            
+              td4.innerText = book.author_name;
+              td5.innerHTML = `  <button type="button" class="btn btn-primary">
+            Edit
+          </button>
+          <button type="button" class="btn btn-danger">
+            Delete
+          </button>`;
+              tr.appendChild(td);
+              tr.appendChild(td2);
+              tr.appendChild(td3);
+              
+              tr.appendChild(td4);
+              tr.appendChild(td5);
+              bookList.appendChild(tr);
+            }
+          });
+       
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      }
+
+      function funnextPrev(i) {
+        currentPage += i;
+        displaynoneblock(currentPage,lastPagebook)
+        page.innerText = currentPage;
+
+        bookList.innerHTML = "";
+        booksArr.forEach(function (book) {
+          let index = booksArr.indexOf(book);
+          let skip = (currentPage - 1) * 3;
+          if (index >= skip && index < skip + 3) {
+            let tr = document.createElement("tr");
+            let td = document.createElement("td");
+            let td2 = document.createElement("td");
+            let td3 = document.createElement("td");
+            let td4 = document.createElement("td");
+            let td5 = document.createElement("td");
+            td.innerText = book.book_title;
+            td2.classList.add("maxwidth");
+              td2.innerText = book.book_desc;
+              td3.innerText = book.book_ISBN;
+              td4.innerText = book.author_name;
+            td5.innerHTML = `  <button type="button" class="btn btn-primary">
+            Edit
+          </button>
+          <button type="button" class="btn btn-danger">
+            Delete
+          </button>`;
+            tr.appendChild(td);
+            tr.appendChild(td2);
+            tr.appendChild(td3);
+            tr.appendChild(td4);
+            tr.appendChild(td5);
+            bookList.appendChild(tr);
+          }
+        });
+      }
+
+      function displaynoneblock(currentPage, lastPagebook) {
+        if (currentPage === 1) {
+          previous.style.display = "none";
+        } else {
+          previous.style.display = "block";
+        }
+        if (currentPage === lastPagebook) {
+          next.style.display = "none";
+        } else {
+          next.style.display = "block";
+        }
+      }
+    </script>
+  </body>
+</html>

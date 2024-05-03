@@ -1,0 +1,64 @@
+<%-include ('adminSidebar',{search : 2}) %>
+  <div class="table1">
+    <h2 class="text-center mt-2">List Users</h2>
+    <table class="table text-center table-bordered w-auto">
+      <thead>
+        <tr>
+          <th scope="col" onclick="userOrder('user_id',1)">Id <i id="down1" class="orderIcon">&#8595;</i></th>
+          <th scope="col" onclick="userOrder('u_fname',2)">First Name <i id="down1" class="orderIcon">&#8595;</i></th>
+          <th scope="col" onclick="userOrder('u_lname',3)">Last Name <i id="down1" class="orderIcon">&#8595;</i></th>
+          <th scope="col" onclick="userOrder('u_email',4)">EmailId <i id="down1" class="orderIcon">&#8595;</i></th>
+          <th scope="col" onclick="userOrder('u_contact',5)">Contact <i id="down1" class="orderIcon">&#8595;</i></th>
+          <th scope="col" onclick="userOrder('u_address',6)">Address <i id="down1" class="orderIcon">&#8595;</i></th>
+          <th scope="col" onclick="userOrder('u_gender',7)">Gender <i id="down1" class="orderIcon">&#8595;</i></th>
+          <th scope="col" onclick="userOrder('u_dob',8)">Date of Birth <i id="down1" class="orderIcon">&#8595;</i></th>
+          <th scope="col">Edit</th>
+          <th scope="col">Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(let i=0 ; i<users.length ; i++) {%>
+          <tr>
+            <th scope="row">
+              <%= users[i].user_id %>
+            </th>
+            <td>
+              <%= users[i].u_fname %>
+            </td>
+            <td>
+              <%= users[i].u_lname %>
+            </td>
+            <td>
+              <%= users[i].u_email %>
+            </td>
+            <td>
+              <%= users[i].u_contact %>
+            </td>
+            <td>
+              <%= users[i].u_address %>
+            </td>
+            <td>
+              <%= users[i].u_gender %>
+            </td>
+            <td>
+              <%= users[i].u_dob %>
+            </td>
+            <td><a href="/admin/editUser/<%=users[i].user_id %>"><input type="button" value=" Edit " class="btn btn-primary"></a></td>
+            <td><a href="/admin/deleteUser/<%=users[i].user_id %>"><input type="button" value="Delete" class="btn btn-danger"></a></td>
+          </tr>
+          <% } ; %>
+      </tbody>
+    </table>
+    <%-include ('pagination',{page,p}) %>
+  </div>
+  </div>
+  </div>
+  </body>
+     <script>
+       function userOrder(column,n){
+          window.sessionStorage.setItem('column',`${column}1`);
+          window.sessionStorage.setItem('icon',n);
+          window.location.href = `/admin/getallusers/${column}/desc`;
+        }
+     </script>
+  </html>

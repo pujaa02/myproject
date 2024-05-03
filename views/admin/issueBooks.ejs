@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./css/issueBooks.css">
+
+  <script src="/sweetalert2/sweetalert2.min.js"></script>
+  <link rel="stylesheet" href="/sweetalert2/sweetalert2.min.css">
+</head>
+<body onload="selectTable()">
+  <%-include ('adminSidebar',{search : 6}) %>
+    <div class="table1">
+      <div id="loading">
+        <img src="./gif/find-book-4815913-4009710-ezgif.com-video-to-gif-converter.gif" alt="" id="loader">
+      </div>
+      <div id="table1">
+        <div id="header">
+          <div id="selectState">
+            <select name="status" id="status" onchange="selectTable()">
+              <option value="pending" selected="selected">pending</option>
+              <option value="return">return</option>
+            </select>
+          </div>
+          <h2 class="text-center" id="headings">BOOKS</h2>
+        </div>
+        
+        <table class="table table-borderless">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col">SR NO:</th>
+              <th scope="col">USER ID</th>
+              <th scope="col">NAME</th>
+              <th scope="col">TOTAL BOOKS</th>
+              <th scope="col">SHOW</th>
+            </tr>
+          </thead>
+
+          <tbody id="tbody">
+
+          </tbody>
+        </table>
+        <div class="Container" id="Container">
+          <table id="table">
+  
+          </table>
+            <div class="footerMain">
+              <a  class="fa-solid fa-angles-left arrow" onclick="onfirst()"></a>
+              <a  class="fa-solid fa-angle-left arrow"  onclick="changePage(-1)"></a>
+              <p id="pageCount">1</p>
+              <a  class="fa-solid fa-angle-right arrow" onclick="changePage(1)"></a>
+              <a class="fa-solid fa-angles-right arrow" onclick="onlast()"></a>
+            </div>
+          </div>
+      </div>
+      
+    
+
+
+
+        <script>
+          let limit = 5;
+          let dataLength;
+          let requirePages;
+          let totalPages;
+          function checkPages(dataLength) {
+            let a;
+            if (dataLength % 5 == 0) {
+              a = dataLength / 5;
+              return a;
+            }
+            else {
+              a = (dataLength / 5) + 1;
+              return Math.floor(a);
+            }
+          }
+          function lastPageValues(dataLength) {
+            let b;
+            if (dataLength % 5 == 0) {
+              b = 5;
+              return b;
+            }
+            else {
+              a = (dataLength / 5) + 1;
+              b = dataLength % 5;
+              return b;
+            }
+          }
+
+          function changePage(val) {
+
+            currentPage = Number(document.getElementById("pageCount").innerHTML);
+
+            currentPage = currentPage + val;
+
+            if (currentPage > requirePages || currentPage < 1) {
+              return 0;
+            }
+
+            document.getElementById("pageCount").innerHTML = currentPage;
+            perPageData();
+
+          }
+
+          function onfirst() {
+
+            currentPage = Number(document.getElementById("pageCount").innerHTML);
+
+            if (currentPage <= 1) {
+              return 0;
+            }
+
+            document.getElementById("pageCount").innerHTML = 1;
+            perPageData();
+          }
+          function onlast() {
+            currentPage = Number(document.getElementById("pageCount").innerHTML);
+            if (currentPage >= requirePages) {
+              return 0;
+            }
+            document.getElementById("pageCount").innerHTML = requirePages;
+            perPageData();
+          }
+
+
+          const showAllBookList = async (status) => {
+            let data = await fetch(`${location.origin}/admin/listsOfFilterUser/?status=${status}&&searchby=<%=searchby%>&&searchvalue=<%=searchvalue%>`, {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+              },
+            });
+            let result = await data.json();
+
+            dataLength = result.length;
+            requirePages = checkPages(dataLength);
+            return result;
+          }
+
+          const perPageData = async (status) => {
+            let filter = document.getElementById("status").value;
+            document.getElementById("tbody").innerHTML = "";
+            
+            document.getElementById("loading").style.display="block";
+            document.getElementById("table1").style.display="none";
+            let result = await showAllBookList(filter);
+            document.getElementById("table1").style.display="block";
+            document.getElementById("loading").style.display="none";
+
+            if (result.length == 0) {
+              document.getElementById("table1").style.display = "none";
+              document.getElementById("Container").style.display = "none";
+
+              Swal.fire({
+                title: "Empty!",
+                text: "Result Not Found !!!",
+                imageUrl: "./gif/result-not-found-11264082-9049427-ezgif.com-video-to-gif-converter.gif",
+                imageWidth: 300,
+                imageHeight: 300,
+                imageAlt: "Custom image"
+              });
+            }
+            else {
+              totalPages = 5;
+              let offset;
+              let page = document.getElementById("pageCount").innerHTML;
+              offset = ((page - 1) * 5) + 5;
+
+              if (page == requirePages) {
+                totalPages = lastPageValues(result.length);
+
+                if (page == 1) {
+                  offset = totalPages;
+                  document.getElementsByClassName("footerMain")[0].style.display="none";
+                }
+                else if (totalPages % 5 != 0) {
+                  offset = ((page - 1) * 5) + 5 - totalPages;
+                }
+              }
+              let startPage = (page - 1) * 5;
+              for (let i = startPage; i < offset && result.length > i; i++) {
+                let txt =
+                  `
+          <tr>
+           <th scope="row">
+                  ${i + 1} 
+                </th>
+          <td>${result[i].reader_id}</td>  
+          <td>${result[i].u_fname}</td>  
+          <td>${result[i].Total_Books}</td>
+          <td><a href="/admin/showBooksById/?status=${filter}&reader_id=${result[i].reader_id}"><input type="button"
+                      value="Show" class="btn btn-primary"></a>
+                </td>
+          </tr>
+          `;
+                document.getElementById("tbody").innerHTML += txt;
+              }
+            }
+          }
+
+          const selectTable = () => {
+            document.getElementById("loading").style.display="none";
+            let status = document.getElementById("status").value;
+            if (status == "pending") {
+              document.getElementById("headings").innerHTML = "PENDING BOOKS";
+            } else {
+              document.getElementById("headings").innerHTML = "RETURN BOOKS ";
+            }
+            document.getElementById("pageCount").innerHTML = 1;
+            perPageData(status);
+          }
+        </script>
+</body>
+
+</html>

@@ -1,0 +1,46 @@
+<%-include ('adminSidebar',{search : 5}) %>
+  <div class="table1">
+    <h2 class="text-center mt-2">Users Request of Books</h2>
+    <table class="table text-center table-bordered w-auto">
+      <thead>
+        <tr>
+          <th scope="col">Request ID</th>
+          <th scope="col">User ID</th>
+          <th scope="col">Book Name</th>
+          <th scope="col">Author Name</th>
+          <th scope="col">Category</th>
+          <th scope="col">Language</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(let i=0 ; i<result.length ; i++) {%>
+          <tr>
+            <th scope="row">
+              <%= result[i].contro_id %>
+            </th>
+            <td>
+              <%= result[i].user_id%>
+            </td>
+            <td>
+              <%= result[i].book_name %>
+            </td>
+            <td>
+              <%= result[i].author_name %>
+            </td>
+            <td>
+              <%= result[i].sel_cat %>
+            </td>
+            <td>
+              <%= result[i].sel_lan %>
+            </td>
+          </tr>
+          <% } ; %>
+      </tbody>
+    </table>
+    <%-include('pagination',{p,page}) %>
+  </div>
+  </div>
+  </div>
+  </body>
+
+  </html>

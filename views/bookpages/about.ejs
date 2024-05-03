@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="icon" type="image/x-icon" href="assests/SMARTLIB.png">
+    <link rel="stylesheet" href="/css/bookpages/about.css" />
+  </head>
+  <body>
+    <% var dir=process.cwd() %> <%- include(dir + "/views/lefttop/leftside.ejs"
+    ) %> <%- include(dir + "/views/lefttop/header.ejs" ) %>
+    <div class="mainarea">
+      <div class="conatiner">
+        <img src="/icon/SmartLib.png" alt="none" />
+      </div>
+      <div class="content">
+        <p>
+          &#128218; SmartLib is a online virtual library application where users
+          can manage and organize their collection of books. &#128218;
+        </p>
+      </div>
+      <h4 id="h4">&#128308; <span> Features </span> &#128308;</h4>
+      <div class="features">
+        <img id="right" src="/icon/booklibrary.jpeg" alt="" />
+        <p class="title">Book Management</p>
+        <p class="title_content">
+          Users can add new books to their library by providing details such as
+          title, author, genre, publication year, and ISBN. Books can be edited
+          or removed from the library as needed.
+        </p>
+        <p class="title">Search and Filter</p>
+        <p class="title_content">
+          Users can search for books within their library by title, author,
+          genre, or ISBN. Advanced filtering options allow users to narrow down
+          search results based on specific criteria such as publication year or
+          genre.
+        </p>
+        <p class="title">Book Details</p>
+        <p class="title_content">
+          Clicking on a book displays detailed information about the selected
+          book, including its title, author, genre, publication year, ISBN, and
+          any additional notes or comments added by the user.
+        </p>
+      </div>
+      <div class="features">
+        <img id="left" src="/icon/booklibrary2.jpeg" alt="" />
+        <p class="title">Reading Status</p>
+        <p class="title_content">
+          Users can mark books as 'Read,' 'Currently Reading,' or 'To Read,'
+          allowing them to keep track of their reading progress.
+        </p>
+        <p class="title">Reviews and Ratings</p>
+        <p class="title_content">
+          Users can leave reviews and ratings for books they have read. Reviews
+          and ratings are displayed alongside book details to help other users
+          make informed decisions about which books to read.
+        </p>
+        <p class="title">Recommendations</p>
+        <p class="title_content">
+          The application provides personalized book recommendations based on
+          the user's reading history, favorite genres, and ratings.
+        </p>
+      </div>
+
+      <div class="google-map">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3670.702080888665!2d72.51555317618386!3d23.071381379139666!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e835738a39dd3%3A0x1dc78c11d69ddb22!2seSparkBiz%20-%20Agile%20Teams%20On-demand!5e0!3m2!1sen!2sin!4v1713943270009!5m2!1sen!2sin"
+          width="600"
+          height="450"
+          style="border: 0"
+          allowfullscreen=""
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
+      </div>
+    </div>
+  </body>
+ 
+</html>

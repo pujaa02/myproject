@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/authentication.css">
+
+    <link rel="stylesheet" href="/sweetalert2/sweetalert2.min.css">
+    <script src="/sweetalert2/sweetalert2.min.js"></script>
+</head>
+
+<body>
+    <div class="Container">
+        <div class="passwordVerfication2">
+            <div class="logo">
+                <img src="./assests/smartLibLogo.png" alt="" width="130px;">
+                <span class="logoText">SMARTLIB</span>
+            </div>
+            <div class="group1">
+                <span class="group1First">Verification !!</span>
+                <span class="group1Second">Enter a username or number!!</span>
+            </div>
+            <div class="group2" style="margin: 90px 0px;;">
+                <form id="form">
+                    <div class="formdesign" id="username" class="formdesign">
+                        <label for="username" class="passText">Enter Email OR Number:</label>
+                        <input type="text" name="username" style="margin-bottom:18px;"><br>
+                        <span class="formerror" id="usernameError"><b></b></span>
+                    </div>
+                    <div id="submitDivLog">
+                        <div id="submit" onclick="checkCredentials()">Create Password</div>
+                    </div>
+                </form>
+            </div>
+            <div class="group3" style="display: none;">
+                <div id="greenRound">
+                    <div class="checkIcon">
+                        <img src="./icon/bx-check.svg" alt="" style="color:white; width:50px; font-weight:bolder;">
+                    </div>
+                </div>
+                <div id="linkDiv" style="display: none;">
+                    <div class="col1Timer">
+                        <span class="hourTimer" style="display: inline-block;">0</span>H:
+                        <div class="timer" style="display:inline-block">0</div>M:
+                        <span class="seconds">0</span>S
+                        <div class="col2">
+                            Get activate :<a href="" id="link" style="font-size: 13px; width:250px;"></a>
+                        </div>
+                    </div>
+                    <div class="col1TimeOver" style="display: none;">
+                        <span>Time Over!! Please Register again!</span>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+        <script>
+            function seterror(id, error) {
+                let varId = document.getElementById(id);
+                varId.getElementsByClassName("formerror")[0].innerHTML = " " + error;
+            }
+            function clearerrors() {
+                element = document.getElementsByClassName("formerror");
+                for (let item of element) {
+                    item.innerHTML = "";
+                }
+            }
+            const formValidation = () => {
+                clearerrors();
+                clearPage();
+                let returnVal = true;
+
+                let usernameOrPhone = document.getElementsByName("username")[0].value;
+                usernameOrPhone = usernameOrPhone.replace(/\s/g, '');
+
+                if (usernameOrPhone.length < 10) {
+                    seterror("username", "length is too short!!");
+                    returnVal = false;
+                }
+
+                function seterror(id, error) {
+                    let varId = document.getElementById(id);
+                    varId.getElementsByClassName("formerror")[0].innerHTML = " " + error;
+                }
+                function clearerrors() {
+                    element = document.getElementsByClassName("formerror");
+                    for (let item of element) {
+                        item.innerHTML = "";
+                    }
+                }
+
+                let numberRegex = /[0-9]{10}/;
+                const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+                if (!emailRegex.test(usernameOrPhone)) {
+                    if (!numberRegex.test(usernameOrPhone)) {
+                        seterror("username", "Please enter a valid Credentials");
+                        returnVal = false;
+                    }
+                    else {
+                        if (usernameOrPhone.length != 10) {
+                            seterror("username", "Number should contain 10 digit!!!");
+                            returnVal = false;
+                        }
+                    }
+                }
+                else if (!numberRegex.test(usernameOrPhone)) {
+                    if (!emailRegex.test(usernameOrPhone)) {
+                        seterror("username", "Please enter a valid Credentials");
+                        returnVal = false;
+                    }
+                }
+                return returnVal;
+            }
+            const checkCredentials = async () => {
+                if (formValidation()) {
+                    let form = document.getElementById("form");
+                    let formdata = new FormData(form);
+                    const params = new URLSearchParams(formdata);
+                    const response1 = await new Response(params).text();
+
+
+                    let response = await fetch(
+                        `${location.origin}/forgetPass`,
+                        {
+                            method: 'POST',
+                            headers: {
+                                "Content-Type": "application/x-www-form-urlencoded",
+                            },
+                            body: response1,
+                        }
+                    );
+                    let res1 = await response.json();
+
+                    if (res1.validation == false) {
+                        seterror("username", res1.error);
+                        document.getElementsByName("username")[0].value = res1.userName;
+                    }
+
+                    if (res1.inValid) {
+                        Swal.fire({
+                            title: "Invalid Input",
+                            text: "Please Fill Valid Input?",
+                            icon: "warning"
+                        });
+                    }
+
+                    if (res1.validation == true && res1.inValid == false) {
+                        document.getElementsByClassName("hourTimer")[0].innerHTML = 2;
+                        document.getElementsByClassName("timer")[0].innerHTML = 0;
+                        document.getElementsByClassName("seconds")[0].innerHTML = 0;
+
+                        clearerrors();
+                        document.getElementsByClassName("group2")[0].style.display = "none";
+                        let digitalLink = `${location.origin}/createPassForget?userID=${res1.userId}&digiLink=${res1.digiLink}`;
+                        document.getElementById("link").innerHTML = digitalLink;
+                        document.getElementById("link").setAttribute("href", digitalLink);
+                        document.getElementsByClassName("group3")[0].style.display = "block";
+                        document.getElementsByClassName("col2")[0].style.display = "block";
+
+                        document.getElementById("linkDiv").style.display = "block";
+                        document.getElementsByClassName("col1Timer")[0].style.display = "block";
+                        await successFunction();
+                        await startTimer();
+                    }
+                }
+            }
+            const successFunction = async () => {
+                await Swal.fire({
+                    icon: "success",
+                    title: "please click on the link!",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+            const startTimer = () => {
+
+                let myTimer = setInterval(() => {
+                    let hour = document.getElementsByClassName("hourTimer")[0].innerHTML;
+                    let min = document.getElementsByClassName("timer")[0].innerHTML;
+                    let sec = document.getElementsByClassName("seconds")[0].innerHTML;
+                    if (sec == 0 && min == 0 && hour == 0) {
+                        document.getElementsByClassName("col1Timer")[0].style.display = "none";
+                        document.getElementsByClassName("col1TimeOver")[0].style.display = "block";
+                        document.getElementsByClassName("col2")[0].style.display = "none";
+                        clearInterval(myTimer);
+                    }
+                    else if (min == 0 && sec == 0) {
+                        hour = hour - 1;
+                        min = 59;
+                        sec = 59;
+                    }
+                    else if (sec == "00" || sec == "0") {
+                        sec = 60;
+                        min = min - 1;
+                    }
+                    else {
+                        sec = sec - 1;
+                    }
+                    document.getElementsByClassName("hourTimer")[0].innerHTML = hour;
+                    document.getElementsByClassName("timer")[0].innerHTML = min;
+                    document.getElementsByClassName("seconds")[0].innerHTML = sec;
+                }, 1000);
+            }
+            const clearPage = () => {
+                document.getElementsByClassName("col1TimeOver")[0].style.display = "none";
+                document.getElementsByClassName("col2")[0].style.display = "none";
+            }
+        </script>
+</body>
+
+</html>

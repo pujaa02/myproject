@@ -1,0 +1,58 @@
+<%-include ('adminSidebar',{search : 1}) %>
+  <div class="table1">
+    <h2 class="text-center mt-2">List Book</h2>
+    <table class="table text-center table-bordered w-auto">
+      <thead>
+        <tr>
+          <th scope="col" onclick="bookOrder('prime_book_id',1)">Id <i id="down1" class="orderIcon">&#8595;</i></th>
+          <th scope="col" onclick="bookOrder('book_title',2)">Title <i id="down1" class="orderIcon">&#8595;</i></th>
+          <th scope="col" onclick="bookOrder('genre_id',3)">GenrerId <i id="down1" class="orderIcon">&#8595;</i></th>
+          <th scope="col" onclick="bookOrder('book_publication',4)">Publication <i id="down1" class="orderIcon">&#8595;</i></th>
+          <th scope="col" onclick="bookOrder('book_publication_year',5)">Year <i id="down1" class="orderIcon">&#8595;</i></th>
+          <th scope="col" onclick="bookOrder('book_ISBN',6)">ISBN <i id="down1" class="orderIcon">&#8595;</i></th>
+          <th scope="col">Edit</th>
+          <th scope="col">Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(let i=0 ; i<result2.length ; i++) {%>
+          <tr>
+            <th scope="row">
+              <%= result2[i].prime_book_id %>
+            </th>
+            <td>
+              <%= result2[i].book_title %>
+            </td>
+          
+            <td>
+              <%= result2[i].genre_id %>
+            </td>
+            <td>
+              <%= result2[i].book_publication %>
+            </td>
+            <td>
+              <%= result2[i].book_publication_year %>
+            </td>
+            <td>
+              <%= result2[i].book_ISBN %>
+            </td>
+            <td><a href="/admin/editBook/?bookid=<%=result2[i].prime_book_id %>"><input type="button" value="Edit" class="btn btn-primary"></a>
+            </td>
+            <td><a href="/admin/deleteBook/?bookid=<%=result2[i].prime_book_id %>"><input type="button" value="Delete" class="btn btn-danger"></a></td>
+          </tr>
+          <% } ; %>
+      </tbody>
+    </table>
+    <%-include ('pagination',{p,page}) %>
+  </div>
+  </div>
+  </div>
+  </body>
+    <script>
+       function bookOrder(column,n){
+          window.sessionStorage.setItem('column',`${column}1`);
+          window.sessionStorage.setItem('icon',n);
+          window.location.href = `/admin/listbook/${column}/desc`;
+        }
+    </script>
+  </html>

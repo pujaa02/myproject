@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .error {
+      border: 1px solid red;
+    }
+
+    .error_message {
+      display: block;
+      color: red;
+
+    }
+
+    #issued {
+      visibility: hidden;
+      width: 75%;
+      margin-left: 140px;
+    }
+    #issueid{
+      border:2px solid #b3320b;
+      border-radius: 5px;
+      padding: 5px 10px;
+      font-size:18px;
+      color:black;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+  <%-include ('adminSidebar',{search : 0}) %>
+    <div class="table1">
+      <h2 class="text-center">Issue Book</h2>
+      <p class="text-center fs-3 " id="msg"></p>
+      <form class="" id="validateForm">
+        <div class="form-row">
+          <div class="form-group col-md">
+            <label for="inputEmail4">Enter the User Email</label>
+            <input type="text" class="form-control" name="u_email" id="useremail" placeholder="ashutosh@gmail.com">
+          </div>
+          <input type="button" class="btn btn-primary mt-3 mb-2" value="Validate User" onclick="validateUser()"></input>
+      </form>
+      <span id="user_error" class="error_message"></span>
+    </div>
+    <div class="tab">
+      <form action="" style="visibility: hidden;" id="issueBook">
+        <div class="form-group col-md">
+          <input type="hidden" class="form-control" name="reader_id" id="readerId">
+          <label for="bookTitle">Reader ID</label>
+          <input type="text" class="form-control" id="readerId2" placeholder="Reader ID" disabled>
+          <span id="bookTitle_error" class="error_message"></span>
+        </div>
+        <div class="form-group col-md">
+          <label for="publication">Book ID</label>
+          <input type="text" name="prime_book_id" class="form-control" id="bookid" placeholder="Book ID">
+          <span id="publication_error" class="error_message"></span>
+        </div>
+        <input type="button" class="btn btn-primary mt-3" value="Issue Book" onclick="issueBook()"></input>
+      </form>
+    </div>
+</body>
+<script>
+  async function validateUser() {
+    let formdata = document.getElementById('validateForm')
+    const details = new FormData(formdata);
+    const params = new URLSearchParams(details);
+    const userdata = await new Response(params).text();
+
+    let data = await fetch("/admin/validateUser", {
+
+      method: "POST",
+      headers: {
+        "Content-type": 'application/x-www-form-urlencoded'
+      },
+      body: userdata
+    })
+    response = await data.json();
+    if (response.msg === "valid user") {
+      document.getElementById('issueBook').style.visibility = 'visible';
+      document.getElementById('user_error').innerHTML = ""
+      document.getElementById('readerId2').value = response.userid;
+      document.getElementById('readerId').value = response.userid;
+    }
+    else {
+      document.getElementById('user_error').innerHTML = "User ID is not valid"
+      document.getElementById('issueBook').style.visibility = 'hidden';
+
+    }
+  }
+
+
+  async function issueBook() {
+    let formdata = document.getElementById('issueBook')
+    const details = new FormData(formdata);
+    const params = new URLSearchParams(details);
+    const issuedata = await new Response(params).text();
+    (issuedata)
+
+    let data = await fetch("/admin/finalBookIssue", {
+
+      method: "POST",
+      headers: {
+        "Content-type": 'application/x-www-form-urlencoded'
+      },
+      body: issuedata
+    })
+    response = await data.json();
+    (response);
+    if (response.msg === "success") {
+      document.getElementById('msg').style.color = 'green';
+      document.getElementById('msg').innerHTML = 'Book has been issued';
+    }
+    if (response.msg === "error") {
+      document.getElementById('msg').style.color = 'red';
+      document.getElementById('msg').innerHTML = 'Book is not available';
+    }
+  }
+
+</script>
+
+</html>

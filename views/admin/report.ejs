@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin panel Report</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <script src="/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+  <div class="mx-auto w-75">
+    <div class="table1 overflow-auto">
+
+      <div id="displaybtn" class="mt-5">
+       
+        <select name="month" id="month" onchange="func(this)">
+          <option value="1">January</option>
+          <option value="2" >February</option>
+          <option value="3">March</option>
+          <option value="4" selected>April</option>
+          <option value="5">May</option>
+          <option value="6">June</option>
+          <option value="7">July</option>
+          <option value="8">August</option>
+          <option value="9">September</option>
+          <option value="10">October</option>
+          <option value="11">November</option>
+          <option value="12">December</option>
+        </select>
+        <select name="year" id="year" onchange="func(this)">
+          <option value="2023">2023</option>
+          <option value="2024" selected>2024</option>
+        </select>
+      </div>
+      <h2 class="text-center">Library Management System Report</h2>
+
+      <h3 class="mb-4 text-center" id="monthyear">April 2024</h3>
+      <div class="row h-25">
+        <div class="col-md-4">
+          <h4>Total Users</h4>
+          <p id="usersId"><%=result && result[0] ? result[0] :''%></p>
+        </div>
+        <div class="col-md-4">
+          <h4>New Users</h4>
+          <p id="new"><%=result && result[1] ? result[1] :''%></p>
+        </div>
+        <div class="col-md-4">
+          <h4>Deleted Users</h4>
+          <p id="usersIdd"><%=result && result[2] ? result[2] :''%></p>
+        </div>
+      </div>
+      <div class="row h-25">
+        <div class="col-md-4">
+          <h4>Top 5 books</h4>
+          <ul class="list-group">
+            <li class="list-group-item bookp"><%=result && result[3]&& result[3][0] ? result[3][0].book_title :''%></li>
+            <li class="list-group-item bookp"><%=result && result[3]&& result[3][1] ? result[3][1].book_title :''%></li>
+            <li class="list-group-item bookp"><%=result && result[3]&& result[3][2] ? result[3][2].book_title :''%></li>
+            <li class="list-group-item bookp"><%=result && result[3]&& result[3][3] ? result[3][3].book_title :''%></li>
+            <li class="list-group-item bookp"><%=result && result[3]&& result[3][4] ? result[3][4].book_title :''%></li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <h4>New Added</h4>
+          <ul class="list-group">
+          
+            <li class="list-group-item book"><%=result && result[4]&& result[4][0] ? result[4][0].book_title :''%></li>
+            <li class="list-group-item book"><%=result && result[4]&& result[4][1] ? result[4][1].book_title :''%></li>
+            <li class="list-group-item book"><%=result && result[4]&& result[4][2] ? result[4][2].book_title :''%></li>
+            <li class="list-group-item book"><%=result && result[4]&& result[4][3] ? result[4][3].book_title :''%></li>
+            <li class="list-group-item book"><%=result && result[4]&& result[4][4] ? result[4][4].book_title :''%></li>
+          </ul>
+
+        </div>
+      </div>
+      <div class="row h-25 ">
+        <div class="col-md-4 mt-5">
+          <h4>Popular Authors</h4>
+          <table class="table table-bordered">
+            <tr>
+              <th>Author Name</th>
+              <th>Total Books</th>
+            </tr>
+            <tr>
+              <td class="authorname"><%=result && result[5]&& result[5][0] ? result[5][0].author_name :''%></td>
+              <td class="totalbooks"><%=result && result[5]&& result[5][0] ? result[5][0].total_books :''%></td>
+            </tr>
+            <tr>
+              <td class="authorname"><%=result && result[5]&& result[5][1] ? result[5][1].author_name :''%></td>
+              <td class="totalbooks"><%=result && result[5]&& result[5][1] ? result[5][1].total_books :''%></td>
+            </tr>
+            <tr>
+              <td class="authorname"><%=result && result[5]&& result[5][2] ? result[5][2].author_name :''%></td>
+              <td class="totalbooks"><%=result && result[5]&& result[5][2] ? result[5][2].total_books :''%></td>
+            </tr>
+            <tr>
+              <td class="authorname"><%=result && result[5]&& result[5][3] ? result[5][3].author_name :''%></td>
+              <td class="totalbooks"><%=result && result[5]&& result[5][3] ? result[5][3].total_books :''%></td>
+            </tr>
+            <tr>
+              <td class="authorname"><%=result && result[5]&& result[5][4] ? result[5][4].author_name :''%></td>
+              <td class="totalbooks"><%=result && result[5]&& result[5][4] ? result[5][4].total_books :''%></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div  class="d-flex justify-content-center mt-4" >
+      <input id="displaybtn2"  type="button" value="Download pdf" onclick="pdfGenerate()"> 
+    </div>
+  </div>
+ 
+  <script>
+    let month=4;
+    let year=2024;
+ async function func()
+{
+  let monthid=document.getElementById("month");
+  let yearid=document.getElementById("year")
+ month=document.getElementById("month").value;
+  year=document.getElementById("year").value;
+  const d = new Date();
+let currmonth = d.getMonth();
+let curryear=d.getFullYear()
+let textmonth= monthid.options[monthid.selectedIndex].text
+(textmonth);
+let textyear= yearid.options[yearid.selectedIndex].text
+currmonth+=1;
+let valuemonthyear=textmonth+" "+textyear;
+(valuemonthyear);
+document.getElementById("monthyear").innerText=valuemonthyear;
+
+  await getAllUsersCount()
+  await getAllUserMonth()
+  await getAllUsersdeletedCount()
+  await getLatestBooks()
+}
+    async function start(){
+    await getAllUsersCount()
+     await getAllUserMonth()
+   await getAllUsersdeletedCount()
+   await getPopularBooks()
+   await getLatestBooks()
+     await authorsWithBooks()
+    }
+start()
+
+
+    async function pdfGenerate() {
+      try {
+        const response = await fetch("/admin/pdfGenerate", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+
+        const blob = await response.blob()
+        const url = window.URL.createObjectURL(blob)
+        const a = document.createElement("a")
+        a.href = url;
+        a.download = "report.pdf"
+        document.body.appendChild(a)
+        a.click();
+        document.body.removeChild(a)
+      } catch (error) {
+        (error);
+      }
+    }
+
+
+    async function getAllUsersCount() {
+      let data = await fetch(`/admin/getAllUsersCount?month=${month}&year=${year}`, {
+        method: "Get",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      let datacount = await data.json()
+      let count = datacount.total[0].count;
+      document.getElementById("usersId").innerText = count
+
+    }
+
+    async function getAllUserMonth() {
+      let data = await fetch(`/admin/getAllUserMonth?month=${month}&year=${year}`, {
+        method: "Get",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      let datacount = await data.json()
+      let count = datacount.total[0].count;
+      document.getElementById("new").innerText = count
+
+    }
+    async function getAllUsersdeletedCount() {
+      let data = await fetch(`/admin/getAllUsersCountdeleted?month=${month}&year=${year}`, {
+        method: "Get",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      let datacount = await data.json()
+      let count = datacount.total[0].count;
+      document.getElementById("usersIdd").innerText = count
+    }
+    async function getLatestBooks() {
+      let data = await fetch(`/admin/getlatestBooks?month=${month}&year=${year}`, {
+        method: "Get",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      let databooks = await data.json()
+      let booksarr = databooks.books;
+      let book = document.getElementsByClassName("book");
+
+      for (let i = 0; i < booksarr.length; i++) {
+        book[i].innerText = booksarr[i].book_title
+
+      }
+    }
+    async function getPopularBooks() {
+      let data = await fetch("/admin/getPopularBooks", {
+        method: "Get",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      let databooks = await data.json()
+      let booksarr = databooks.books;
+      let bookp = document.getElementsByClassName("bookp");
+      for (let i = 0; i < booksarr.length; i++) {
+        bookp[i].innerText = booksarr[i].book_title
+
+      }
+    }
+
+
+    async function authorsWithBooks() {
+      let data = await fetch("/admin/getAuthorsWithBooks", {
+        method: "Get",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      let databooksauthor = await data.json()
+      let authorbookarr = databooksauthor.authorsBook;
+      let authornamearr = document.getElementsByClassName("authorname");
+      let totalbooksarr = document.getElementsByClassName("totalbooks");
+
+      for (let i = 0; i < authorbookarr.length; i++) {
+        authornamearr[i].innerText = authorbookarr[i].author_name;
+        totalbooksarr[i].innerText = authorbookarr[i].total_books;
+
+      }
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contribute Book</title>
+    <script src="../../node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="../../node_modules/sweetalert2/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="/css/contributebook.css">
+    <script src="../../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+</head>
+
+<body id="bd" onload="fetchdata('<%=user_id%>')">
+    <% var dir=process.cwd() %>
+        <%- include(dir + "/views/lefttop/leftside.ejs" ) %> <%- include(dir + "/views/lefttop/header.ejs" ) %>
+                <form id="form" class="form"
+                    style="background-color: #F3F3F7;width:100%;border-bottom-right-radius: 10px;margin-top:10%;">
+                    <div class="d-flex">
+                        <div class="bg-white m-4 p-5 ">
+                            <div>
+                                <h3>Fill up Book Details</h3>
+                            </div>
+                            <div class="row" style="background-color: white;">
+                                <div class="col-7">
+                                    <div class="form-floating mb-3">
+                                        <input name="book_name" class="form-control mb-2" id="book_name"
+                                            placeholder="Book Name">
+                                        <label for="book_name">Book Name</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control mb-1 " id="author_name"
+                                            name="author_name" placeholder="Author Name">
+                                        <label for="author_name">Author Name</label>
+                                        <div id="authinvalid" style="display: none;color: red;font-size: 13px;">
+                                            Invalid name format
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <select id="reasonforcon" name="sel_reason"
+                                            class="form-select mb-4 rounded-pill" aria-label="Default select example">
+                                            <option selected value="0">
+                                                Enter Your Reason For Contributing the book to this library.
+                                            </option>
+                                            <option value="1">Need For Reasearch</option>
+                                            <option value="2">Book not Available</option>
+                                            <option value="3">Proffesional Development</option>
+                                            <option value="4">For Fun</option>
+                                            <option value="5">For Academics</option>
+                                            <option value="6">Other</option>
+                                        </select>
+                                    </div>
+                                    <button type="button" style="background-color: #F4683C;" class="btn"
+                                        onclick="submitdata()">Submit</button>
+                                </div>
+                                <div class="col-5 my-auto">
+                                    <select id="sel_cat" name="sel_cat" class="form-select mb-4 rounded-pill"
+                                        aria-label="Default select example">
+                                        <option selected disabled>
+                                            category
+                                        </option>
+                                        <option value="Horror">Horror</option>
+                                        <option value="Design">Design</option>
+                                        <option value="Fantasy">Fantasy</option>
+                                    </select>
+                                    <select id="sel_lan" name="sel_lan" class="form-select rounded-pill mb-5"
+                                        aria-label="Default select example">
+                                        <option selected disabled>Language</option>
+                                        <option value="English">English</option>
+                                        <option value="Spanish">Spanish</option>
+                                        <option value="French">French</option>
+                                    </select>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-3">
+                            <h2 class="mb-5">Your <span style="color: #F4683C;">Contribution</span><br> Helps Other to
+                                Learn
+                            </h2>
+                            <p>Your Previous Contributions</p>
+                            <div class="d-flex" style="font-size: 70%;">
+                                <div id="contro1" class="me-3 shadow p-2">
+                                    <img id="yourcontrobook1" alt="" width="100px">
+                                    <div class="text-truncate" id="book_title1" style="max-width:80px;">a</div>
+                                    <div>
+                                        <span id="authname1"></span>,<span id="year1">2022</span>
+                                    </div>
+                                    <div><span id="readers1">15k </span>Readers</div>
+                                </div>
+                                <div id="contro2" class="me-3 shadow p-2">
+                                    <img id="yourcontrobook2"  alt="" width="100px">
+                                    <div class="text-truncate" id="book_title2" style="max-width:80px;">a</div>
+                                    <div>
+                                        <span id="authname2"></span>,<span id="year2">2022</span>
+                                    </div>
+                                    <div><span id="readers2">15k </span>Readers</div>
+                                </div>
+                                <div id="contro3" class="me-3 shadow p-2">
+                                    <img id="yourcontrobook3" alt="" width="100px">
+                                    <div class="text-truncate" id="book_title3" style="max-width:80px;">a</div>
+                                    <div>
+                                        <span id="authname3"></span>,<span id="year3">2022</span>
+                                    </div>
+                                    <div><span id="readers3">15k </span>Readers</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <script>
+                    async function submitdata() {
+                        const bookname = document.getElementById('book_name');
+                        const authname = document.getElementById('author_name');
+                        const reason = document.getElementById('reasonforcon');
+                        const sel_lan = document.getElementById('sel_lan');
+                        const sel_cat = document.getElementById('sel_cat');
+                        let count = 0;
+                        if (bookname.value == '') {
+                            bookname.style.border = "2px solid #F4683C";
+                            count++;
+                        }
+                        else {
+                            bookname.style.border = "";
+                        }
+                        if (authname.value != '') {
+                            let regName = /^[a-zA-Z]+ [a-zA-Z]+$/;
+                            if (!regName.test(authname.value)) {
+                                authname.style.border = "2px solid #F4683C";
+                                document.getElementById("authinvalid").style.display = "block";
+                                count++;
+                            }
+                            else {
+                                authname.style.border = "";
+                                document.getElementById("authinvalid").style.display = "none";
+                            }
+                        }
+                        else {
+                            authname.style.border = "2px solid #F4683C";
+                            count++;
+                        }
+                        if (reason.value == 0) {
+                            reason.style.border = "2px solid #F4683C";
+                            count++;
+                        }
+                        else {
+                            reason.style.border = "";
+                        }
+                        if (sel_cat.value == 'category') {
+                            count++;
+                            sel_cat.style.border = "2px solid #F4683C";
+                        }
+                        else {
+                            sel_cat.style.border = "";
+                        }
+                        if (sel_lan.value == 'Language') {
+                            count++;
+                            sel_lan.style.border = "2px solid #F4683C";
+                        }
+                        else {
+                            sel_lan.style.border = "";
+                        }
+                        if (count == 0) {
+                            let form = document.getElementById('form');
+                            const formData = new URLSearchParams(new FormData(form));
+                            let posturl = `${location.origin}/contribute_post`
+                            let res1 = await fetch(posturl, {
+                                method: "POST",
+                                body: formData,
+                                headers: {
+                                    "Content-type": "application/x-www-form-urlencoded"
+                                }
+                            });
+                            let res = await res1.json();
+                            if (res == "success") {
+                                Swal.fire({
+                                    position: "top-center",
+                                    icon: "success",
+                                    title: "Thank you for Contribution",
+                                    showConfirmButton: false,
+                                    timer: 1300
+                                });
+                            }
+                            else {
+                                Swal.fire({
+                                    title: 'Info!',
+                                    text: 'You have already contributed this book',
+                                    icon: 'info',
+                                    confirmButtonText: 'OK',
+                                    confirmButtonColor: '#FA7C54 '
+                                })
+                            }
+                        }
+                    }
+
+                    async function fetchdata(user_id) {
+
+                        let nameurl = await fetch(`/user/?user_id=${user_id}`);
+                        let nameimg_res = await nameurl.json();
+                        document.getElementById('name').innerHTML = nameimg_res[0].u_fname;
+                        document.getElementById('image').src = nameimg_res[0].img_path;
+
+
+                        let fetchurl = await fetch(`/fetch_contro/?user_id=${user_id}`);
+                        let fetchres = await fetchurl.json();
+                        if (fetchres.resfetchconto[0] != null) {
+                            let res_book1 = fetchres.resfetchconto[0];
+                            document.getElementById('yourcontrobook1').src = `${res_book1.book_img}`;
+                            document.getElementById('book_title1').innerHTML = res_book1.book_title;
+                            document.getElementById('authname1').innerHTML = fetchres.resfetchauthconto[0].author_name;
+                            document.getElementById('year1').innerHTML = res_book1.book_publication_year;
+                        }
+                        else {
+                            document.getElementById('contro1').style.display = 'none';
+                        }
+                        if (fetchres.resfetchconto[1] != null) {
+                            let res_book2 = fetchres.resfetchconto[1];
+                            document.getElementById('yourcontrobook2').src = `${res_book2.book_img}`;
+                            document.getElementById('book_title2').innerHTML = res_book2.book_title;
+                            document.getElementById('authname2').innerHTML = res_book2.author_name;
+                            document.getElementById('year2').innerHTML = res_book2.book_publication_year;
+                        }
+                        else {
+                            document.getElementById('contro2').style.display = 'none';
+                        }
+                        if (fetchres.resfetchconto[3] != null) {
+                            let res_book3 = fetchres.resfetchconto[2];
+                            document.getElementById('yourcontrobook3').src = `${res_book3.book_img}`;
+                            document.getElementById('book_title3').innerHTML = res_book3.book_title;
+                            document.getElementById('authname3').innerHTML = res_book3.author_name;
+                            document.getElementById('year3').innerHTML = res_book3.book_publication_year;
+                        }
+                        else {
+                            document.getElementById('contro3').style.display = 'none';
+                        }
+                    }
+                </script>
+</body>
+
+</html>

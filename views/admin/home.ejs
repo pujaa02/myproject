@@ -1,0 +1,141 @@
+<%-include ('adminSidebar', {search : 0}) %>
+  <div class="table1 overflow-auto ">
+    <div class="table">
+      <div class="d-flex flex-wrap gap-3 justify-content-center text-center">
+        <div class="" style="width: 300px;">
+          <div class="d-flex justify-content-between p-3">
+            <div class="fs-3 bg-danger p-3 rounded-2" style="max-height: 70px; max-width: 100px;">
+              <i class="fa-solid fa-book" style="color: white;  "></i>
+            </div>
+            <div class="d-flex flex-column">
+              <a href="/admin/listbook" style="text-decoration: none;">
+                <p>Total Books</p>
+              </a>
+              <p class="fs-3" style="margin-top: -15px;">
+                <%= result2[0].totalbooks %>
+              </p>
+            </div>
+          </div>
+
+        </div>
+        <div class="" style="width: 300px;">
+          <div class="d-flex justify-content-between p-3">
+            <div class="fs-3 bg-primary p-3 rounded-2" style="max-height: 70px; max-width: 100px;">
+              <i class="fa-regular fa-user" style="color: white;"></i>
+            </div>
+            <div class="d-flex flex-column">
+              <a href="/admin/getallusers" style="text-decoration: none;">
+                <p>Total Users</p>
+              </a>
+              <p class="fs-3" style="margin-top: -15px;">
+                <%= result1[0].totalusers %>
+              </p>
+            </div>
+          </div>
+
+        </div>
+        <div class="" style="width: 300px;">
+          <div class="d-flex justify-content-between p-3">
+            <div class="fs-3 bg-success p-3 rounded-2" style="max-height: 70px; max-width: 100px;">
+              <i class="fa-solid fa-handshake-angle" style="color: white;"></i>
+            </div>
+            <div class="d-flex flex-column">
+              <a href="/admin/listrequests" style="text-decoration: none;">
+                <p>Total Requests</p>
+              </a>
+              <p class="fs-3" style="margin-top: -15px;">
+                <%= result4[0].totalrequest %>
+              </p>
+            </div>
+          </div>
+
+        </div>
+        
+        <div class="" style="width: 300px;">
+          <div class="d-flex justify-content-between p-3">
+            <div class="fs-3 bg-info p-3 rounded-2" style="max-height: 70px; max-width: 100px;">
+              <i class="fa-solid fa-pen" style="color: white;"></i>
+            </div>
+            <div class="d-flex flex-column">
+              <a href="/admin/listauthors" style="text-decoration: none;">
+                <p>Total Authors</p>
+              </a>
+              <p class="fs-3" style="margin-top: -15px;">
+                <%= result5[0].totalauthors %>
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div id="chart"></div>
+  </div>
+  </div>
+  </div>
+  <script src="../../node_modules/apexcharts/dist/apexcharts.min.js"></script>
+  <script>
+   window.addEventListener('load',async () => {
+     const response = await fetch('/admin/chartData', {
+       method: 'GET',
+       headers:{
+         'Content-Type': "application/json",
+        }
+      });
+      let final = await response.json()
+      let val = {
+        Jan : final[0]?final[0].date_count: 0,
+        Feb : final[1]?final[1].date_count : 0,
+        Mar : final[2]?final[2].date_count : 0,
+        Apr : final[3]?final[3].date_count : 0,
+        May : final[4]?final[4].date_count : 0,
+        Jun : final[5]?final[5].date_count : 0,
+        Jul : final[6]?final[6].date_count : 0,
+        Aug : final[7]?final[7].date_count : 0,
+        Sep : final[8]?final[8].date_count : 0,
+        Oct : final[9]?final[9].date_count : 0,
+        Nov : final[10]?final[10].date_count : 0,
+        Dec : final[11]?final[11].date_count : 0
+      }
+      var options = {
+          series: [{
+            name: "Books Issued",
+            data: [val.Jan , val.Feb , val.Mar , val.Apr , val.May , val.Jun , val.Jul , val.Aug , val.Sep , val.Oct , val.Nov , val.Dec]
+        }],
+          chart: {
+          height: 300,
+          type: 'line',
+          zoom: {
+            enabled: false
+          }
+        },
+        dataLabels: {
+          enabled: true
+        },
+        stroke: {
+          curve: 'straight'
+        },
+        title: {
+          text: 'Books Issued by Month',
+          align: 'left'
+        },
+        grid: {
+          row: {
+            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+            opacity: 0.5
+          },
+        },
+        xaxis: {
+          categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov','Dec'],
+        }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
+    })
+     
+  </script>
+
+  </body>
+
+  </html>

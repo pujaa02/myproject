@@ -1,0 +1,61 @@
+.ticketMain{
+  width: 95%;
+  background-color: #f2f2f2;
+}
+.form{
+    display: flex;
+    width: 900px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.formInput{
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+}
+.ticketBar ul{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 30px;
+}
+.ticketBar ul li{
+    cursor: pointer;
+}
+.ticketBar ul li input{
+    padding: 8px;
+    border: 1px solid #F76B56;
+    border-radius: 10px;
+    color: #F76B56;
+}
+.totalTicket{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+table{
+    width: 90%;
+}
+table th{
+    width: 200px;
+    border: 2px solid;
+    text-align: center; 
+}
+table td{
+    width: 200px;
+    border: 2px solid;
+    text-align: center;
+}
+table td img{
+    width: 15%;
+}
+.totalTicket{
+    display: none;
+}
+
+@media (1297px <= width <= 1366px) {
+    .book_main_container{
+       height: 725px;
+    }
+}

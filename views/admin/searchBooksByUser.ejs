@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <script src="/sweetalert2/sweetalert2.min.js"></script>
+  <link rel="stylesheet" href="/sweetalert2/sweetalert2.min.css">
+  <link rel="stylesheet" href="/css/adminIssueBooks/booksByUser.css">
+</head>
+</head>
+
+<body onload="perPageData()">
+  <%-include ('adminSidebar',{search : 7}) %>
+
+    <div class="table1">
+      <div id="loading">
+        <img src="/gif/find-book-4815913-4009710-ezgif.com-video-to-gif-converter.gif" alt="" id="loader">
+      </div>
+      <div id="table1" style="display:none">
+        <h2 class="text-center" style="margin:15px 0px;">
+          <%if(Status=="return"){%>
+            RETURN
+            <%}else{%>
+              PENDING
+              <%}%>
+                BOOKS
+        </h2>
+        <div id="calFilter">
+          <div id="fromDate">
+            <select name="firstDate" id="firstDate" onchange="selectDate()">
+              <option value="undefined" selected>FROM:</option>
+              <option value="borrowDate1" id="borrowDate1">Borrow Date</option>
+              <%if(Status=="return"){%>
+                <option value="returnDate1" id="returnDate1">Return Date</option>
+                <%}%>
+            </select>
+            <input type="date" id="fromDate" name="fromDate">
+          </div>
+          <div id="toDate">
+            <select name="secondDate" id="secondDate">
+              <option value="undefined" selected>TO:</option>
+              <option value="borrowDate2" id="borrowDate2">Borrow Date</option>
+              <%if(Status=="return"){%>
+                <option value="returnDate2" id="returnDate2">Return Date</option>
+                <%}%>
+            </select>
+            <input type="date" id="toDate" name="toDate">
+          </div>
+          <button type="buttonFilter" class="btn btn-success" onclick="buttonFilter()">Filter</button>
+          <button type="buttonCancel" class="btn btn-danger" onclick="buttonCancel()">Clear</button>
+        </div>
+        <table class="table table-borderless">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col">SR NO:</th>
+              <th scope="col">USER ID</th>
+              <th scope="col">BOOK SKU ID</th>
+              <th scope="col">BOOK ID</th>
+              <th scope="col">BOOK TITLE</th>
+              <th scope="col">BORROWED DATE</th>
+              <%if(Status=="return"){%>
+                <th scope="col">RETURN DATE</th>
+                <%}%>
+                  <th scope="col">DAYS LATE</th>
+                  <th scope="col">PENALTY</th>
+                  <%if(Status=="pending"){%>
+                    <th scope="col">RETURN</th>
+                    <%}%>
+            </tr>
+          </thead>
+
+          <tbody id="tbody">
+
+          </tbody>
+        </table>
+        <div class="footerMain">
+          <a  class="fa-solid fa-angles-left arrow" onclick="onfirst()"></a>
+          <a  class="fa-solid fa-angle-left arrow"  onclick="changePage(-1)"></a>
+          <p id="pageCount">1</p>
+          <a  class="fa-solid fa-angle-right arrow" onclick="changePage(1)"></a>
+          <a class="fa-solid fa-angles-right arrow" onclick="onlast()"></a>
+        </div>
+        </div>
+
+      </div>
+
+      <div id="elem" style="display: none;">
+        <div id="readerID">
+          <%=readerID%>
+        </div>
+        <div id="Status">
+          <%=Status%>
+        </div>
+        <div id="searchby">
+          <%=searchby%>
+        </div>
+        <div id="searchvalue">
+          <%=searchValue%>
+        </div>
+      </div>
+      <script>
+        const buttonFilter = () => {
+          perPageData();
+        }
+        const successAlert = document.getElementById("successAlert");
+        let limit = 5;
+        let dataLength;
+        let requirePages;
+        let totalPages;
+        function checkPages(dataLength) {
+          let a;
+          if (dataLength % 5 == 0) {
+            a = dataLength / 5;
+            return a;
+          }
+          else {
+            a = (dataLength / 5) + 1;
+            return Math.floor(a);
+          }
+        }
+        function lastPageValues(dataLength) {
+          let b;
+          if (dataLength % 5 == 0) {
+            b = 5;
+            return b;
+          }
+          else {
+            a = (dataLength / 5) + 1;
+            b = dataLength % 5;
+            return b;
+          }
+        }
+
+        function changePage(val) {
+
+          currentPage = Number(document.getElementById("pageCount").innerHTML);
+
+          currentPage = currentPage + val;
+
+          if (currentPage > requirePages || currentPage < 1) {
+            return 0;
+          }
+
+          document.getElementById("pageCount").innerHTML = currentPage;
+          perPageData();
+
+        }
+
+        function onfirst() {
+
+          currentPage = Number(document.getElementById("pageCount").innerHTML);
+
+          if (currentPage <= 1) {
+            return 0;
+          }
+
+          document.getElementById("pageCount").innerHTML = 1;
+          perPageData();
+        }
+        function onlast() {
+          currentPage = Number(document.getElementById("pageCount").innerHTML);
+          if (currentPage >= requirePages) {
+            return 0;
+          }
+          document.getElementById("pageCount").innerHTML = requirePages;
+          perPageData();
+        }
+
+        const submitResponse = async (id, bookId) => {
+          Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Return it!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              submitResponseMain(id, bookId);
+            }
+          });
+        }
+
+
+        const submitResponseMain = async (id, bookId) => {
+          const response2 = `&id=${id}&bookID=${bookId}`;
+          const response = await fetch(`${location.origin}/admin/insertReturnData`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: response2,
+          })
+          let resultRes = await response.json();
+          if (resultRes == true) {
+            Swal.fire({
+              title: "Return!",
+              text: "Your Book has been Returned.",
+              icon: "success"
+            });
+            await perPageData();
+          }
+          else {
+            Swal.fire({
+              title: "Somthing Wrong!",
+              text: "The book has been not Return!",
+              icon: "error"
+            });
+          }
+        }
+
+        const checkDate = () => {
+          let firstDate = document.getElementsByName("firstDate")[0].value;
+          let secondDate = document.getElementsByName("secondDate")[0].value;
+          let fromDate = document.getElementsByName("fromDate")[0].value;
+          let toDate = document.getElementsByName("toDate")[0].value;
+
+          date1 = new Date(fromDate);
+          date2 = new Date(toDate);
+
+          var time_difference = date2.getTime() - date1.getTime();
+
+          var days_difference = time_difference / (1000 * 60 * 60 * 24);
+          if (firstDate != undefined && secondDate != undefined && fromDate != undefined && toDate != undefined) {
+            if (days_difference >= 0) {
+              return true;
+            }
+            else {
+              return false;
+            }
+          }
+          else {
+            return false;
+          }
+        }
+        const showAllBookList = async (id, status) => {
+
+          if (checkDate()) {
+            let firstDate = document.getElementsByName("firstDate")[0].value;
+            let secondDate = document.getElementsByName("secondDate")[0].value;
+            let fromDate = document.getElementsByName("fromDate")[0].value;
+            let toDate = document.getElementsByName("toDate")[0].value;
+
+
+            let searchby = document.getElementById("searchby").innerHTML;
+            let searchvalue = document.getElementById("searchvalue").innerHTML;
+            let data = await fetch(`${location.origin}/admin/showBooksByIdDetails/?readerId=${id}&status=${status}&&searchby=${searchby}&&searchvalue=${searchvalue}&&firstDate=${firstDate}&&secondDate=${secondDate}&&fromDate=${fromDate}&&toDate=${toDate}`, {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+              },
+            });
+            let result = await data.json();
+            dataLength = result.length;
+            requirePages = checkPages(dataLength);
+            return result;
+
+          }
+          else {
+
+            let searchby = document.getElementById("searchby").innerHTML;
+            let searchvalue = document.getElementById("searchvalue").innerHTML;
+            let data = await fetch(`${location.origin}/admin/showBooksByIdDetails/?readerId=${id}&status=${status}&&searchby=${searchby}&&searchvalue=${searchvalue}`, {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+              },
+            });
+            let result = await data.json();
+
+            dataLength = result.length;
+            requirePages = checkPages(dataLength);
+            return result;
+          }
+
+        }
+
+        const perPageData = async () => {
+          document.getElementById("table1").style.display = "block";
+
+          let filter = document.getElementById("Status").innerHTML;
+          let id = document.getElementById("readerID").innerHTML;
+          document.getElementById("tbody").innerHTML = "";
+
+          document.getElementById("loading").style.display="block";
+            document.getElementById("table1").style.display="none";
+          let result = await showAllBookList(id, filter);
+          document.getElementById("table1").style.display="block";
+            document.getElementById("loading").style.display="none";
+
+          if (result.length == 0) {
+            document.getElementById("table1").style.display = "none";
+
+            Swal.fire({
+              title: "Empty!",
+              text: "Result Not Found !!!",
+              imageUrl: "/gif/result-not-found-11264082-9049427-ezgif.com-video-to-gif-converter.gif",
+              imageWidth: 300,
+              imageHeight: 300,
+              imageAlt: "Custom image"
+            });
+          }
+          else {
+            totalPages = 5;
+            let offset;
+            let page = document.getElementById("pageCount").innerHTML;
+            offset = ((page - 1) * 5) + 5;
+
+            if (page == requirePages) {
+              totalPages = lastPageValues(result.length);
+              if (page == 1) {
+                offset = totalPages;
+                document.getElementsByClassName("footerMain")[0].style.display = "none";
+              }
+              else if (totalPages % 5 != 0) {
+                offset = ((page - 1) * 5) + 5 - totalPages;
+              }
+            }
+            let startPage = (page - 1) * 5;
+            for (let i = startPage; i < offset && result.length > i; i++) {
+              let txt =
+                `
+          <tr>
+            <th scope="row">
+              ${i + 1}
+            </th>
+            <td>
+              ${result[i].reader_id}
+            </td>
+            <td>
+              ${result[i].skuId}
+            </td>
+            <td>
+              ${result[i].prime_book_id}
+            </td>
+            <td>
+              ${result[i].book_title}
+            </td>
+            <td>
+              ${result[i].borrow_date.split(" ")[0]}
+              </td>
+            `;
+              filter = filter.replace(/\s/g, "");
+              if (filter == "return") {
+                txt += `
+              <td>
+                ${result[i].return_date.split(" ")[0]}
+              </td>
+              `;
+              }
+              if (result[i].daysLate == null) {
+                txt += `
+              <td>
+                0
+              </td>
+              <td>
+                0
+              </td>
+              `;
+              } else {
+                txt += `
+              <td>
+                ${result[i].daysLate}
+              </td>
+              <td>
+                ${result[i].penalty}
+              </td>
+              `;
+              }
+              if (filter == "pending") {
+                txt += `
+              <td><input type="button" value="Return" class="btn btn-primary"
+                  onclick="submitResponse(${result[i].borrowed_id},${result[i].book_id})"></a>
+              </td>
+              `;
+              }
+
+              document.getElementById("tbody").innerHTML += txt;
+            }
+          }
+        }
+        const selectDate = () => {
+          let firstDate = document.getElementById("firstDate").value;
+          let secondDate = document.getElementById("secondDate").value;
+          if (firstDate == "returnDate1") {
+            document.getElementById("borrowDate2").disabled = true;
+          }
+        }
+        const closeBtn2 = async () => {
+          setTimeout(function () { successAlert.style.display = "none"; }, 300);
+        }
+        const buttonCancel = () => {
+          let firstDate = document.getElementsByName("firstDate")[0].value = "undefined";
+          let secondDate = document.getElementsByName("secondDate")[0].value = "undefined";
+          let fromDate = document.getElementsByName("fromDate")[0].value = "";
+          let toDate = document.getElementsByName("toDate")[0].value = "";
+        }
+
+      </script>
+</body>
+
+</html>

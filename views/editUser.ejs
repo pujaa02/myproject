@@ -1,0 +1,59 @@
+<%-include ('adminSidebar',{search : 0}) %>
+  <div class="table1">
+    <h2 class="text-center mt-2">Edit User</h2>
+    <form class="" method="post" action="/admin/updateUser" >
+      <input type="text" name="user_id" value="<%= result[0].user_id %>"  hidden>
+      <div class="form-row">
+        <div class="form-group col-md">
+          <label for="inputEmail4">First Name</label>
+          <input type="text" class="form-control" name="u_fname" id="inputEmail4" placeholder="Tomar" value="<%=result[0].u_fname %>" >
+        </div>
+        <div class="form-group col-md">
+          <label for="inputPassword4">Last Name</label>
+          <input type="text" class="form-control" name="u_lname" id="inputPassword4" placeholder="Ashutosh" value="<%=result[0].u_lname %>"  >
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md">
+          <label for="inputEmail4">Contact</label>
+          <input type="text" name="u_contact" class="form-control" id="inputEmail4" placeholder="7777888880" value="<%=result[0].u_contact %>" >
+        </div>
+        <div class="form-group col-md">
+          <label for="inputPassword4">Address</label>
+          <input type="text" class="form-control" id="inputPassword4" name="u_address" placeholder="New Naroda Ahmedabad" value="<%=result[0].u_address %>" >
+        </div>
+        <div class="form-group col-md">
+          <label for="inputEmail4">Email</label>
+          <input type="text" name="u_email" class="form-control" id="inputEmail4" placeholder="ashutosh@gmail.com" value="<%=result[0].u_email %>" >
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputAddress">Date of Birth</label>
+        <input type="text" class="form-control" name="u_dob" id="inputAddress" placeholder="1999-02-20" value="<%=result[0].u_dob %>">
+      </div>
+      <fieldset class="form-group">
+        <div class="row">
+          <legend class="col-form-label col-sm-2 pt-0">Gender</legend>
+          <div class="col-sm-10">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="u_gender" id="gridRadios1" value="male" <% result[0].u_gender === "male" ? 'checked' : "" %>>
+              <label class="form-check-label" for="gridRadios1">
+                Male
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="u_gender" id="gridRadios2" value="female" <% result[0].u_gender === "female" ? 'checked' : "" %>>
+              <label class="form-check-label" for="gridRadios2">
+                Female
+              </label>
+            </div>
+          </div>
+        </div>
+      <input type="submit" class="btn btn-primary mt-3" value="Update"></input>
+    </form>
+  </div>
+  </div>
+  </div>
+  </body>
+
+  </html>

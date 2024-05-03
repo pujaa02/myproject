@@ -1,0 +1,139 @@
+.chatPage{
+    display: flex;
+    flex-direction: column;
+    border: 2px solid;
+    width: 70%;
+    height: 400px;
+    margin-left: 15%;
+    margin-top: 2%;
+    padding: 40px;
+    overflow-y: scroll;
+    scrollbar-width: none;
+}
+.approve{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 20px;
+}
+.approve input{
+    padding: 5px;
+    border:1px solid #F76B56;
+    border-radius: 10px;
+    color: #F76B56;
+}
+.chatInput{
+    border: 1px solid;
+    width: 70%;
+    height: 6%;
+    display: flex;
+    position: relative;
+    top: 0px;
+    padding: 5px;
+    margin-left: 15%;
+}
+form{
+    display: flex;
+}
+.chatInput input[type = "text"]{
+  width: 630px;
+}
+#emoji{
+    width: 5%;
+    margin:5px;
+}
+.chatInput input[type = "submit"]{
+    width: 18%;
+    margin-left: 5px;
+}
+.chatBoxLeft{
+    display: flex;
+}
+.chatBoxLeft .chat{
+    float: left;
+    background-color: #fef5de;
+    margin-bottom: 20px;
+    margin-left: -30px;
+    padding: 15px;
+}
+.chatBoxRight .chat{
+    float: inline-end;
+    background-color: #e4f1ff;
+    margin-bottom: 20px;
+    margin-right: 20px;
+    padding: 15px;
+}
+.chatBoxRight  img{
+    position: relative;
+    vertical-align: middle;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    left: 600px;
+    top: 48px;
+    border-radius: 100%;
+}
+.chatBoxLeft img{
+    position: relative;
+    right:30px;
+    top: 50px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+emoji-picker {
+    position: absolute;
+    top: -305px;
+    left: 300px;
+    width: 400px;
+    height: 300px;
+    z-index: 1;
+}
+@media (1500px <=width <=2000px){
+    .chatPage{
+        width: 90%;
+        margin-left: 5%;
+        height: 600px;
+    }
+    .chatBoxRight img{
+       left: 1235px;
+    }
+    .chatBoxLeft .chat{
+        margin-left: 5px;
+    }
+    .chatBoxLeft img{
+        right: 10px;
+    }
+    .chatBoxRight .chat{
+        margin-right: 50px;
+    }
+    .chatInput{
+        width: 90%;
+        margin-left: 5%;
+        height: 4%;
+    }
+    .chatInput input[type = "text"]{
+        width: 1000px;
+    }
+    #emoji{
+        width: 5%;
+    }
+    .chatInput input[type = "submit"]{
+        left: 1100px;
+        width: 300px;
+    } 
+    emoji-picker {
+        top: -410px;
+        left: 750px;
+        width: 600px;
+        height: 400px;
+        z-index: 1;
+      }
+}
+
+@media (1297px <= width <= 1366px) {
+    .book_main_container{
+       height: 725px;
+    }
+}

@@ -1,0 +1,8 @@
+@media (1298px <=width <=1366px) {
+    .d-flex{
+        height: 520px;
+    }
+    .d-flex div{
+        height: max-content;
+    } 
+}

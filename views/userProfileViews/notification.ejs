@@ -1,0 +1,132 @@
+<style>
+    @media ( 1297px <= width <= 1366px){
+        .comp_container{
+            height: 725px;
+        }
+    }
+</style>
+
+<div class="col-md-12 d-flex flex-column align-items-center ">
+    <div id="showMsg"></div>
+    <h3 class="text-center heading m-3">Notification</h3>
+    <div class="container d-flex flex-row justify-content-center align-items-center p-3">
+        <form id="searchForm">
+            <input class="search-text" name="search_text" type="text" />
+            <img onclick="search()" height="40px" width="40px" src="/userProfileScript/icons/search_icon.svg" />
+        </form>
+    </div>
+    <div id="main">
+        <% if(result.length==0){%>
+            <h2 class="text-danger">No new notification available</h2>
+            <%} else { if(result.length<=2){%>
+                <div id="cards">
+                    <%result.forEach((element)=>{%>
+                        <div id="card">
+                            <div class="card-body">
+                                <p>
+                                <p class="float-right" onclick="deleteNotification('<%=element.notify_id%>')"><img
+                                        width="30" height="30" src="./userProfileScript/icons/bxs-x-circle.svg" /></p>
+                                </p>
+                                <div class="d-flex flex-row align-items-end ">
+                                    <img width="40" height="40"
+                                        src="https://cdn.iconscout.com/icon/premium/png-512-thumb/book-2382575-2013047.png?f=webp&w=256" />
+
+                                    <h5 class="card-title text-center"><b>
+                                            <%= element.book_title%>
+                                        </b></h5>
+                                </div>
+                                <p class="card-text">
+                                    <%= element.message %>
+                                </p>
+                                <p class="float-right">
+                                    <%=element.created_at %>
+                                </p>
+                                <% if(element.isSeen==1){%>
+                                    <img src="./userProfileScript/icons/greenCheck.svg" />
+                                    <%}else{%>
+                                        <img onclick="seenMsg('<%=element.notify_id%>', this)"
+                                            src="./userProfileScript/icons/simpleCheck.svg" />
+                                        <%}%>
+
+                            </div>
+                        </div>
+                        <%})%>
+                </div>
+                <div class="container-fluid">
+                    <p onclick="deleteAllNotification('<%=result[0].reader_id%>')" class=" ubtn float-right text-light">
+                        clear
+                        all</p>
+                </div>
+                <%} else{%>
+                    <div id="cards">
+                        <%for(let i=0; i<2; i++){%>
+                            <div class="card">
+                                <div class="card-body">
+                                    <p>
+                                    <p class="float-right" onclick="deleteNotification('<%=result[i].notify_id%>')">
+                                        <img width="30" height="30" src="./userProfileScript/icons/bxs-x-circle.svg" />
+                                    </p>
+                                    </p>
+                                    <div class="d-flex flex-row align-items-end ">
+                                        <img width="40" height="40"
+                                            src="https://cdn.iconscout.com/icon/premium/png-512-thumb/book-2382575-2013047.png?f=webp&w=256" />
+
+                                        <h5 class="card-title text-center"><b>
+                                                <%= result[i].book_title%>
+                                            </b></h5>
+                                    </div>
+                                    <p class="card-text">
+                                        <%= result[i].message %>
+                                    </p>
+                                    <p class="float-right">
+                                        <%=result[i].created_at %>
+                                    </p>
+                                    <% if(result[i].isSeen==1){%>
+                                        <img src="./userProfileScript/icons/greenCheck.svg" />
+                                        <%}else{%>
+                                            <img onclick="seenMsg('<%=result[i].notify_id%>', this)"
+                                                src="./userProfileScript/icons/simpleCheck.svg" />
+                                            <%}%>
+
+                                </div>
+                            </div>
+                            <%}%>
+                    </div>
+                    <div class="container-fluid">
+                        <p onclick="deleteAllNotification('<%=result[0].reader_id%>')"
+                            class=" ubtn float-right text-light">
+                            clear
+                            all</p>
+                    </div>
+                    <nav aria-label="Page navigation example" class="float-left">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <p aria-label="Previous" onclick="displayFirstNoti('<%=result[0].reader_id%>')"
+                                    class="page-link">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Previous</span>
+                                </p>
+                            </li>
+                            <li class="page-item">
+                                <p onclick="prevNoti('<%=result[0].reader_id%>')" class="page-link">
+                                    < </p>
+                            </li>
+                            <li class="page-item">
+                                <p id="pageNo" class="page-link">1</p>
+                            </li>
+                            <li class="page-item">
+                                <p onclick="nextNoti('<%=result[0].reader_id%>')" class="page-link">>
+                                </p>
+                            </li>
+                            <li class="page-item">
+                                <p onclick="displayLastNoti('<%=result[0].reader_id%>')" aria-label="Next"
+                                    class="page-link">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Next</span>
+                                </p>
+                            </li>
+                        </ul>
+                    </nav>
+                    <%}}%>
+    </div>
+</div>

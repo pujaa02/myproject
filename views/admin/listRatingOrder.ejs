@@ -1,0 +1,59 @@
+<%-include ('adminSidebar',{search : 3}) %>
+  <div class="table1">
+    <h2 class="text-center">List of Ratings by Users</h2>
+    <table class="table text-center table-bordered w-auto">
+      <thead>
+        <tr>
+          <th scope="col" id="table1" onclick="rateOrder('user_id',1)">Reader Id <i id="down1"></i></th>
+          <th scope="col" id="table2" onclick="rateOrder('book_title',2)">BookTitle</th>
+          <th scope="col" id="table3" onclick="rateOrder('date',3)">Date of Rating</th>
+          <th scope="col" id="table4" onclick="rateOrder('rating',4)">Rating(5)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(let i=0 ; i<result.length ; i++) {%>
+          <tr>
+            <th scope="row">
+              <%= result[i].user_id %>
+            </th>
+            <td>
+              <%= result[i].book_title %>
+            </td>
+            <td >
+              <%= result[i].date %>
+            </td>
+            <td >
+              <%= result[i].rating %>
+            </td>
+          </tr>
+          <% } ; %>
+      </tbody>
+    </table>
+    <%-include('pagination',{p,page}) %>
+  </div>
+  </div>
+  </div>
+  </body>
+     <script>
+      window.addEventListener('load',()=>{
+       let n = window.sessionStorage.getItem('icon');
+       document.getElementById(`table${n}`).style.border = '1px solid orange';
+      })
+          function rateOrder(column,n){
+            let column1 = window.sessionStorage.getItem('column');
+            let icon = window.sessionStorage.getItem('icon');       
+            if(column1 == `${column}1`){
+                window.sessionStorage.setItem('column', `${column}0`);
+                window.sessionStorage.setItem('icon',n);
+                document.getElementById(`table${n}`).style.border = '1px solid orange';
+                window.location.href = `/admin/showrating/${column}/asc`;
+            }
+        else{
+               window.sessionStorage.setItem('column', `${column}1`);
+               window.sessionStorage.setItem('icon',n);
+               document.getElementById(`table${n}`).style.border = '1px solid orange';
+               window.location.href = `/admin/showrating/${column}/desc`;
+            }
+        }
+     </script>
+  </html>

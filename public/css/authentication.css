@@ -1,0 +1,391 @@
+.Container {
+    width: 1140px;
+    height: 100%;
+    margin: auto auto;
+}
+.formerror{
+    margin-top:-20px;
+    font-size: 10px;;
+    color:red;
+    font-weight: bold;
+}
+.formerrorr{
+    margin-top:-5px;
+    font-size: 10px;;
+    color:red;
+    font-weight: bold;
+}
+.formerrorr2{
+    margin-top:-5px;
+    font-size: 10px;;
+    color:red;
+    font-weight: bold;
+    visibility: hidden;
+}
+#pass>.formerrorr{
+    position: relative;
+    bottom:45px;
+}
+.label{
+    margin-top:5px;
+}
+.login {
+    width: 32.3%;
+    height: 554px;
+    background: #FFFFFF;
+    margin: 0px auto;
+    border-radius: 10px;
+    box-shadow: 7px 7px 3px #E72929;
+    
+}
+.checkIcon{
+    margin:0px 0px 0px 4px;
+}
+
+#successAlert,#errorAlert{
+    display: none;
+}
+#greenRound{
+    background-color: #4AC156;
+    padding:18px;
+    width:60px;
+    height:60px;
+    border-radius: 100%;
+    margin:60px auto;
+}
+.passwordVerfication,.afterPasswordVerfication{
+    width: 32.3%;
+    height: 504px;
+    background: #FFFFFF;
+    margin:75px auto;
+    box-shadow: 7px 7px 3px #E72929;
+    border-radius: 10px;
+}
+.passwordVerfication2{
+    width: 32.3%;
+    height: 450px;
+    background: #FFFFFF;
+    margin:85px auto;
+    border-radius: 10px;
+    box-shadow: 7px 7px 3px #E72929;
+}
+#img1Pass{
+    position: relative;
+    bottom:27px;
+    left:270px;
+}
+#img1PassLogin{
+    position: relative;
+    bottom:38px;
+    left:272px;
+    margin-bottom: 23px;;
+}
+.register{
+    width: 50.3%;
+    height: 504px;
+    background: #FFFFFF;
+    margin: 2rem auto;
+    border-radius: 10px;
+    padding:70px 0px 30px 0px;
+    box-shadow: 10px 10px 5px #E72929;
+}
+#linkDiv{
+    margin-top:-20px;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+}
+body {
+    background: linear-gradient(160.86deg, #FA7C54 -8.64%, #EC2C5A 121.84%);
+    background-repeat: repeat;
+    background-size:cover;
+    background-attachment:fixed ;
+}
+
+.logo {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-left:-37px;
+}
+.logoR {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: -85px 0px -20px -37px;
+}
+
+.logoText {
+    color: rgb(123, 139, 154);
+    font-size: 19px;
+    font-weight: 700;
+    margin: auto 0px;
+    margin-left: -35px;
+}
+.iconHideImg,.iconShowImg{
+  cursor  : pointer;
+    width:18px;
+}
+.group1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: -25px auto;
+}
+.formdesign{
+    margin:20px auto;
+}
+.group1Reg{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top:-35px;
+}
+
+.group1First {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 24px;
+    text-align: center;
+    color: #4D4D4D;
+}
+.group1Second2 {
+    margin:10px auto -15px auto;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 17px;
+    line-height: 24px;
+    text-align: center;
+    color: red;
+}
+
+.group2 {
+    margin: 50px auto;
+}
+
+.group1Second {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 128.52%;
+    text-align: center;
+    color: #ABABAB;
+}
+
+
+
+#password,
+#showPass,
+#forgotPass,#submitDiv,#createPassword,#confirmPassword,#bname{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    margin: 10px auto;
+}
+#emails,#pass,#username{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    margin: 25px auto;
+}
+
+#fname,#lname,#date,#number,#gender,#date,#email{
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    margin: 35px 10px 15px 30px;
+}
+#submitDivLog{
+    display: flex;
+    justify-content: center;
+    width: 80%;
+    margin: 30px auto 10px auto;
+}
+
+#goLoginSubmitDiv{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    margin: 20px 0px 0px 43px;
+}
+#registerNewUser {
+    width: 80%;
+    margin: 20px auto;
+}
+#registerNewUserLog {
+    width: 80%;
+    margin: 5px 0px 20px 140px;
+}
+
+ #submitDiv {
+    position: relative;
+    margin-top:30px;
+    bottom:49px;
+} 
+
+.emailText,
+.passText {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 100%;
+    color: #4D4D4D;
+}
+
+input[type=text],
+input[type=password],input[type=date],
+select {
+    margin: 7px 0px;
+    width: 100%;
+    padding: 12px 20px;
+
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+.formdesign>input[type=text],
+.formdesign>input[type=password],.formdesign>input[type=date],
+select {
+    margin: 3px 0px;
+    width: 100%;
+    padding: 4px 20px;
+
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type=password],
+select {
+    font: bold 100% "Lucida Sans Unicode", sans-serif;
+}
+
+.passwordIcon {
+    position: relative;
+    bottom: 16px;
+    left: 269px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.passwordIcon>img {
+    font-size: 10px;
+    line-height: 1;
+    color: #333;
+    transition: color 0.3s ease-in-out;
+    margin-bottom: 20px;
+}
+
+#registerNewUser{
+    position: relative;
+    bottom: 53px;
+    font-size: 14px;
+}
+.resgisterNew {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+
+#forgotPass{
+    cursor: pointer;
+    position: relative;
+    bottom: 55px;
+    font-size: 14px;
+    text-decoration: underline;
+}
+#submit:hover{
+    transform: scale(1.05);
+}
+.col1Timer,.col1TimeOver{
+    color:#EC2C5A ;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: large;
+}
+.eyeImg:hover{
+    transform: scale(1.05);
+}
+#submit {
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+
+    background: #FA7C54;
+    border-radius: 8px;
+
+    width: 246px;
+    height: 25px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 100%;
+    text-align: center;
+    color: #FFFFFF;
+}
+
+#submit2 {
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0px 10px 0px;
+
+    background: #FA7C54;
+    border-radius: 8px;
+
+    width: 246px;
+    height: 25px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 100%;
+    text-align: center;
+
+    color: #FFFFFF;
+}
+.mainForm{
+    display: flex;
+    flex-direction: row;
+}
+.alert {
+    padding: 20px;
+    background-color: #f44336;
+    color: white;
+    opacity: 1;
+    transition: opacity 0.6s;
+    margin-bottom: 15px;
+  }
+  
+  .alert.success {background-color: #04AA6D;}
+  .alert.info {background-color: #2196F3;}
+  .alert.warning {background-color: #ff9800;}
+  
+  .closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .closebtn:hover {
+    color: black;
+  }

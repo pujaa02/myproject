@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body {
+            margin: auto;
+        }
+
+        .main {
+            position: fixed;
+            display: flex;
+            width: 100%;
+            position: relative;
+            background-color: #F3F3F7;
+            overflow-y: scroll;
+            scroll-behavior: smooth;
+            height: 90%;
+            scrollbar-width: none;
+            border-radius: 0px 0px 10px 0px;
+        }
+    .pdf {
+        width: 100%;
+        aspect-ratio: 4 / 3;
+    }
+
+    .pdf,
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    h1,
+    h3 {
+        text-align: center;
+    }
+
+    h1 {
+        color: green;
+    }
+    @media (1297px <=width <=1366px) {
+    .main{
+    height: 600px;
+    }
+}
+    </style>
+</head>
+
+<body>
+    <% var dir=process.cwd() %>
+        <%- include(dir + "/views/lefttop/leftside.ejs" ) %>
+            <%- include(dir + "/views/lefttop/header.ejs" ) %>
+
+                <div class="main" style="overflow-y: scroll;
+     scroll-behavior: smooth;">
+                    <object class="pdf"
+                        data="/uploads/libraryform.pdf" width="800"
+                        height="500">
+                    </object>
+                </div>
+                </div>
+</body>
+</html>

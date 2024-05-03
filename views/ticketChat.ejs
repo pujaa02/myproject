@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ticket</title>
+  <link rel="stylesheet" href="/css/ticketChat.css">
+  <link rel="stylesheet" href="/css/ticket.css">
+  <link rel="stylesheet" href="../../node_modules/sweetalert2/dist/sweetalert2.min.css">
+</head>
+
+<body>
+  <% var dir=process.cwd() %>
+    <%- include(dir + "/views/lefttop/leftside.ejs" ) %> <%- include(dir + "/views/lefttop/header.ejs" ) %>
+        <div class="approve">
+          <h5>Closed this Issue</h6>
+            <input type="button" value="Closed" id="close">
+        </div>
+        <div class="chatPage" id="chatPage">
+          <h5 align="center">You are Sending Message to Admin</h5>
+
+          <% if(result.length> 0) {%>
+
+            <% result.forEach((element,index)=> { %>
+              <% if(element.user_id==user_id) {%>
+                <div class="chatBoxRight">
+                  <div class="chat">
+                    <h5>
+                      <%= result1[0].u_fname %>
+                    </h5>
+                    <p>
+                      <%= element.message%>
+                    </p>
+                  </div>
+                  <img src="<%= result1[0].img_path %>" alt="" class="imgUser">
+                </div>
+                <% }else{ %>
+
+                  <div class="chatBoxLeft">
+                    <img src="/icon/profile.png" alt="">
+                    <div class="chat">
+                      <h5>Admin</h5>
+                      <p>
+                        <%= element.message%>
+                      </p>
+                    </div>
+                  </div>
+                  <% } %>
+                    <% }); %>
+
+                      <% }else{ %>
+
+                        <% }%>
+        </div>
+        <div class="chatInput">
+          <form id="form">
+            <input type="text" name="message" id="message">
+            <img src="/icon/emoji.png" alt="" height="20" id="emoji">
+            <emoji-picker style="display: none;" id="emoji-picker"></emoji-picker>
+            <input type="submit" value="Send">
+          </form>
+        </div>
+
+
+
+</body>
+<script src="../node_modules/socket.io/client-dist/socket.io.js"></script>
+<script src="../../node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
+<script type="module" src = "../node_modules/emoji-picker-element/index.js"></script>
+<script>
+  
+  
+  const socket = io();
+  let ticket = '<%= id%>';
+  const form = document.getElementById('form');
+  const input = document.getElementById('message');
+  const messages = document.getElementById('chatPage');
+  document.getElementById('emoji').addEventListener('click',()=>{
+    document.getElementById('emoji-picker').style.display = 'block';
+    document.querySelector('emoji-picker')
+    .addEventListener('emoji-click', event => input.value = input.value + event.detail.unicode);    
+  })
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (input.value) {
+      document.getElementById('emoji-picker').style.display = 'none';
+      let status = await fetch('/ticket/status',{
+        method : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ticket: ticket })
+      });
+      let result = await status.json();
+      if(result.status == 'Open'){
+
+          const item = document.createElement('div');
+          item.className = 'chatBoxRight';
+          const chat = document.createElement('div');
+          chat.className = 'chat';
+          let img = document.createElement('img');
+          img.src = '<%= result1[0].img_path %>';
+          let h5 = document.createElement('h5');
+          h5.innerText = '<%= result1[0].u_fname%>';
+          let p = document.createElement('p');
+          p.className = 'chatText';
+          p.innerText = input.value;
+          chat.append(h5);
+          chat.append(p);
+          item.append(img);
+          item.appendChild(chat);
+          messages.appendChild(item);
+          let msg = input.value;
+          let input1 = { msg: msg, ticket: ticket };
+          socket.emit('chat message', input1);
+          input.value = '';
+          let bodyData = await fetch('/ticket/chat', {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ msg: msg, ticket: ticket })
+          });
+      }
+      else{
+        Swal.fire({
+            title: "Closed!",
+            text: "This Ticket has been closed By Admin",
+            icon: "success"
+          }).then(()=>{
+            window.location.pathname = '/ticket';
+          })
+      }
+    }
+    else{
+            Swal.fire({
+                    title: "Error!",
+                    text: "White-Space are not allowed",
+                    icon: "error"
+            });
+            input.value = '';
+      }
+
+  });
+  socket.on(`chat-message-${ticket}`, (msg) => {
+    const item = document.createElement('div');
+    item.className = 'chatBoxLeft';
+    const chat = document.createElement('div');
+    chat.className = 'chat';
+    let p = document.createElement('p');
+    p.className = 'chatText';
+    p.innerText = msg;
+    let h5 = document.createElement('h5');
+    h5.innerText = 'Admin';
+    let img = document.createElement('img');
+    img.src = '/icon/profile.png';
+    chat.append(h5);
+    chat.append(p);
+    item.append(img);
+    item.appendChild(chat);
+    messages.appendChild(item);
+  });
+
+
+  document.getElementById('close').addEventListener('click', async (e) => {
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Close Ticket!"
+    }).then((result) => {
+      if (result.isConfirmed){
+        fetch('/ticket/update', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ticket: ticket })
+        }).then(() => {
+          return Swal.fire({
+            title: "Closed!",
+            text: "This Ticket has been closed.",
+            icon: "success"
+          }).then(()=>{
+            window.location.pathname = '/ticket';
+          })
+        })
+      }
+    });
+})
+</script>
+
+</html>
